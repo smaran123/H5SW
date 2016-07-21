@@ -1,0 +1,39 @@
+<ul class="nav nav-tabs" id="myTab">
+  <li class="<%= (params[:controller] == "settings" && params[:action] == "accounting") ? "active" : "" %>">
+    <%= link_to t('.account'), accounting_settings_path, :title => "list accounting" %>
+  </li>
+
+  <li class=<%= params[:controller] == "users" ? 'active' : ''  %>>
+    <%= link_to t('.user'), users_path , :title => "list users" %>
+  </li>
+
+  <li class=<%= params[:controller] == "roles" ? 'active' : ''  %>>
+    <%= link_to t('.role'), roles_path, :title => "list roles" %>
+  </li>
+
+  <li class="<%= (params[:controller] == "customs" && (params[:action] == "new" || params[:action]=="new_tab") )? 'active' : '' %>" >
+    <% tab = current_login.tabs.first %>
+    <% if tab.present? %>
+      <%= link_to t('.custom'), new_custom_path(:tab => tab.id, :type => tab.tab_type), :title => "custom page" %>
+    <% else %>
+      <%= link_to t('.custom'), new_tab_customs_path(:type=> "Customer"), :title => "Create Tabs" %>
+    <% end %>
+  </li>
+
+  <li class="<%= (params[:controller] == "subscriptions" && params[:action] == "billing") ? 'active' : ''  %>">
+    <%=  link_to t('.billing'), billing_subscriptions_path, :title => "billing page" %>
+  </li>
+
+  <li class="<%= (params[:controller] == "items" && params[:action] == "index") ? 'active' : ''  %>" >
+    <%=  link_to t('.item'), items_path, :title => "List of Items" %>
+  </li>
+  
+  <li class="<%= (params[:controller] == "settings" && params[:action] == "index") ? 'active' : '' %>">
+    <%= link_to t('.list'), settings_path%>
+  </li>
+  
+  <li class="<%= (params[:controller] == "recurrings" && params[:action] == "index") ? 'active' : '' %>">
+    <%= link_to "Job Templates", recurrings_path%>
+  </li>
+</ul>
+

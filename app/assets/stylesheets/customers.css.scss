@@ -1,0 +1,60 @@
+// Place all the styles related to the customers controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div.scrollWrapper{
+  height: 250px;
+  width :100%;
+  overflow: scroll;
+}
+
+
+#form2_customers{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 220px;
+}
+
+#form2_actions{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 220px;
+}
+
+
+#customer_types{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 430px;
+}
+
+#customer_parent_billing{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 430px;
+}
+
+#customer_contact_id{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 430px;
+}
+
+#customer_business_type{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 430px;
+}
+
+#customer_terms_client{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 430px;
+}
+
+#customer_status{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 430px;
+}
+

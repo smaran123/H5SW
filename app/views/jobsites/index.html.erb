@@ -1,0 +1,32 @@
+<%= render '/layouts/customer_with_action' %>
+<%= render 'tabbed' %>
+<%= render 'search' %>
+  <table class="table table-striped">
+    <tr>
+      <th colspan="5"><%= link_to "Add New", new_jobsite_path %></th>
+    </tr>
+    <tr>
+      <th><%=  t('jobsites.index.name')%></th>
+      <th><%= t('jobsites.index.city') %></th>
+      <th><%= t('jobsites.index.state') %></th>
+      <th><%= t('jobsites.index.zip') %></th>
+      <th><%= t('jobsites.index.action') %></th>
+    </tr>
+
+
+    <% @jobsites.each do |jobsite| %>
+      <tr>
+        <td><%= jobsite.name %></td>
+        <td><%= jobsite.city %></td>
+        <td><%= jobsite.state %></td>
+        <td><%= jobsite.zip %></td>
+        <td><%= link_to t('jobsites.index.edit'), edit_jobsite_path(jobsite), :class => "btn btn-mini btn-primary" %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="5">
+        <%= will_paginate @jobsites %>
+      </td>
+    </tr>
+  </table>
+

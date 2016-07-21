@@ -1,0 +1,9 @@
+<% if params[:type] == "qty" %>
+$("#quantity_<%= @inventory.id %>").html('<%= escape_javascript render :partial => 'inventories/inventory',:locals => {:inventory => @inventory} %>')
+<% elsif params[:type] == "number" %>
+$("#number_<%= @inventory.id %>").html('<%= escape_javascript render :partial => 'inventories/inventory3',:locals => {:inventory => @inventory} %>')
+<% elsif params[:type] == "itemtype" %>
+$("#itemtype_<%= @inventory.id %>").html('<%= escape_javascript render :partial => 'inventories/inventory2',:locals => {:inventory => @inventory} %>')
+<% else %>
+$("#description_<%= @inventory.id %>").html('<%= escape_javascript render :partial => 'inventories/inventory1',:locals => {:inventory => @inventory} %>')
+<% end %>

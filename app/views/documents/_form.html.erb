@@ -1,0 +1,118 @@
+<%= form_for(@document, :url => documents_path(:type => params[:type]),:remote => true, :html => {:multipart => true }) do |f| %>
+
+  <table width="100%">
+    <tr style="color: #FFF; font-weight: bold; background: #666;">
+      <td><%= t('documents.form.doc') %> : .docx, .doc, .pdf, .zip, .jpg, .jpeg, .gif, .png, .tif, .tiff, .txt, .ppt, .pptx, .xls, .xlsx</td>
+    </tr>
+    <tr>
+      <td>
+        <div id="error_explanation" style="display:none;"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= f.hidden_field :documentable_type, :value => params[:type] %>
+        <%= f.hidden_field :documentable_id, :value => params[:type]=="Job" ? session[:job_id]: session[:customer_id] %>
+        <%= f.hidden_field :jobsite_id, :value => session[:jobsite_id] %>
+      </td>
+
+
+    </tr>
+    <tr>
+      <td id="file_field">
+        <%= f.file_field :document, :onchange => "$(this).parents('form').submit();" %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span style=" color: red;
+              font-size: 20px;
+              padding-left: 300px;"> OR</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div id="droparea">
+          drag here
+        </div>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+
+<script type="text/javascript" >
+  var dropArea = document.getElementById("droparea")
+
+  dropArea.addEventListener("drop", function(evt){
+    evt.preventDefault();
+    evt.stopPropagation();
+    
+    uploadFiles(evt.dataTransfer.files);
+
+    return false;
+  }, false);
+
+
+  function uploadFiles(files){
+    var fd = FormData();
+    var position = 0;
+    var max = files.length;
+    if (typeof fd != "undefined"){
+      function queue(){
+        if (max >= 1 && position <= max - 1){
+          fd.append("file", files[position]);
+          upload();
+        }
+      }
+
+      function upload(){
+        $.ajax({
+          url: '/documents?type='+'<%= params[:type] %>',
+          data: fd,
+          processData: false,
+          contentType: false,
+          type: 'POST',
+          success: function(data){
+            position = position + 1;
+            queue();
+          }
+        });
+      }
+      queue();
+    }
+  }
+
+  dropArea.addEventListener("dragenter", function(evt){
+    if (evt){
+      this.className = "drag-enter";
+    }
+    endFn(evt);
+  }, false);
+
+  dropArea.addEventListener("dragleave", function(evt){
+    this.className = "";
+    endFn(evt);
+  }, false);
+
+  dropArea.addEventListener("dragover", function(evt){
+    endFn(evt);
+    evt.dataTransfer.dropEffect = 'move';
+
+    return false;
+  }, false);
+
+  function endFn(evt){
+    evt.preventDefault();
+    evt.stopProp
+  }
+</script>
+<style>
+  td, th {
+    text-align: left;
+  }
+</style>
+
+<hr />
+
+

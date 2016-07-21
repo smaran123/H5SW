@@ -1,0 +1,121 @@
+<%= form_for @recurring do |f| %>
+
+<div class="field">
+  <%= f.label :name, "Template Name" %>
+  <%= f.select :name ,options_for_select([["Daily Template"],["Weekly Template"],["Monthly Template"],["Yearly Template"]]) %>
+</div>
+
+<div class="field">
+  <%= f.label :template_type, "Type" %>
+  <%= f.select :template_type, options_for_select([["scheduled"]]) %>
+</div>
+
+<div class="field">
+  <%= f.label :interval %>
+  <%= f.select :interval, options_for_select([["Daily","daily"], ["Weekly","weekly"], ["Monthly","monthly"], ["Yearly","yearly"]]),{}, :onchange => "getoptions();" %>
+  <span id ="daily">
+  <%= f.label :every %><%= text_field_tag :daily ,nil,:placeholder => "2 days",:style=>"width:50px;" %>day(s)</span>
+  
+  <span id="weekly">
+    <%= f.label :every %><%= text_field_tag :weekly,nil,:placeholder => "2 weeks",:style=>"width:65px;"%>week(s)<%= f.label :on %><%= select_tag :weekly1 ,options_for_select([["Sunday"],["Monday"],["Tuesday"],["Wednesday"],["Thursday"],["Friday"],["Saturday"]]),:style=>"width:100px;" %>
+  </span>
+  
+  <span id ="monthly">
+    <%= f.label :on %><%= select_tag :monthly , options_for_select([["day",""],["first","1st day"],["second","2nd day"],["third","3rd day"],["fourth","4th day"],["last","last day"]]), :style => "width:100px;" %> <%#= f.select :on, options_for_select([["1st"],["2nd"],["3rd"],["4th"],["5th"],["6th"],["7th"],["8th"],["9th"],["10th"],["11th"],["12th"],["13th"],["14th"],["15th"],["16th"],["17th"],["18th"],["19th"],["20th"],["21st"],["22nd"],["23rd"],["24th"],["25th"],["26th"],["27th"],["28th"],["last"]]), :style => "width:75px;" %> of <%= f.label :every %> <%= text_field_tag :monthly1, nil,:placeholder => "2 months",:style => "width:65px;" %>month(s)
+  </span>
+  
+  <span id ="yearly">
+    <%= f.label :every %><%= select_tag :year,options_for_select([["January"],["February"],["March"],["April"],["May"],["June"],["July"],["August"],["September"],["October"],["November"],["December"]]),:style=>"width:100px;" %> <%= select_tag :year1, options_for_select([["1st"],["2nd"],["3rd"],["4th"],["5th"],["6th"],["7th"],["8th"],["9th"],["10th"],["11th"],["12th"],["13th"],["14th"],["15th"],["16th"],["17th"],["18th"],["19th"],["20th"],["21st"],["22nd"],["23rd"],["24th"],["25th"],["26th"],["27th"],["28th"],["last"]]), :style => "width:75px;" %>
+
+  </span>
+</div>
+
+<div class="field">
+  <%= f.label :start_date %>
+  <div id="datetimepicker1" class="input-append date">
+      <style>
+        .btn{
+          padding :0;
+        }
+      </style>
+      <%= f.text_field :start_date, "data-format"=>"dd/MM/yyyy hh:mm:ss" %>
+      <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+        </i>
+      </span>
+</div>
+
+  
+  <div class="field">
+    <%= f.label :end_date %>
+    <div id="datetimepicker2" class="input-append date">
+      <style>
+        .btn{
+          padding :0;
+        }
+      </style>
+      <%= f.text_field :end_date, "data-format"=>"dd/MM/yyyy hh:mm:ss" %>
+      <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+        </i>
+      </span>
+  </div>
+    
+    <div class="field">
+      <%= f.label :days_inadvance, "Days in advance to create" %>
+      <%= f.text_field :days_inadvance %>
+    </div>
+    
+        
+    <div class="actions">
+      <%= f.submit :save, :class => "btn-success" %>
+    </div>
+  <% end %>
+    
+    
+  <script>
+    $(function() {
+    $('#datetimepicker1').datetimepicker({
+       language: 'en'
+    });
+    
+    $('#datetimepicker2').datetimepicker({
+       language: 'en'
+    });
+  });
+  
+   $(document).ready(function() {
+    getoptions();
+   });
+   
+   function getoptions(){
+    if ($("#recurring_interval").val() == "daily") {
+      $("#daily").show();
+      $("#weekly").hide();
+      $("#monthly").hide();
+      $("#yearly").hide();
+    }
+    
+    if($("#recurring_interval").val() == "weekly"){
+      $("#daily").hide();
+      $("#weekly").show();
+      $("#monthly").hide();
+      $("#yearly").hide();
+    }
+    
+    if($("#recurring_interval").val() == "monthly"){
+      $("#daily").hide();
+      $("#weekly").hide();
+      $("#monthly").show();
+      $("#yearly").hide();
+    }
+    
+    if($("#recurring_interval").val() == "yearly"){
+      $("#daily").hide();
+      $("#weekly").hide();
+      $("#monthly").hide();
+      $("#yearly").show();
+    }
+   }
+
+  </script>

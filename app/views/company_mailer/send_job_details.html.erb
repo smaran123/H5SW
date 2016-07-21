@@ -1,0 +1,57 @@
+<div>
+  <span style="font-size :18px; font-weight:bold;">Customer</span><br/>
+  <% @job.customer_id ? customer = Customer.find(@job.customer_id) : '' %>
+  <%=  customer.company_name  %><br/>
+  <%=  customer.city %>,
+  <%=  customer.state  %>,
+  <%=  customer.zip %>
+</div><br/>
+
+<div>
+  <span style="font-size :18px; font-weight:bold; border-bottom: 1px solid #CCC;">Job details</span><br/>
+
+  <table style="border-collapse:collapse;border:1px solid;width:500px;">
+    <tr>
+      <td style="border:1px solid black;">Job Number</td>
+      <td style="border:1px solid black;"><%= @job.id %></td>
+    </tr>
+
+    <tr>
+      <td style="border:1px solid black;">Reference Number</td>
+      <td style="border:1px solid black;"><%= @job.reference_no %></td>
+    </tr>
+
+    <tr>
+      <td style="border:1px solid black;">Due_date</td>
+      <td style="border:1px solid black;"><%= @job.due_date %></td>
+    </tr>
+
+    <tr>
+      <td style="border:1px solid black;">Class Type</td>
+      <td style="border:1px solid black;"><%= @job.class_type %></td>
+    </tr>
+
+    <tr>
+      <td style="border:1px solid black;">Assigned_To</td>
+      <td style="border:1px solid black;"><%= @job.assigned_to %></td>
+    </tr>
+
+    <tr>
+      <td style="border:1px solid black;">Status</td>
+      <td style="border:1px solid black;"><%= @job.status %></td>
+    </tr>
+
+    <tr>
+      <td style="border:1px solid black;">Sales_person</td>
+      <td style="border:1px solid black;"><%= @job.sales_person %></td>
+    </tr>
+    <% if @job.contact_id.present? %>
+      <tr>
+        <td style="border:1px solid black;">Primary Contact</td>
+        <td style="border:1px solid black;"><%= Contact.find(@job.contact_id).name %></td>
+      </tr>
+    <% end %>
+
+  </table>
+</div>
+

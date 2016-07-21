@@ -1,0 +1,205 @@
+
+<table style="background: #F1F1F1">
+  <%= form_for(@custom,  :url => customs_path(:tab => @tab.id, :type => @tab.tab_type)) do |f| %>
+
+  <%# Validation %>
+    <% if @custom.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@custom.errors.count, "error") %> <%= t('.customs.form.error') %></h2>
+
+        <ul>
+          <% @custom.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+  <%#= hidden_field_tag "drop_ids" %>
+    <%= f.hidden_field :company_id, :value => current_login.id %>
+
+    <tr style="background: #666; color: #FFF;">
+      <td colspan="3"><%= t('.label') %></td>
+    </tr>
+    <tr>
+      <td>
+        &nbsp;
+      </td>
+    </tr>
+
+  <%# find job id if tab type is job %>
+
+    <tr style="text-align:left;">
+      <th><%= t('.title') %></th>
+      <th></th>
+    </tr>
+
+    <tr style="border-bottom: 1px solid #CCC;">
+      <td>
+        <%= text_field_tag :tab_name, nil, :value => @tab.name, :class => "span5" %>
+        <%= link_to_function "update", "update_tab();", :class => "btn btn-mini btn-primary", :remote => true  %>
+      </td>
+      <td>
+        <%= f.hidden_field :tab_id, :value => @tab.id %>
+      </td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td><%= f.label :name, t('.create_field') %></td>
+      <td><%= f.label :field, t('.select_field') %></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td><%= f.text_field :name, :placeholder => "Create a Label for your custom field" %></td>
+      <td>
+        <%= f.select :field, options_for_select([['Text Box', 'Text Box'], ['Dropdown List', 'Dropdown List'], ['Calendar', 'Calendar'], ['Legend', 'Legend'],['Table','Table']]), {}, :onchange => "display_this();" %>
+      </td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <div id="display_dropdown_values"></div>
+      </td>
+    </tr>
+
+    <tr id="add_drop_down_values">
+      <td id="append_text" colspan="3">
+        <%= f.label "Enter value for custom field", :id => "hide_label" %>
+        <span id="text">
+          <%= text_field_tag "drop_down_value", nil, :placeholder => "Dropdown Values e.g: value 1, value 2, value 3, ......", :class => 'data' %>
+          <%= image_tag "calendar.png", :style => "width: 32px; height: 32px; cursor:pointer; display:none;", :id => "calendar_icon1", :class => "datepicker" %>
+        </span>
+        <span id="textarea" style="display:none">
+          <%= text_area_tag "drop_down_value1", nil, :placeholder => "Enter your legend here..."%>
+        </span>
+
+    <style>
+      input.small_row{
+        margin: 0;
+        padding: 5px;
+        width: 60px;
+      }
+      input.mini_row{
+        margin: 0;
+        padding: 5px;
+        width: 20px;
+      }
+      .bold_me{
+        cursor: pointer;
+      }
+    </style>
+    <script>
+      $("tr.bold_me:first").css("font-weight", "bold");
+    </script>
+    <table id="table123" style="display:none; width:100%" >
+      <tr>
+        <td><%= text_field_tag :field_1, nil, :class => "small_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_2, nil, :class => "small_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_3, nil, :class => "mini_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_4, nil, :class => "mini_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_5, nil, :class => "mini_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_6, nil, :class => "mini_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_7, nil, :class => "mini_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_8, nil, :class => "mini_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_9, nil, :class => "mini_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_10, nil, :class => "mini_row", :placeholder => "value" %></td>
+        <td><%= text_field_tag :field_11, nil, :class => "small_row", :placeholder => "value" %></td>
+      </tr>
+    </table>
+    <div class="alert alert-info" id="value_label">NOTE: Use commas(,) to seperate multiple values. E.g: USA, Canada, Japan, Koria, China</div>
+  </td>
+  </tr>
+  <tr>
+    <td colspan="3"><%= f.submit :save, :style => "width: 80px; height: 37px"%> </td>
+  </tr>
+<% end %>
+</table>
+
+<div id="display_values" style="margin-top: 10px;">
+  <%= render :partial => 'customs', :locals => {:customs => @customs} %>
+</div>
+
+
+
+
+
+<script>
+  function update_tab() {
+    var tab = $("#tab_name").val();
+    $.ajax({
+      url: '/customs/<%= @tab.id %>/update_tab',
+      type: "PUT",
+      dataType: "script",
+      data: {
+        updated_name: tab,
+        type: '<%= params[:type] %>'
+      },
+      success: function(data) {
+      }
+    });
+  }
+
+  $(document).ready(function() {
+    display_this();
+  });
+
+  function display_this() {
+    $("#value_label").html("NOTE: Use commas(,) to seperate multiple values. E.g: USA, Canada, Japan, Koria, China");
+    if ($("#custom_field").val() == 'Dropdown List') {
+      $("#value_label").show();
+      $("#calendar_icon1").hide();
+      $("#textarea").hide();
+      $("#text").show();
+      $("#table123").hide();
+      $("#drop_down_value").show();
+      $("#hide_label").show();
+    }
+    if ($("#custom_field").val() == "Text Box") {
+      $("#value_label").hide();
+      $("#calendar_icon1").hide();
+      $("#textarea").hide();
+      $("#text").show();
+      $("#table123").hide();
+      $("#drop_down_value").hide();
+      $("#hide_label").hide();
+    }
+    if ($("#custom_field").val() == "Calendar") {
+      $("#value_label").hide();
+      $("#calendar_icon1").hide();
+      $("#textarea").hide();
+      $("#text").show();
+      $("#table123").hide();
+      $("#drop_down_value").hide();
+      $("#hide_label").hide()
+    }
+    if ($("#custom_field").val() == "Legend") {
+      $("#textarea").show();
+      $("#text").hide();
+      $("#calendar_icon1").hide();
+      $("#value_label").hide();
+      $("#table123").hide();
+    }
+    if ($("#custom_field").val() == "Table") {
+      $("#textarea").hide();
+      $("#text").hide();
+      $("#calendar_icon1").hide();
+      $("#value_label").html("Create heading of the table first. Once heading is created you can add more rows in the view section. Please scroll down after creating heading");
+      $("#value_label").show();
+      $("#table123").show();
+    }
+
+    $("#custom_type").change(function() {
+      $.ajax({
+        url: "/customs?type=" + $("#custom_type").val() + "&tab=<%= params[:tab] %>",
+        type: 'GET',
+        dataType: 'script',
+        success: function(data) {
+        }
+      });
+    })
+  }
+
+</script>

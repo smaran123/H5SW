@@ -1,0 +1,55 @@
+<div style="margin: 0 auto; width: 960px;">
+  <h2>SIGN UP</h2>
+
+  <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+    <%= f.hidden_field :subscription_date, :value => Date.today %>
+    <%= devise_error_messages! %>
+    <div>
+      <p>
+        <span>Company Name </span>
+        <span class="star">*</span>
+      </p>
+      <%= f.text_field :name %></div>
+  
+    <div>
+      <p>
+        <span>Phone Number </span>
+        <span class="star">*</span>
+      </p>
+      <%= f.text_field :phone_number,:placeholder => "999-999-9999" %></div>
+  
+  <div>
+      <p>
+        <span>User FirstName </span>
+        <span class="star">*</span>
+      </p>
+      <%= f.text_field :user_firstname %></div>
+  
+  <div>
+      <p>
+        <span>User LastName</span>
+        <span class="star">*</span>
+      </p>
+      <%= f.text_field :user_lastname %></div>
+    <div>
+      <p>
+        <span>Email </span>
+        <span class="star">*</span>
+      </p>
+      <%= f.email_field :email, :autofocus => true %></div>
+
+    <div>
+      <p>
+        <span>Password </span>
+        <span class="star">*</span>
+      </p>
+      <%= f.password_field :password %></div>
+
+    <div><%= f.label :password_confirmation, :style => "font-size: 12px;" %><br />
+      <%= f.password_field :password_confirmation %></div>
+
+    <div><%= f.submit "Sign up",:class => "btn btn-info" %></div>
+  <% end %>
+
+  <%= render "devise/shared/links" %>
+</div>

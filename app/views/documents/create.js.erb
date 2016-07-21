@@ -1,0 +1,11 @@
+<% if !@document.new_record? %>
+  $('#documents').html("<%= escape_javascript(render(:partial => 'documents', :locals => {:documents => @documents})) %> ");
+  $('#document_document').val('');
+<% else %>
+  <%  errors = [] %>
+  <% @document.errors.each do |field, error| %>
+    <% errors  << "#{field}"+' '+"#{error}" %>
+  <%  end %>
+  $("#error_explanation").html("<h2><%= pluralize(@document.errors.count, "error") %> prohibited this contact from being saved:</h2><ul><li style='list-style: none;'><%=  "#{errors.join('<br/>')}".html_safe %></li></ul>")
+  $("#error_explanation").show();
+<% end %>

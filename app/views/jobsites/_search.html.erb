@@ -1,0 +1,6 @@
+<div>
+  <%= form_tag :jobsites, :method => 'get', :class => "form-search" do |f|  %>
+  <%= text_field_tag :search, params[:search], :placeholder => "Search by Name", :class => "input-large search-query" %> &nbsp;
+  <%= submit_tag :Search, :class => "btn btn-mini btn-primary",:style => "width:60px; height:30px" %>  
+<% end %>
+</div>

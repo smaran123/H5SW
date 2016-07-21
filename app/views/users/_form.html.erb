@@ -1,0 +1,76 @@
+<%= form_for(@user, :url => @user.new_record? ? create_user_path : user_path(@user), :remote => true) do |f| %>
+  <table width="100%;" style="background: #F1F1F1;">
+    <tr style="border-bottom: 1px solid #CCC; text-align: left; background: #CCC;">
+      <th colspan="2">
+        <%= link_to t('.add_new'), users_path %>
+      </th>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <% if @user.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@user.errors.count, "error") %><%= t('users.form.error') %></h2>
+
+            <ul>
+              <% @user.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= t('.role') %> <br/>
+        <% if current_login.roles.empty? %>
+          <span style="color: red;">No Roles First create roles on role tab.</span>
+        <% else %>
+          <%= f.select :role_id, options_for_select(current_login.roles.map{|cr| [cr.roll, cr.id]}, :selected => @user.role_id) %>
+        <% end %>
+      </td>
+      <td>
+        <%= t('.name') %><br/>
+        <%= f.text_field :name, :class => "span4" %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= t('.acc_type') %><br/>
+        <%= f.select :accounting_type, ["Employee", "Vendor", "Customer"] %>
+      </td>
+      <td>
+        <%= t('.acc_name') %><br/>
+        <%= f.text_field :accounting_name, :class => "span4" %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= t('.email') %><br/>
+        <%= f.email_field :email, :class => "span4" %>
+      </td>
+      <td>
+        <%= f.check_box :smo_user %> <%= t('.smo_user') %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= t('.lang') %><br/>
+        <%= f.text_field :language, :class => "span4" %>
+      </td>
+      <td>
+        <%= t('.time_zone') %><br/>
+        <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones,{},:id=>"time-zone" %>
+      </td>
+    </tr>
+    <tr>
+      <td><%= f.submit "Save", :class => "btn btn-success", :style => "padding: 5px 20px;" %></td>
+    </tr>
+  </table>
+<% end %>
+
+<style>
+  td, th {
+    text-align: left;
+  }
+</style>

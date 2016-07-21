@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  reference_no: MyString
+  due_date: 2013-06-10 15:43:59
+  class_type: MyString
+  assigned_to: MyString
+  status: MyString
+  job_contact: MyString
+  sales_person: MyString
+  summary: MyString
+  sub_total: 9.99
+  add_items: MyString
+  notes: MyText
+
+two:
+  reference_no: MyString
+  due_date: 2013-06-10 15:43:59
+  class_type: MyString
+  assigned_to: MyString
+  status: MyString
+  job_contact: MyString
+  sales_person: MyString
+  summary: MyString
+  sub_total: 9.99
+  add_items: MyString
+  notes: MyText

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:ipp="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-type" content="text-html; charset=utf-8" />
+    <title>High5software</title>
+    <%= stylesheet_link_tag    "application","datepicker", :media => "all" %>
+    <%= stylesheet_link_tag 'gmaps4rails', "http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" %>
+    <%= javascript_include_tag "https://js.stripe.com/v1/","application","autocomplete-rails","bootstrap-datepicker","signature", "highcharts" %>
+    <%= csrf_meta_tags %>
+    <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
+
+    <!-- somewhere in your document include the Javascript -->
+    <script type="text/javascript" src="https://appcenter.intuit.com/Content/IA/intuit.ipp.anywhere.js"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+
+    <!-- configure the Intuit object: 'grantUrl' is a URL in your application which kicks off the flow, see below -->
+    <script>
+      intuit.ipp.anywhere.setup({menuProxy: '<%= bluedot_settings_url %>', grantUrl: "<%= authenticate_settings_url %>"});
+
+      <% if signed_in? && session[:single_sign_on] == true %>
+        intuit.ipp.anywhere.directConnectToIntuit();
+      <% end %>
+    </script>
+
+    <% if signed_in? && current_company.access_token.present? && current_company.access_secret.present? && current_company.realm_id.present? %>
+      <ipp:blueDot></ipp:blueDot>
+    <% end %>
+
+  </head>
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse">
+            <% if signed_in? %>
+              <ul class="nav pull-left">
+                <li>
+                  <%= link_to t('layouts.application.home' ),  dashboards_index_path %>
+                </li>
+                <li>
+                  <%= link_to t('.customer' ), customers_path %>
+                </li>
+                <li>
+                  <%= link_to t('.job' ), jobs_path %>
+                </li>
+                <li>
+                  <%= link_to t('.contact'), contacts_path %>
+                </li>
+              </ul>
+              <ul class="nav pull-right">
+                <li>
+                  <%= link_to t('.setting' ), users_path %>
+                </li>
+                <li>
+                  <%= link_to "Logout", "#", id: "signout_link" %>
+
+                  <!-- first logout signed in app from the appcenter and then logout from SMO -->
+                  <%= form_for "logout", :url => destroy_company_session_path,:html => {:id => "logout_form"}, :method => :delete do %><% end %>
+                </li>
+              </ul>
+            <% end %>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    <div class="container" style="padding-bottom:50px;">
+      <br/> <br/> <br/>
+      <% if signed_in? %>
+        <% unless params[:controller] == "trial_expires" || params[:controller] == "subscriptions" %>
+          <div class="trial-warning warning">
+            <span style ="font-size:14px;">Free User Account:</span><br/>
+            Jobs remaining this month are <span class="trial-remaining-days"><%= (current_login.jobs_remaining) %></span> out of 30 jobs. New Month Starts on <%= (current_login.new_company_period.to_date ) %>.  
+            <% if current_company.present? %>
+              <%= link_to "Subscribe Now", billing_subscriptions_path , :class => "btn btn-small btn-success" %>
+      <%#= link_to "Subscribe Now", "#subscriptionForm", :class => "btn btn-small btn-success", "data-toggle" =>"modal" %>
+            <% end %>
+    <%#= link_to_function "Subscribe Now", "alert('Comming Soon'); return false;", :class => "btn btn-small btn-success", "data-toggle" =>"modal" %>
+          </div>
+        <% end   %>
+      <% end %>
+
+      <% if notice %>
+        <div class="alert alert-info" style="margin-top: 0px;">
+          <a class="close" data-dismiss="alert">×</a>
+          <strong><%= notice %></strong>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-error">
+          <a class="close" data-dismiss="alert">×</a>
+          <strong><%= alert %></strong>
+        </div>
+      <% end %>
+      <%= yield %>
+      <%= yield :scripts %>
+    </div>
+
+    <div id='ajax_loader_big_div'>
+      <img alt="Ajax-loader-big" src="/assets/ajax-loader-big.gif"  />
+    </div>
+    <script type="text/javascript">
+      var _mfq = _mfq || [];
+      (function() {
+        var mf = document.createElement("script");
+        mf.type = "text/javascript";
+        mf.async = true;
+        mf.src = "//cdn.mouseflow.com/projects/5f3fc771-6e2d-48d4-a88e-30e9a2c93bd4.js";
+        document.getElementsByTagName("head")[0].appendChild(mf);
+      })();
+    </script>
+  </body>
+</html>
+

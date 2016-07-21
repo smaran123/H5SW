@@ -1,0 +1,265 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  layouts:
+    application:
+      home:         "Home"
+      customer:    "Customers"
+      job:         "Jobs"
+      contact:     "Contact"
+      setting:     "Settings"
+      trialmsg_html: "Your SMO trial period will expire on"
+      trialmsg1_html: "days. Enjoy your free trial."
+      subscribe:      "Suscribe Now"
+    tab_panel_for_dashboards:
+        dashboard:      "Dashboard"
+        report:         "Reports"
+    tab_panel_for_customer:
+        customer:       "Customer"
+        job:            "Jobs"
+        note:           "Notes"
+        contact:        "Contact"
+        document:       "Documents"
+        custom:         "Custom Fields"
+    tab_panel_for_job:
+        job:            "Job"
+        note:           "Note"
+        time:           "Time"
+        item:           "Items"
+        document:       "Documents"
+        custom:         "Custom Fields"
+    tabs_for_settings:
+        account:        "Accounting"
+        user:           "Users"
+        role:           "Roles"
+        custom:         "Custom Fields"
+        billing:        "Billing"
+        item:           "Items"
+        business:       "Business Type"
+    customer_with_action:
+      action:           "Actions"
+      add_customer:     "Add Customer"
+      add_jobsite:      "Add Job Site"
+      add_job:          "Add Job"
+      add_note:         "Add Note"
+      add_contact:      "Add Contact"
+      add_doc:          "Add Document"
+    job_with_action:
+      action:           "Actions"
+      add_customer:     "Add Customer"
+      add_jobsite:      "Add Job Site"
+      add_job:          "Add Job"
+      add_note:         "Add Note"
+      add_contact:      "Add Contact"
+      add_doc:          "Add Document"
+    timer:
+      start:            "Start"
+      stop:             "Stop"
+    
+  customers:     
+    customer:
+      add_new:          "Add New"
+      name:             "Name"
+      type:             "Type"
+      contact:          "Contact Name"
+      email:            "Email"
+      job:              "Jobs"
+      option:           "Options"
+    form:
+      type:             "Type"
+      company:          "Company"
+      address1:         "Address1"
+      address2:         "Address2"
+      city:             "City"
+      state:            "State"
+      zip:              "Zip code"
+      acc:              "Account#"
+      web:              "Website"
+      business:         "Biz type"
+      terms:            "Terms client"
+      status:           "Status"
+  jobs:
+    my_jobs:
+      add_new:          "Add New Job"
+      ref_no:           "Reference no"
+      date:             "Date"
+      status:           "Status"
+      summary:          "Summary"
+      action:           "Action"
+    form:
+      ref_no:           "Reference No"
+      due_date:         "Due date"
+      class_type:       "Class Type"
+      assigned_to:      "Assigned To"
+      status:           "Status"
+      job_contact:      "Job Contact"
+      sales_person:     "Sales Person"
+      summary:          "Summary"
+      name:             "Name"
+      sign:             "Signature"
+      
+  contacts:
+    contacts:
+      add_new:          "Add New"
+      name:             "Name"
+      role:             "Role"
+      email:            "Email"
+      mobile:           "Mobile"
+      business:         "Business"
+      twitter:          "Twitter"
+      actions:          "Actions"
+    form:
+      name:             "Name"
+      role:             "Role"
+      email:            "Email"
+      mobile:           "Mobile"
+      business:         "Business"
+      twitter:          "Twitter"
+      actions:          "Actions"
+  
+  notes:
+    notes:
+      comment:            "Comment"
+    form:
+      site_notes:         "Site Notes"
+      service_request:    "Service Request"
+      service_performed:  "Service Performed"
+      private:            "Private"
+      customer:           "Customer"
+      system_notes:       "System Notes"
+      
+  documents:
+    documents:
+      description:        "Description"
+      file_type:          "FileType"
+      date_added:         "DateAdded"
+      action:             "Action"
+  
+  jobtimes:
+    index:
+      add_time:           "Add time"
+      add_schedule:       "Add schedule"
+      type:               "Type"
+      date:               "Date"
+      qty:                "Qty"
+      who:                "Who"
+      service:            "Service"
+    form:
+      user:               "Tech User"
+      type:               "Type"
+      start_time:         "Start Time"
+      hours:              "Hours/Qty"
+      service_item:       "Service Item"
+      
+  items:
+    index:
+      list:               "Items List"
+      title_html:         "Please Click On Quantity, Type, Number and Description to edit"
+      type:               "Type"
+      qty:                "Qty"
+      price:              "Unit_Price"
+      number:             "Number"
+      name:               "Name"
+      desc:               "Description"
+      sub_total:          "Subtotal"
+      action:             "Action"
+      
+  inventories:
+    index:
+      add_item:           "Add Item"
+      
+  settings:
+    accounting:
+      disconnect_from_quickbook:  "Disconnect from Quickbooks"
+      sync_customer:      "Sync Customers Now"
+      sync_items:         "Sync Items Now"
+      sync_employees:     "Sync Employees Now"
+      sync_vendors:       "Sync Vendors Now"
+      sync_sales_person:  "Sync Sales Person Now"
+      cust_html:          "Import all new customers created on quickbooks."
+      item_html:          "Import all Items created on quickbooks."
+      emp_html:           "Import all employees created on quickbooks."
+      vendors_html:       "Import all vendors created on quickbooks."
+      sales_html:         "Import all sales representative created on quickbooks."
+      
+  users:
+    users:
+      user:               "User"
+      emp:                "Emp/Vendor"
+      accounting:         "Accounting Name"
+      role:               "Role"
+      options:            "Options"
+    form:
+      add_new:            "Add New User"
+      role:               "Role"
+      name:               "Name"
+      acc_type:           "Accounting Type"
+      acc_name:           "Accounting Name"
+      email:              "Email"
+      smo_user:           "SMO User"
+      lang:               "Language"
+      time_zone:          "Time Zone"
+      
+  roles:
+    roles:
+      role:               "Role"
+      customer:           "Customer"
+      job:                "Jobs"
+      jobtime:            "Jobtimes"
+      contact:            "Contacts"
+      report:             "Reports"
+      admin:              "Settings/Admin"
+      option:             "Options"
+    form:
+      add_new:            "Add New Role"
+      role:               "Role"
+      module:             "Module"
+      access:             "Access"
+      customer:           "Customer"
+      job:                "Jobs"
+      jobtime:            "Jobtimes"
+      contact:            "Contacts"
+      report:             "Reports"
+      admin:              "Settings/Admin"  
+      
+  businesses:
+    index:
+      business_type:      "Business Types"
+      new:                "New"
+    form:
+       business_type:      "Business Type"
+       
+  customs:
+    new_tab:
+      custom_html:          "Create Customer/Job tabs. You can only create two(2) tabs for customer and two(2) tabs for jobs."
+      tab_title:            "Create Customer/Job Tab first"
+      preview:              " PREVIEW"
+    form:
+      label:                "Create a custom fields.."
+      title:                "Change Your Custom Tab Label"
+      create_field:         "Create a unique label for your custom field"
+      select_field:         "Select a custom field"
+    customs:
+      heading:              "You can drag and drop the position of contents. Click on content (i.e. label / text) to edit that content"
+      desc:                 "No custom fields are created yet. Create your custom fields now!"
+    index:
+      description:          "No custom fields are created yet. Create your custom fields now!"
+      
+      
+      
+      
+    
+      
+      
+    
+      
+    
+    
+      
+     
+      
+     
+      
+      
+     

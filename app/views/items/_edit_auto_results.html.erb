@@ -1,0 +1,37 @@
+<% if @items %>
+  <% @items.each do |item| %>
+    <li id="auto_res"><%= link_to_function item.name,"text_field_value('#{item.name}')" %></li>
+  <% end %>
+<% else %>
+  no results
+<% end %>
+<style>
+  ul li#auto_res{
+    list-style-type: none;
+    padding: 2px;
+  }
+
+  #edit_auto_results{
+    border: 1px solid grey;
+    left: -24px;
+    position: relative;
+    top: -10px;
+    width: 125px;
+    display: none;
+  }
+</style>
+<script>
+  function text_field_value(item){
+    var count = $("#edit_auto_complete_text").val().split(',').length;
+    var str = $("#edit_auto_complete_text").val();
+    var coma_len = $("#edit_auto_complete_text").val().lastIndexOf(',')
+    var fin = (str.length - coma_len)-1;
+    if(count == 1){
+      tex_val = ''
+    }else{
+      tex_val = str.slice(0,-fin);
+    }
+    $("#edit_auto_complete_text").val(tex_val+''+item+',');
+    $("#edit_auto_results").hide(); 
+  }
+</script>

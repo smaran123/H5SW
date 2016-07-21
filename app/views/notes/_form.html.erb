@@ -1,0 +1,37 @@
+<%= form_for(@note, :url => notes_path(:type => params[:type]), :remote => true) do |f| %>
+  <table width="100%">
+    <%= f.hidden_field :notable_id, :value =>  params[:type]=="Job" ? session[:job_id] : session[:customer_id] %>
+    <%= f.hidden_field :notable_type, :value => params[:type] %>
+    <%= f.hidden_field :jobsite_id, :value => session[:jobsite_id] %>
+    <tr style="background:#666; color: #FFF; font-weight: bold;">
+      <td id="error"><%= t('notes.form.error') %></td>
+    </tr>
+    <tr>
+      <td>
+        <%= f.select :note_type, [[t('.site_notes'), t('.site_notes')],[t('.service_request'), t('.service_request')], [t('.service_performed'), t('.service_performed')], [t('.private'), t('.private')], [t('.customer'), t('.customer')], [t('.system_notes'), t('.system_notes')]],:selected => @note.note_type%>
+        <%= f.text_area :description, :style => "width:350px;", :rows => 1 %>
+        <%= f.submit "Add Note", :class => "btn btn-primary",:onclick => "
+                var error = document.getElementById('error');
+                var note_type = document.getElementById('note_note_type');
+                var notable_type = document.getElementById('note_notable_id');
+
+                error.style.background='#666';
+                error.innerHTML='Please select Customer and Note Type';
+
+                if(note_type.value == '' || notable_type.value == 'All'){
+                  error.style.background='#DE652C';
+                  error.innerHTML = 'Please Select Customer and Note Type';
+                  return false
+                }
+        ", :style => "padding: 10px;" %></td>
+    </tr>
+  </table>
+<% end %>
+
+<style>
+  td, th {
+    text-align: left;
+  }
+</style>
+
+

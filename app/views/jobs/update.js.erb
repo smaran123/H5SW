@@ -1,0 +1,9 @@
+<% unless current_company.access_token.present? && current_company.access_secret.present? && current_company.realm_id.present?  %>
+  alert("You are not connected with QuickBooks. Please connect with QuickBooks and try again!");
+<% else %>
+  <% if current_login.inventories.exists?(:job_id => @job.id) || current_login.jobtimes.exists?(:job_id => @job.id) %>
+    alert("Report is pushed to QuickBooks invoice. Please make sure of it");
+  <% else %>
+    alert("At least one item is required to generate invoice. Please create items for this job");
+  <% end %>
+<% end %>

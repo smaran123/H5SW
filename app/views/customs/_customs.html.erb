@@ -1,0 +1,70 @@
+<script>
+  $(function() {
+    var fir_position;
+    var sec_position;
+    var cus_id;
+    $( "ul.droptrue" ).sortable({
+      connectWith: "ul",
+      start: function(event, ui) {
+        fir_position = ui.item.index()+1;
+        cus_id = ui.item.attr('data-order');
+      },
+      stop: function(event, ui) {
+        sec_position = ui.item.index()+1;
+        $.ajax({
+          url:"/customs/update_position",
+          data:{
+            pos_1:fir_position,
+            pos_2:sec_position,
+            id:cus_id,
+            tab:<%= params[:tab] %>
+          },
+          type:'PUT',
+          dataType:'script',
+          success:function(data){
+            <%#*alert(fir_position);%>
+            <%#*alert(sec_position);%>
+          }
+        });
+      }
+    });
+    $( "ul.dropfalse" ).sortable({
+      connectWith: "ul",
+      dropOnEmpty: false
+    });
+  });
+</script>
+<h5 style="margin-top:10px; margin-bottom: 0px; background: #666; color: #FFF; padding:5px;">
+  <%= t('.heading') %>
+</h5>
+<ul id="sortable" class="droptrue">
+
+  <%=  customs.count==0 ? t('.desc') : '' %>
+  <% customs.each do |custom| %>
+    <li class="ui-state-default" data-order="<%= custom.id %>" id="li<%= custom.id %>">
+      <span id="label<%= custom.id %>">
+        <%= label_tag custom.name, nil, :id=> "label#{custom.id}", :onclick => "inplace_edit(#{custom.id});" %>
+      </span>
+      <div id="custom_field_updation_<%= custom.id %>">
+        <%= render :partial => 'customs/replace_dropdown',:locals => {:custom => custom} %>
+      </div>
+    </li>
+  <% end %>
+</ul>
+
+<script>
+  function show_edit_form(custom_id,value_id, tb_type){
+    $.ajax({
+      url:'/customs/get_dropdown_values',
+      data:{
+        custom_id:custom_id,
+        dropdown_id:value_id,
+        tab:<%= params[:tab] %>,
+        type:tb_type
+      },
+      type:'GET',
+      dataType:'script',
+      success:function(data){}
+    });
+  }
+</script>

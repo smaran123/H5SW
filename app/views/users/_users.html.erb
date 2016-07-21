@@ -1,0 +1,32 @@
+<% if !users.blank? %>
+
+  <table width="100%" class="table table-striped">
+    <tr>
+      <th><%= t('.user') %></th>
+      <th><%= t('.emp') %></th>
+      <th><%= t('.accounting') %></th>
+      <th><%= t('.role') %></th>
+      <th><%= t('.options') %></th>
+    </tr>
+
+    <% users.each do |user| %>
+      <% role = Role.find_by_id(user.role_id) %>
+      <tr id="user_<%= user.id %>">
+        <td><%= user.name %></td>
+        <td><%= user.accounting_type %></td>
+        <td><%= user.accounting_name %></td>
+        <td><%= role.present? ? role.roll : "" %></td>
+        <td>
+          <%= link_to t('.edit'), edit_user_path(user), :remote => true, :class => "btn btn-mini btn-primary" %>
+          <%= link_to t('.delete'), user, :method => :delete, :data => { :confirm => t('.del') }, :remote => true, :class => "btn btn-mini btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+      <tr>
+        <td colspan ="5">
+          <%= will_paginate %>
+        </td>
+      </tr>
+
+  </table>
+<% end %>

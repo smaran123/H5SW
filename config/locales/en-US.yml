@@ -1,0 +1,515 @@
+  # Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en-US:
+  devise:
+    confirmations:
+      confirmed: "Your account was successfully confirmed. You are now signed in."
+      send_instructions: "You will receive an email with instructions about how to confirm your account in a few minutes."
+      send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
+    failure:
+      already_authenticated: "You are already signed in."
+      inactive: "Your account was not activated yet."
+      invalid: "Invalid email or password."
+      invalid_token: "Invalid authentication token."
+      locked: "Your account is locked."
+      not_found_in_database: "Invalid email or password."
+      timeout: "Your session expired, please sign in again to continue."
+      unauthenticated: "You need to sign in or sign up before continuing."
+      unconfirmed: "You have to confirm your account before continuing."
+    mailer:
+      confirmation_instructions:
+        subject: "Confirmation instructions"
+      reset_password_instructions:
+        subject: "Reset password instructions"
+      unlock_instructions:
+        subject: "Unlock Instructions"
+    omniauth_callbacks:
+      failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
+      success: "Successfully authenticated from %{kind} account."
+    passwords:
+      no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
+      send_instructions: "You will receive an email with instructions about how to reset your password in a few minutes."
+      send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
+      updated: "Your password was changed successfully. You are now signed in."
+      updated_not_active: "Your password was changed successfully."
+    registrations:
+      destroyed: "Bye! Your account was successfully cancelled. We hope to see you again soon."
+      signed_up: "Welcome! You have signed up successfully."
+      signed_up_but_inactive: "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
+      signed_up_but_locked: "You have signed up successfully. However, we could not sign you in because your account is locked."
+      signed_up_but_unconfirmed: "A message with a confirmation link has been sent to your email address. Please open the link to activate your account."
+      update_needs_confirmation: "You updated your account successfully, but we need to verify your new email address. Please check your email and click on the confirm link to finalize confirming your new email address."
+      updated: "You updated your account successfully."
+    sessions:
+      signed_in: "Signed in successfully."
+      signed_out: "Signed out successfully."
+    unlocks:
+      send_instructions: "You will receive an email with instructions about how to unlock your account in a few minutes."
+      send_paranoid_instructions: "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
+      unlocked: "Your account has been unlocked successfully. Please sign in to continue."
+  errors:
+    messages:
+      already_confirmed: "was already confirmed, please try signing in"
+      confirmation_period_expired: "needs to be confirmed within %{period}, please request a new one"
+      expired: "has expired, please request a new one"
+      not_found: "not found"
+      not_locked: "was not locked"
+      not_saved:
+        one: "1 error prohibited this %{resource} from being saved:"
+        other: "%{count} errors prohibited this %{resource} from being saved:"
+  activerecord:
+    errors:
+      messages:
+        accepted: "must be accepted"
+        taken: "has already been taken"
+        not_a_number: "is not a number"
+        blank: can't be blank
+        greater_than_or_equal_to: "must be greater than or equal to %{count}"
+        exclusion: "is reserved"
+        confirmation: "doesn't match confirmation"
+        less_than_or_equal_to: "must be less than or equal to %{count}"
+        odd: "must be odd"
+        invalid: "is invalid"
+        empty: "can't be empty"
+        too_short: "is too short (minimum is %{count} characters)"
+        wrong_length: "is the wrong length (should be %{count} characters)"
+        too_long: "is too long (maximum is %{count} characters)"
+        less_than: "must be less than %{count}"
+        even: "must be even"
+        inclusion: "is not included in the list"
+        greater_than: "must be greater than %{count}"
+        equal_to: "must be equal to %{count}"  
+  
+  layouts:
+    application:
+      home:             "Home"
+      customer:         "Customers"
+      job:              "Jobs"
+      contact:          "Contact"
+      setting:          "Settings"
+      trialmsg_html:    "Your SMO trial period will expire on"
+      trialmsg1_html:   "days. Enjoy your free trial."
+      subscribe:        "Suscribe Now"
+      
+    tab_panel_for_dashboards:
+        dashboard:      "Dashboard"
+        report:         "Reports"
+    tab_panel_for_customer:
+        customer:       "Customer"
+        job:            "Jobs"
+        note:           "Notes"
+        contact:        "Contact"
+        document:       "Documents"
+        custom:         "Custom Fields"
+    tab_panel_for_job:
+        job:            "Job"
+        note:           "Note"
+        time:           "Time"
+        item:           "Items"
+        document:       "Documents"
+        custom:         "Custom Fields"
+    tabs_for_settings:
+        account:        "Accounting"
+        user:           "Users"
+        role:           "Roles"
+        custom:         "Custom Fields"
+        billing:        "Billing"
+        item:           "Items"
+        list:       "Lists"
+    customer_with_action:
+      action:           "Actions"
+      add_customer:     "Add Customer"
+      add_jobsite:      "Add Job Site"
+      add_job:          "Add Job"
+      add_note:         "Add Note"
+      add_contact:      "Add Contact"
+      add_doc:          "Add Document"
+    job_with_action:
+      action:           "Actions"
+      add_customer:     "Add Customer"
+      add_jobsite:      "Add Job Site"
+      add_job:          "Add Job"
+      add_note:         "Add Note"
+      add_contact:      "Add Contact"
+      add_doc:          "Add Document"
+    timer:
+      start:            "Start"
+      stop:             "Stop"
+    
+  customers:     
+    customer:
+      add_new:          "Add New"
+      name:             "Name"
+      type:             "Type"
+      contact:          "Contact Name"
+      email:            "Email"
+      job:              "Jobs"
+      option:           "Options"
+      status:           "Status"
+      action:           "Actions"
+      inactive:         "Inactive"
+      term:             "Terms client"
+    form:
+      type:             "Type"
+      company:          "Company"
+      address1:         "Address1"
+      address2:         "Address2"
+      city:             "City"
+      state:            "State"
+      zip:              "Zip code"
+      acc:              "Account#"
+      web:              "Website"
+      business:         "Biz type"
+      terms:            "Terms client"
+      status:           "Status"
+      error:            "prohibited this customer from being saved:"
+    create:
+      created:          "Customer was successfully created in SMO and pushed to QuickBooks."
+      create_smo:       "Customer was successfully created in SMO."
+      alert:            "Warning: You are not connected with QuickBooks."
+      notice:           "Customer was successfully created in SMO."
+    update:
+      updated:          "Customer was successfully updated in SMO and QuickBooks."
+      alert:            "Warning: You are not connected with QuickBooks"
+      notice:           "Customer was successfully updated in SMO"
+      notice_smo:       "Customer was successfully updated in SMO"
+    destroy:
+      notice:            "Customer was successfully deleted."
+      error:             "Customer deletion is failed. please try again."
+  jobs:
+    my_jobs:
+      add_new:          "Add New Job"
+      ref_no:           "Reference no"
+      date:             "Date"
+      status:           "Status"
+      summary:          "Summary"
+      action:           "Action"
+      invoice:          "invoice"
+      close:            "close"
+    form:
+      ref_no:           "Reference No"
+      due_date:         "Due date"
+      class_type:       "Class Type"
+      assigned_to:      "Assigned To"
+      status:           "Status"
+      job_contact:      "Job Contact"
+      sales_person:     "Sales Person"
+      summary:          "Summary"
+      name:             "Name"
+      sign:             "Signature"
+      error:            "prohibited this job from being saved:  "
+    create:
+      notice:          "Job was successfully created."
+    update:
+      notice:           "Job details email has been sent."
+      noticeqb:         "Job details are pushed to QuickBooks."
+      notice1:          "Job was successfully updated."
+      notice2:          "Job was successfully updated."
+    destroy:
+      notice:           "Job was successfully deleted."
+      error:            "Job deletion failed."
+    display_customer_and_jobsite:
+      display:          "Please select customer for this job !"
+    close_job:
+      notice:           "Job was closed successfully."
+     
+      
+      
+  contacts:
+    contacts:
+      add_new:          "Add New"
+      name:             "Name"
+      role:             "Role"
+      email:            "Email"
+      mobile:           "Mobile"
+      business:         "Business"
+      twitter:          "Twitter"
+      actions:          "Actions"
+      del:           "Are you sure?"
+      delete:         "Delete"
+    form:
+      name:             "Name"
+      role:             "Role"
+      email:            "Email"
+      mobile:           "Mobile"
+      business:         "Business"
+      twitter:          "Twitter"
+      actions:          "Actions"
+  
+  notes:
+    notes:
+      comment:            "Comment"
+    form:
+      site_notes:         "Site Notes"
+      service_request:    "Service Request"
+      service_performed:  "Service Performed"
+      private:            "Private"
+      customer:           "Customer"
+      system_notes:       "System Notes"
+      error:               "Please select Customer and Note Type"
+    update:
+      notice:             "Note was successfully updated"
+      
+  documents:
+    documents:
+      description:        "Description"
+      file_type:          "FileType"
+      date_added:         "DateAdded"
+      action:             "Action"
+      del:                "Are you sure?"
+      delete:             "Delete"
+    show:
+      alert:              "You don't have permission to access this document"
+    form:
+      doc:                "Document Format supported are"
+  
+  jobtimes:
+    index:
+      add_time:           "Add time"
+      add_schedule:       "Add schedule"
+      type:               "Type"
+      date:               "Date"
+      qty:                "Qty"
+      who:                "Who"
+      service:            "Service"
+    form:
+      user:               "Tech User"
+      type:               "Type"
+      start_time:         "Start Time"
+      hours:              "Hours/Qty"
+      service_item:       "Service Item"
+      error:               "Prohibited this time from being saved "
+    update:
+      notice:             "Time was successfully updated."
+      
+  items:
+    index:
+      list:               "Items List"
+      title_html:         "Please Click On Quantity, Type, Number and Description to edit"
+      type:               "Type"
+      qty:                "Qty"
+      price:              "Unit_Price"
+      number:             "Number"
+      name:               "Name"
+      desc:               "Description"
+      sub_total:          "Subtotal"
+      action:             "Action"
+      
+  inventories:
+    index:
+      add_item:           "Add Item"
+    create:
+      notice:             "Item was successfully created "
+    destroy:
+      notice:             "Item was successfully deleted"
+      error:              "Item deletion failed"
+    inventory3:
+      update:             "update"
+      cancel:             "Cancel"
+    inventory:
+      update:             "update"
+      cancel:             "Cancel"
+    inventory1:
+      update:             "update"
+      cancel:             "Cancel"
+    inventory2:
+      update:             "update"
+      cancel:             "Cancel"
+      
+  settings:
+    accounting:
+      disconnect_from_quickbook:  "Disconnect from QuickBooks"
+      sync_customer:      "Sync Customers Now"
+      sync_items:         "Sync Items Now"
+      sync_employees:     "Sync Employees Now"
+      sync_vendors:       "Sync Vendors Now"
+      sync_sales_person:  "Sync Sales Person Now"
+      cust_html:          "Import all new customers created on QuickBooks."
+      item_html:          "Import all Items created on QuickBooks."
+      emp_html:           "Import all employees created on QuickBooks."
+      vendors_html:       "Import all vendors created on QuickBooks."
+      sales_html:         "Import all sales representative created on QuickBooks."
+      
+    index:
+      add:                "Add New"
+      business:           "Business Types"
+      action:             "Actions"
+      edit:               "Edit"
+      delete:             "Delete"
+      del:                "Are you sure?"
+      addnew:             "Add New"
+      job:                "Job status"
+      action1:            "Actions"
+      edit1:              "Edit"
+      delete1:            "Delete"
+      del1:               "Are you sure?"
+      
+  users:
+    users:
+      user:               "User"
+      emp:                "Emp/Vendor"
+      accounting:         "Accounting Name"
+      role:               "Role"
+      options:            "Options"
+      del:                "Are you sure?"
+      edit:               "Edit"
+      delete:             "Delete"
+    form:
+      add_new:            "Add New User"
+      role:               "Role"
+      name:               "Name"
+      acc_type:           "Accounting Type"
+      acc_name:           "Accounting Name"
+      email:              "Email"
+      smo_user:           "SMO User"
+      lang:               "Language"
+      time_zone:          "Time Zone"
+      error:              " prohibited this customer from being saved:"
+      
+  roles:
+    roles:
+      role:               "Role"
+      customer:           "Customer"
+      job:                "Jobs"
+      jobtime:            "Jobtimes"
+      contact:            "Contacts"
+      report:             "Reports"
+      admin:              "Settings/Admin"
+      option:             "Options"
+      del:                "Are you sure?"
+      edit:               "Edit"
+      delete:             "Delete"
+    form:
+      add_new:            "Add New Role"
+      role:               "Role"
+      module:             "Module"
+      access:             "Access"
+      customer:           "Customer"
+      job:                "Jobs"
+      jobtime:            "Jobtimes"
+      contact:            "Contacts"
+      report:             "Reports"
+      admin:              "Settings/Admin" 
+      error:              "prohibited this role from being saved:"
+      
+  businesses:
+    index:
+      business_type:      "Business Types"
+      new:                "New"
+      del:                "Are you sure?"
+      edit:               "Edit"
+      delete:             "Delete"
+    form:
+       business_type:      "Business Type"
+       error:               "prohibited this business type from being saved:"
+    create:
+      notice:               "Business type was successfully created"
+    update:
+      notice:               "Business Type was successfully updated"
+    destroy:
+      notice:               "Business Type was deleted successfully ."
+      error:                "Business Type deletion is failed. please try again."
+       
+  customs:
+    new_tab:
+      custom_html:          "Create Customer/Job tabs. You can only create two(2) tabs for customer and two(2) tabs for jobs."
+      tab_title:            "Create Customer/Job Tab first"
+      preview:              " PREVIEW"
+    form:
+      label:                "Create a custom fields.."
+      title:                "Change Your Custom Tab Label"
+      create_field:         "Create a unique label for your custom field"
+      select_field:         "Select a custom field"
+      error:                "prohibited custom fields from being saved:"
+    customs:
+      heading:              "You can drag and drop the position of contents. Click on content (i.e. label / text) to edit that content"
+      desc:                 "No custom fields are created yet. Create your custom fields now!"
+    index:
+      description:          "No custom fields are created yet. Create your custom fields now!"
+    create:
+      notice:               "Custom field created successfully."
+    create_tab:
+      error:                "sorry cannot create more tabs"
+    email_custominfo:
+      notice:               "CustomInfo has been sent."
+      alert:                "There is no contact to send mail.Please select contact for this job."
+    email_customer:
+      notice:               "Your message has been sent successfully."
+  
+  jobsites:
+    create:
+      noticeqb:           "Jobsite was successfully created and pushed to QuickBooks."
+      alert:              "Warning: You are not connected with QuickBooks."
+      notice:             "Jobsite was successfully created."
+      notice1:            "Jobsite was successfully created."
+    update:
+      notice:             "Jobsite was successfully updated."
+      notice1:            "Jobsite was successfully updated."
+    update_jobsite_to_quickbook:
+      notice:             "Parent Customer is not present in QuickBooks. Please make sure of it and sync customers now"
+    index:
+      name:               "Name"
+      city:               "City"
+      state:              "State"
+      zip:                "Zip"
+      action:             "Action"
+      edit:               "Edit"
+    form:
+      parent:             "Parent/Billing"
+      name:               "Name"
+      city:               "City"
+      state:              "State"
+      zip:                "Zip"
+      error:              "prohibited this jobsite from being saved:  "
+
+  reports:
+    index:
+      reference_no:         "Reference no"
+      date:                 "Date"
+      status:               "Status"
+      summary:              "Summary"
+    send_mail:
+      notice:               "Your email has been sent."
+      notice1:               "There is no Contact to send mail.Please create contact for this job"
+      
+  will_paginate:
+    previous_label:         "← Previous"
+    next_label:             "Next →"
+    page_gap:               "&hellip;"
+    
+  application:
+    error:          "You don't have permission to access this page!"
+    alert:          "Only company can access this page!"
+    alert1:         "At least one item is required to generate invoice. Please create items for this job and try again later."
+    alert2:         "You are not connected with QuickBooks. Please connect to QuickBooks and try again" 
+    
+  jobstatuses:
+    create:      
+      notice:       "Job status was created successfully."
+    update:
+      notice:       "Job status was updated successfully."
+    destroy:
+     notice:        "Job status was deleted successfully"
+     error:         "Job status deletion failed. Please try again later."
+     
+  subscriptions:
+    billing:
+     payment:      "Payment method"
+     user:         "User"
+     role:         "Role"
+     deactive:     "Deactive"
+     pay:          "Pay Now"
+     date:          "Date"
+     plan:          "plan"
+     amount:        "Amount"
+     current_user:  "Current Users"
+     history:       "Billing History"
+    index:
+      subscribe:    "Subscribe Now"
+      trial:        "Your SMO trial period is expired, please subscribe now for accessing SMO."
+    create:
+      thanks:       "Your Transaction was successful."
+      welcome:      "Thank you for subscribing."
+      smo:          "Welcome To SMO"
+   

@@ -1,0 +1,12 @@
+<script>
+  $(document).ready(function(){
+    var isTimerOn = sessionStorage.time;
+
+    if(typeof(isTimerOn)!="undefined" || isTimerOn!="null"){
+      if(confirm('Your timer is on. If you logout you timer will reset. Are you sure to continue?')){
+         sessionStorage=null;
+      }
+      return false;
+    }
+  })
+</script>

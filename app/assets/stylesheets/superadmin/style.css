@@ -1,0 +1,16 @@
+/* 
+    Document   : style
+    Created on : 24 Sep, 2013, 11:12:17 AM
+    Author     : rails
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+#error_explanation{
+    color: red;
+}
+

@@ -1,0 +1,73 @@
+<%= render '/layouts/timer' %>
+<%= render '/layouts/job_with_action' %>
+<%= render '/layouts/tab_panel_for_job' %>
+<%= form_for(@jobtime) do |f| %>
+
+  <% if @jobtime.errors.any? %>
+    <div id ="error_explanation">
+      <h2><%= pluralize(@jobtime.errors.count,"error") %><%= t('jobtimes.form.error') %></h2>
+
+      <ul>
+        <% @jobtime.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :job_id, :value => @job_id %>
+  <%= f.hidden_field :customer_id, :value => @customer_id %>
+  <%= f.hidden_field :jobsite_id, :value => @jobsite_id %>
+  <%= f.hidden_field :company_id, :value => current_login.id %>
+
+  <div class="span7">
+    <%= f.label :user, t('jobtimes.form.user') %>
+    <%= f.select :user, options_for_select(@tech_users ? @tech_users.map{|user| [user.name]} : [""], :selected => @jobtime.user) %>
+
+    <%= f.label :timetype, t('jobtimes.form.type') %>
+    <% if params[:action]=="new" %>
+      <%= f.select :timetype, options_for_select([["Scheduled Time", "Scheduled Time"], ["Actual Time", "Actual Time"]], :selected => (params[:time]=="Actual" ? "Actual Time" : "Scheduled Time")) %>
+    <% else %>
+      <%= f.select :timetype, options_for_select([["Scheduled Time", "Scheduled Time"], ["Actual Time", "Actual Time"]], :selected => @jobtime.timetype) %>
+    <% end %>
+
+    <%= f.label :start_time, t('jobtimes.form.start_time') %>
+    <%#= f.datetime_select(:start_time, :order => [:day, :month, :year]) %>
+    <div id="datetimepicker1" class="input-append date">
+      <style>
+        .btn{
+          padding :0;
+        }
+      </style>
+      <%= f.text_field :start_time, "data-format"=>"dd/MM/yyyy hh:mm:ss" %>
+      <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+        </i>
+      </span>
+    </div> 
+    <%= f.label :qty, t('jobtimes.form.hours') %>
+    <%= f.text_field :qty, :placeholder => "Hours/Qty" %>
+
+    <%= f.label :service, t('jobtimes.form.service_item') %>
+    <%= f.select :service, options_for_select(Item.find_all_by_itemtype("Service").map{|item| [item.name, item.id]}, :selected => @jobtime.service) %>  <!-- later implement this with current_login.items("........") -->
+
+    <br />
+    <label for="jobtime_billable">
+      <%= f.check_box :billable, :checked => true %>
+      Billable ?
+    </label>
+
+    <br />
+    <div class ="actions">
+      <%= f.submit "Save", :class => "btn btn-success", :style =>"width:300px; height:40px;" %>
+    </div>
+  </div>
+
+<% end %>
+<script type="text/javascript">
+  $(function() {
+    $('#datetimepicker1').datetimepicker({
+       language: 'en'
+    });
+  });
+</script>

@@ -1,0 +1,80 @@
+<%= render :partial => "layouts/tabs_for_settings" %>
+
+<div class="field">
+  <%= label_tag :payment_method,t('subscriptions.billing.payment') %>
+  <%= select_tag :payment_method, options_for_select([["Credit card"]]) %>
+</div>
+
+<table class="table table-striped">
+  <tr>
+    <td style="background:#666; color: #FFF; font-weight: bold; " colspan="5"><%= t('subscriptions.billing.current_user') %></td>
+  </tr>
+  <tr>
+    <th><%= t('subscriptions.billing.user') %></th>
+    <th><%= t('subscriptions.billing.role') %></th>
+    <th><%= t('subscriptions.billing.deactive') %></th>
+  </tr>
+  
+  <% @user.each do |user| %>
+  <tr>
+    <td><%= user.name %></td>
+    
+    <td><% if user.role_id.present? %><%= user.role.roll %><% end %> </td>
+    <td><%= check_box_tag(user.id, user.id, false, :onclick => "deactivate(#{user.id});" )%></td>
+  </tr>
+  <% end %>
+  <tr><td colspan="8"><%= will_paginate @user, :param_name => 'page1'  %></td></tr>
+  
+  <tr>
+    <td colspan="8">
+      <div style="float:right;">
+      <% if current_company.present? %>
+      <%= link_to t('subscriptions.billing.pay'), "#subscriptionForm", :class => "btn btn-small btn-success", "data-toggle" =>"modal" %>
+      <% end %>
+      <%= render 'subscriptions/form' %>
+      </div>
+    </td>
+  </tr>
+</table>
+<br/>
+
+<table class="table table-striped">
+  <tr>
+    <td style="background:#666; color: #FFF; font-weight: bold; " colspan="5"><%= t('subscriptions.billing.history') %></td>
+  </tr>
+  <tr>
+    <th><%= t('subscriptions.billing.date') %></th>
+    <th><%= t('subscriptions.billing.plan') %></th>
+    <th><%= t('subscriptions.billing.amount') %></th>
+  </tr>
+  
+  <% @subscription.each do |subscription| %>
+  <tr>
+    <td><%= subscription.updated_at.to_date %></td>
+    <td><%= subscription.plan %></td>
+    <td><%= subscription.amount %></td>
+  </tr>
+  <% end %>
+  <tr><td colspan="8"><%= will_paginate @subscription,:param_name => 'page2' %></td></tr>
+ </table>
+
+
+<script>
+  function deactivate(id){
+    var r = confirm("Deactivate user?");
+    if (r==true)
+        {
+         $.ajax({
+          url: '/users/'+id+'/deactivate_user',
+          data: {
+            user_id :id
+          },
+          method: 'PUT',
+          success: function(data){}
+        });
+        }
+      else{
+       window.location.reload(true);
+      }
+ }
+</script>

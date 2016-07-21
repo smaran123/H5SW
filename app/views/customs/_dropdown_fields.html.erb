@@ -1,0 +1,77 @@
+<% @value = DropdownValue.find_by_custom_id_and_company_id(custom.id, current_login.id) %>
+
+<%= form_for @drop_downvalue, :url => update_dropdown_values_custom_path(@drop_downvalue, :tab => params[:tab], :type => params[:type], :custom_id => @custom.id), :method => 'POST',:remote => true do |f| %>
+
+  <%= f.hidden_field :custom_id,:value => @custom.id %>
+
+  <% if params[:type] == "Job" %>
+    <%= f.hidden_field :job_id, :value => session[:job_id] %>
+  <% end %>
+  <%= f.hidden_field :customer_id, :value => session[:customer_id] %>
+  <%= f.hidden_field :jobsite_id, :value => (session[:jobsite_id].present? ? session[:jobsite_id] : 0) %>
+
+
+
+  <% if custom.field == "Text Box" %>
+    <% if params[:type]=="Job" %>
+      <% textfield_value = (current_login.dropdown_values.exists?(:custom_id => @custom.id,:job_id =>session[:job_id]) and @custom.field == "Text Box") ? current_login.dropdown_values.find_by_custom_id_and_job_id(@custom.id,session[:job_id]).drop_value : '' %>
+    <% else %>
+      <%
+      if session[:jobsite_id].present? && session[:jobsite_id] != 0 && session[:jobsite_id] != "All" && session[:jobsite_id] != "None"
+        textfield_value = (current_login.dropdown_values.exists?(:custom_id => custom.id,:customer_id =>session[:customer_id], :jobsite_id => session[:jobsite_id]) and custom.field == "Text Box") ? current_login.dropdown_values.find_by_custom_id_and_customer_id_and_jobsite_id(custom.id,session[:customer_id], session[:jobsite_id]).drop_value : ''
+      else
+        textfield_value = (current_login.dropdown_values.exists?(:custom_id => custom.id,:customer_id =>session[:customer_id], :jobsite_id => 0) and custom.field == "Text Box") ? current_login.dropdown_values.find_by_custom_id_and_customer_id_and_jobsite_id(custom.id,session[:customer_id], 0).drop_value : ''
+      end
+    %>
+    <% end %>
+    <%= f.text_field "drop_value", :value => textfield_value %>
+
+
+  <% elsif custom.field == "Dropdown List" %>
+    <% dropvalue = DropdownValue.find_by_custom_id_and_company_id(custom.id, current_login.id).drop_value.split(',').each %>
+    <%= select_tag "dropdownField", options_for_select(dropvalue.each do |drop|[drop] end), :style => "width: 436px" %>
+
+
+  <% elsif custom.field == "Calendar" %>
+    <% if params[:type]=="Job" %>
+      <% calendar_value = (current_login.dropdown_values.exists?(:custom_id => @custom.id,:job_id =>session[:job_id]) and @custom.field == "Text Box") ? current_login.dropdown_values.find_by_custom_id_and_job_id(@custom.id,session[:job_id]).drop_value : '' %>
+    <% else %>
+      <% calendar_value = (current_login.dropdown_values.exists?(:custom_id => @custom.id,:customer_id =>session[:customer_id]) and @custom.field == "Text Box") ? current_login.dropdown_values.find_by_custom_id_and_customer_id(@custom.id,session[:customer_id]).drop_value : '' %>
+    <% end %>
+    <%= f.text_field "drop_value", :value => calendar_value,
+      :class => 'data', :placeholder => Date.today %>&nbsp;
+    <%= image_tag "calendar.png", :style => "width: 32px; height: 32px; cursor:pointer;", :id => "calendar_icon", :class => "datepicker"%>
+
+
+  <% elsif custom.field == "Legend" %>
+    <%= f.text_area "drop_value", :value => @value ? @value.drop_value : "default value", :rows => 5 %>
+
+
+  <% elsif custom.field == "Table" %>
+    <%= f.text_field "drop_value", :value => @value ? @value.drop_value : "default value" %>
+  <% else %>
+    ''
+  <% end %>
+  <%= f.submit 'Save', :class => 'btn btn-small btn-primary' %>
+  <%#= link_to_function 'update', 'update_dropdown_values()', :class => 'btn btn-mini btn-primary', :style => "color:white;" %>
+  <%= link_to_function 'cancel', 'cancel_update_dropdown()',:class => 'btn btn-mini btn-primary', :style => "color:white;" %>
+<% end %>
+
+<script>
+  function cancel_update_dropdown(id) {
+    $("#custom_field_updation_<%= @custom.id %>").html('<%= escape_javascript render :partial => 'customs/replace_dropdown',:locals => {:custom => custom} %>');
+  }
+
+  $(document).ready(function() {
+    /* Activating Best In Place */
+    $('.datepicker').datepicker()
+    .on('changeDate', function(e) {
+      var y = e.date.getFullYear(),
+      _m = e.date.getMonth() + 1,
+      m = (_m > 9 ? _m : '0' + _m),
+      _d = e.date.getDate(),
+      d = (_d > 9 ? _d : '0' + _d);
+      $(this).prev('input.data').val(y + '-' + m + '-' + d);
+    });
+  });
+</script>

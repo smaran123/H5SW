@@ -1,0 +1,5 @@
+$('#users').html("<%= escape_javascript(render(:partial => 'users', :locals => {:users => @users})) %> ");
+$("input[type='text']").val('');
+$("input[type='email']").val('');
+$(".field_with_errors input").css('border','1px solid #CCCCCC');
+$("#error_explanation").hide();

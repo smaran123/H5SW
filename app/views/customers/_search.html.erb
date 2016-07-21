@@ -1,0 +1,9 @@
+<%= render '/layouts/customer_with_action' %>
+
+<%= render '/layouts/tab_panel_for_customer' %>
+
+<div>
+  <%= form_tag :customers, :method => 'get', :class => "form-search" do |f|  %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search by Name", :class => "input-large search-query" %> &nbsp;
+  <% end %>
+</div>

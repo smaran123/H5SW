@@ -1,0 +1,27 @@
+<table class ="table table-striped">
+  <tr>
+    <th>Role</th>
+    <th>Module</th>
+    <th>Customer</th>
+    <th>Jobs</th>
+    <th>Contacts</th>
+    <th>Reports</th>
+    <th>Settings/Admin</th>
+  </tr>
+
+
+  <% roles.each do |role| %>
+  <tr id="role_<%= role.id %>">
+    <td><%= role.role %></td>
+    <td><%= role.module %></td>
+    <td><%= role.customer %></td>
+    <td><%= role.jobs %></td>
+    <td><%= role.contacts %></td>
+    <td><%= role.reports %></td>
+    <td><%= role.settings_admin%> </td>
+
+    <td><%= link_to 'Edit', edit_role_path(role) %></td>
+    <td><%= link_to 'Destroy', role, method: :delete, data: { confirm: 'Are you sure?' }, remote: true %></td>
+  </tr>
+<% end %>
+</table>

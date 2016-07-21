@@ -1,0 +1,29 @@
+
+<table class="table table-striped" width="100%">
+  <tr>
+    <th><%= t('.description') %></th>
+    <th><%= t('.file_type') %></th>
+    <th><%= t('.date_added') %></th>
+    <th><%= t('.action') %></th>
+  </tr>
+
+  <% documents.each do |document| %>
+    <tr id="document_<%= document.id %>">
+      <td>
+        <%= link_to document.document_file_name, document_path(document) %></td>
+      <td>
+        <%= link_to document.document_content_type, document_path(document) %></td>
+      <td><%= document.created_at%></td>
+
+      <td><%= link_to t('documents.documents.delete') , document, :method => :delete, :data => { :confirm => t('documents.documents.del') }, :remote => true, :class => "btn btn-mini btn-danger" %></td>
+
+    </tr>
+
+  <% end %>
+  <tr>
+    <td colspan="4">
+      <%= will_paginate @documents %>
+    </td>
+  </tr>
+
+</table>

@@ -1,0 +1,10 @@
+<%= form_for @jobstatus do |f| %>
+<div class="field">
+  <%= f.label :status %>
+  <%= f.text_field :status, :style => "width:180px;"%>
+</div>
+
+ <div class="actions">
+   <%= f.submit :Save,:class=>"btn btn-small btn-success" %>
+ </div>
+<% end %>

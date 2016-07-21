@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  dropdown_value: MyString
+  custom_id: 1
+
+two:
+  dropdown_value: MyString
+  custom_id: 1

@@ -1,0 +1,19 @@
+<%= render :partial => 'edit' %>
+
+<script type="text/javascript">
+  $("#edit_auto_complete_text").keyup(function(){
+    var n = $(this).val().split(',').length
+    var data = $(this).val().split(',')[n-1];
+    $.ajax({
+      url: '/items/edit_autocomplete_items',
+      data:{
+        name:data,
+        not_list:$(this).val()
+      },
+      type:'GET',
+      success:function(data){}
+    });
+  });
+</script>
+
+

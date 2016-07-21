@@ -1,0 +1,35 @@
+<table class="table">
+  <table class="table table-striped">
+    <tr>
+      <th colspan="9">
+        <%= link_to t('contacts.contacts.add_new'), new_contact_path %>
+      </th>
+    </tr>
+    <tr>
+      <th><%= t('contacts.contacts.name') %></th>
+      <th><%= t('contacts.contacts.role') %></th>
+      <th><%= t('contacts.contacts.email') %></th>
+      <th><%= t('contacts.contacts.mobile') %></th>
+      <th><%= t('contacts.contacts.business') %></th>
+      <th><%= t('contacts.contacts.twitter') %></th>
+      <th colspan="3"><%= t('contacts.contacts.actions') %></th>
+    </tr>
+
+    <% @contacts.each do |contact| %>
+      <tr id="contact_<%= contact.id %>">
+        <td><%= link_to  contact.name, edit_contact_path(contact) %></td>
+        <td><%= contact.role %></td>
+        <td><%= contact.email %></td>
+        <td><%= contact.mobile %></td>
+        <td><%= contact.business %></td>
+        <td><%= contact.twitter %></td>
+        <td><%= link_to t('contacts.contacts.delete'), contact, method: :delete, data: { confirm: t('contacts.contacts.del')}, remote: true, :class => "btn btn-mini btn-danger" %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="9">
+        <%= will_paginate @contacts %>
+      </td>
+    </tr>
+  </table>
+</table>

@@ -1,0 +1,68 @@
+<%= form_for :custom, :url => "customs/email_customer", :remote => true,:html => {:id => "emailform"} do |f| %>
+
+  <div class="modal fade" id="emailForm" tabindex="-1" role="dialog" aria-labelledby="emailFormLabel" aria-hidden="true" style="width:410px;">
+    <div class="modal-header1">
+      <p style="color:white; font-weight:bold;">New message</p>
+    </div>
+    <div class="modal-body1">
+      <span id="email_error" class="alert-error"></span><br/>
+      <%= email_field_tag :email ,nil, :placeholder => "To", :style => "width:360px" %>
+      
+      <span id="subject_error" class="alert-error"></span><br/>
+      <%= text_field_tag :subject,nil,:placeholder => "Subject", :style => "width:360px" %>
+      
+      <%= text_area_tag  :body,nil, :placeholder => "Body", :style => "width:360px", :rows => 12 %>
+
+    </div>
+
+    <div class="modal-footer" style="margin-bottom: 0;">
+      <%= f.submit :send, :id => "submit", :class => "btn btn-small btn-primary" %>
+    </div>
+  </div>
+<% end %>
+
+<style>
+  .error_msg{color:red;}
+  p, strong, div, span{
+    color: #6F6F6F;
+  }
+  [class*="span"] {
+    text-align: left;
+    margin-left:10px;
+    min-height:1px;
+  }
+  .modal-header1{
+    background: #666;
+    font-family: "Helvetica Neue","Helvetica",Arial,sans-serif;
+    height: 30px;
+  }
+  td, label{
+    text-align: left;
+  }
+
+  .modal-body1 {
+    height: 400px;
+    padding: 15px;
+    position: relative;
+  }
+</style>
+<script>
+  $(document).ready(function() {
+    $("#email_error").html("");
+    $("#subject_error").html("");
+    $("#submit").click(function() {
+      if ($("#email").val() == "") {
+        $("#email_error").html("Email can't be blank");
+        return false;
+      }else{
+        $("#email_error").html("");
+      }
+      if($("#subject").val()==""){
+        $("#subject_error").html("Subject can't be blank");
+        return false;
+      }else{
+        $("#subject_error").html("");
+      }
+    })
+  })
+</script>

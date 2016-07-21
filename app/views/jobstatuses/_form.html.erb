@@ -1,0 +1,59 @@
+<%= form_for Jobstatus.new do |f| %>
+  <div class="modal fade" id="jobstatusForm" tabindex="-1" role="dialog" aria-labelledby="jobstatusFormLabel" aria-hidden="true" style="width:300px;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+          <strong>Job Status</strong>
+        </div>
+        <div class="modal-body">
+        
+        <div class="field">
+            <%=f.label :status %>
+            <%= f.text_field :status, :style => "width:200px;"%>
+        </div>
+        </div>
+        <div class="modal-footer" style="margin-bottom: 0;">
+          <%= f.submit :Save,:class=>"btn btn-small btn-success" %>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  </div>
+<% end %>
+  
+  <style>
+  h4, h3{
+    color: #333;
+  }
+  p, strong, div, span{
+    color: #6F6F6F;
+  }
+  [class*="span"] {
+    text-align: left;
+    margin-left:10px;
+    min-height:1px;
+  }
+  .modal-header{
+    height: 20px;
+    background: #E9EDF0;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -o-border-radius: 10px;
+    -web-kit-border-radius: 10px;
+    font-family: "Helvetica Neue","Helvetica",Arial,sans-serif;
+     width :270px;
+  }
+  td, label{
+    text-align: left;
+  }
+  .modal-body{
+    height: 100px;
+    width :300px;
+  }
+  
+  .modal.fade.in{
+    top: 30%;
+    left: 50%
+  }
+  
+</style>

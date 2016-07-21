@@ -1,0 +1,1 @@
+$('#inventories').html("<%= escape_javascript(render(:partial => 'items/index', :locals => {:inventories => @inventories})) %> ");

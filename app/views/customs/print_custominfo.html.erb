@@ -1,0 +1,112 @@
+<div>
+  <% @tab = current_login.tabs.find(params[:id]) %>
+  <table>
+    <tr>
+      <td>Date</td>
+      <td><%= Date.today %></td>
+    </tr>
+    <tr>
+      <td>Time</td>
+      <td><%= Time.now %></td>
+    </tr>
+  </table>
+</div><br/>
+
+<div>
+  <% if @customer.present? %>
+  <% if current_login.customs.exists?(:tab_id => params[:id]) %>
+    <% custom = current_login.customs.find_by_tab_id(params[:id]) %>
+    <% @value = current_login.dropdown_values.find_by_custom_id_and_customer_id(custom.id,session[:customer_id]) %>
+    <table>
+      <tr>
+        <td>Company Name</td>
+        <td><%= @customer.company_name %></td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td><%= @customer.address1 %></td>
+      </tr>
+      <tr>
+        <td>City</td>
+        <td><%= @customer.city %></td>
+      </tr>
+      <tr>
+        <td>State</td>
+        <td><%= @customer.state %></td>
+      </tr>
+      <tr>
+        <td>Zip</td>
+        <td><%= @customer.zip %></td>
+      </tr>
+    </table>  
+  <% end %>
+  <% end %>
+
+<div>
+  <style>
+    table
+    {
+      border-collapse:collapse;
+      width: 100%;
+    }
+    td, th, table{
+      border: 1px solid black;
+    }
+  </style>
+
+  <p>Yes-Acceptable  "X" No-Unacceptable(Explains no answer in Remarks) "NA"Not Applicable</p>
+  <table>
+    <% @custom_table = current_login.customs.exists?(:field => 'Table') ? current_login.customs.find_by_tab_id_and_field(params[:id], 'Table') : '' %>
+    <!-- display table heading same for all the customers,jobsites and jobs -->
+    <% if @custom_table.present? %>
+      <tr style="background: #CCC;">
+        <% fields = @custom_table.drop_value.split(',') %>
+        <% fields.each do |heading| %>
+          <td>
+            <%= heading %>
+          </td>
+        <% end %>
+      </tr>
+
+      <!-- display table values depending on the customers,jobsites and jobs -->
+      <% values = current_login.dropdown_values.where("custom_id=? and job_id=?",@custom_table.id, session[:job_id]).order("created_at") %>
+      <% values.each do |value| %>
+        <tr class="bold_me">
+          <% value.drop_value.split(',').each do |row| %>
+            <td><%= row %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div><br/>
+
+
+<div>
+  <% @tab = current_login.tabs.find(params[:id]) %>
+  <% if current_login.customs.exists?(:tab_id => params[:id]) %>
+  <%# @custom = current_login.customs.find_all_by_tab_id_and_field(params[:id],'Text Box') %>
+    <% @customs = current_login.customs.where("tab_id=? AND field!=?", params[:id], 'Table') %>
+    <table>
+      <tr>
+        <th>Custom Fields</th>
+        <th>Values</th>
+      </tr>
+      <% @customs.each do |custom| %>
+        <% @value = current_login.dropdown_values.find_by_custom_id_and_job_id(custom.id, session[:job_id]) %>
+        <tr>
+          <td><%= custom.name %></td>
+          <td>      
+            <% if custom.field == "Legend" %>
+              <%= current_login.dropdown_values.find_by_custom_id(custom.id).drop_value %>
+            <% elsif custom.field == "Dropdown List" %>
+              <%= current_login.dropdown_values.find_by_custom_id_and_job_id(custom.id, session[:job_id]).drop_value %>
+            <% else %>
+              <%= @value.present? ? @value.drop_value : '' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>

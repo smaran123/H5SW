@@ -1,0 +1,15 @@
+Welcome, <%= @company.name %>, 
+    Job details are:
+    Job # : <%= @job.id  %>
+    Reference No : <%= @job.reference_no %>
+    Due Date : <%= @job.due_date %>
+    Class Type : <%= @job.class_type %>
+    Assigned To : <%= @job.assigned_to %>
+    Status : <%= @job.status %>
+    
+    <% if @job.contact_id.present? %>
+      Primary Contact : <%= Contact.find(@job.contact_id).name %>
+    <% end %>
+
+    Sales Person : <%= @job.sales_person %>
+    Summary : <%= @job.summary %>

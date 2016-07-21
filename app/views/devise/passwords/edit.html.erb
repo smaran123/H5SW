@@ -1,0 +1,22 @@
+<div style="margin: 0 auto; width: 960px;">
+<h2>Change your password</h2>
+
+<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.hidden_field :reset_password_token %>
+
+  <div><%= f.label :password, "New password" %><br />
+  <%= f.password_field :password, :autofocus => true %></div>
+
+  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
+  <%= f.password_field :password_confirmation %></div>
+
+  <div><%= f.submit "Change my password",:class => "btn btn-info" %></div>
+<% end %>
+
+  <% if request.fullpath == '/superadmins/password' || request.fullpath == '/superadmins/password/edit?reset_password_token?' %>
+  <%= link_to "Admin Signin",  new_superadmin_session_path %>
+  <% else %>
+  <%= render "devise/shared/links" %>
+  <% end %>
+</div>

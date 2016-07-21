@@ -1,0 +1,3 @@
+  $('#notes').html("<%= escape_javascript(render(:partial => 'notes', :locals => {:notes => @notes})) %> ");
+  $('#note_description').val(' ')
+  $('#note_note_type').val(' ')

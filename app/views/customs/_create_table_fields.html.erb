@@ -1,0 +1,134 @@
+<%# values = current_login.dropdown_values.where("custom_id=?",custom.id).order("created_at") %>
+<style>
+  input.small_row{
+    margin: 0;
+    padding: 5px;
+    width: 60px;
+  }
+  input.mini_row{
+    margin: 0;
+    padding: 5px;
+    width: 20px;
+  }
+  .bold_me{
+    cursor: pointer;
+  }
+  
+  .scrollable-div{
+    max-width: 850px; 
+    overflow: auto;
+  }
+</style>
+<script>
+  $(document).ready(function() {
+    $("tr.bold_me:first").css("font-weight", "bold");
+
+    $(".bold_me").mouseover(function() {
+      //$(this).find("a.edit_link").show();
+      $(this).find("a.delete_link").show();
+    });
+
+    $(".bold_me").mouseout(function() {
+      //$(this).find("a.edit_link").hide();
+      $(this).find("a.delete_link").hide();
+    });
+  });
+</script>
+
+<div class="scrollable-div">
+  <table class ="table-striped">
+    <% if params[:controller]=="customs" && (params[:action]=="new" || params[:action]=="edit_table_heading" || params[:action] == "update_heading") %>
+      <% value = current_login.customs.find(custom.id) %>
+      <tr class="bold_me" onclick="edit_table_heading(<%= value.id %>)" id="tr_<%= value.id %>">
+        <% value.drop_value.split(',').each do |row| %>
+          <td><%= row %></td>
+        <% end %>
+        <td colspan="2"></td>
+      </tr>
+      <tr id="display_table_fields">
+        <%= render :partial => '/customs/update_table_heading', :locals => {:custom => custom} %>
+      </tr>
+    <% else %>
+      <% value = current_login.customs.find(custom.id) %>
+      <tr class="bold_me">
+        <% value.drop_value.split(',').each do |row| %>
+          <td><%= row %></td>
+        <% end %>
+        <td colspan="2"></td>
+      </tr>
+
+      <%
+      if params[:type] == "Job"
+        values = current_login.dropdown_values.where("custom_id=? AND job_id=?",custom.id, session[:job_id]).order("created_at")
+        else
+        if session[:jobsite_id].present? && session[:jobsite_id] != 0 && session[:jobsite_id] != "All" && session[:jobsite_id] != "None"
+          values = current_login.dropdown_values.where("custom_id=? AND jobsite_id=? AND customer_id=?",custom.id, session[:jobsite_id], session[:customer_id]).order("created_at")
+          else
+          #if session[:jobsite_id]=="None"
+          # values = current_login.dropdown_values.where("custom_id=? and customer_id=? and jobsite_id=?",custom.id, session[:customer_id], 0).order("created_at")
+          #else
+          values = current_login.dropdown_values.where("custom_id=? and customer_id=?",custom.id, session[:customer_id]).order("created_at")
+        #end
+        end
+        end
+    %>
+  <%# values = current_login.dropdown_values.where("custom_id=? and customer_id=?", custom.id, session[:customer_id]).order("created_at") %>
+      <% values.each do |value| %>
+        <tr class="bold_me"
+            onclick="edit_row_values(<%= value.id %>, '<%=  params[:type] %>')"
+            id="tr_<%= value.id %>">
+              <% value.drop_value.split(',').each do |row| %>
+            <td><%= row %></td>
+          <% end %>
+
+          <td style="width:50px;">
+    <%#= link_to "Delete", delete_table_custom_path(value),:remote => true, :confirm => "Are you sure to delete?", :method => :delete, :class => "delete_link btn btn-mini btn-primary" , :style => "color:white; display:none; margin-left:0px"%>
+          </td>
+
+          <td>
+            <%= link_to_function "Edit", "edit_row_values(#{value.id})", :class => "edit_link btn btn-mini btn-primary", :style => "color:white; display:none;"  %>
+          </td>
+        </tr>
+      <% end %>
+      <tr id="display_table_fields">
+        <%= render :partial => '/customs/table_fields', :locals => {:custom => custom} %>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+
+<script>
+  function edit_table_heading(value_id) {
+    $.ajax({
+      url: '/customs/edit_table_heading',
+      data: {
+        id: value_id,
+        tab:<%= params[:tab] %>
+      },
+      type: 'GET',
+      dataType: 'script',
+      success: function(data) {
+      }
+    });
+  }
+
+  function edit_row_values(value_id, type) {
+    $.ajax({
+      url: '/customs/edit_table',
+      data: {
+        id: value_id,
+        tab:<%= params[:tab] %>,
+        type: type
+      },
+      type: 'GET',
+      dataType: 'script',
+      success: function(data) {
+      }
+    });
+  }
+
+  $(document).ready(function() {
+    $("tr.bold_me:first").css("font-weight", "bold");
+  })
+</script>

@@ -1,0 +1,23 @@
+<%= render 'layouts/tabs_for_settings' %>
+
+<table class="table table-striped">
+  <tr>
+    <th colspan="2"><%= link_to t('businesses.index.new'), new_business_path %></th>
+  </tr>
+  
+  <tr style="background:#666; color: #FFF; font-weight: bold; ">
+    <th><%= t('businesses.index.business_type') %></th>
+    <th>Actions</th>
+  </tr>
+  
+  <% @businesses.each do |business| %>
+  <tr>
+    <td><%= business.biz_type %></td>
+    <td><%= link_to t('businesses.index.edit'), edit_business_path(business), :class => "btn btn-small btn-primary" %>|<%= link_to t('businesses.index.delete'), business, method: :delete, data: { confirm: t('businesses.index.del') }, :class => "btn btn-mini btn-danger" %></td>
+  </tr>
+  <tr>
+    <%= will_paginate @business  %>
+  </tr>
+  <% end %>
+  
+</table>

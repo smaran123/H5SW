@@ -1,0 +1,71 @@
+<style>
+  #ui-datepicker-div, .ui-helper-clearfix{
+    border: none;
+    overflow: hidden;
+  }
+</style>
+<% if params[:controller]=="customs" && params[:type]=="Customer" %>
+<% else %>
+  <%= render '/layouts/timer' %>
+<% end %>
+
+<% if params[:type] == "Job" %>
+  <%= render '/layouts/tab_panel_for_job' %>
+<% else %>
+  <%= render  '/layouts/tab_panel_for_customer' %>
+<% end %>
+
+<ul class="nav nav-tabs" id="custom_tab">
+  <% @tabs.each do |tab| %>
+    <li class=<%= (@default_tab.to_i == tab.id) ? 'active' : '' %> >
+      <%= link_to tab.name, customs_path(:type => params[:type], :tab => tab.id) %>
+    </li>
+  <% end %>
+</ul>
+
+<%#= Just display all the custom fields matching search criteria %>
+
+<ul id="sortable" class="droptrue">
+  <h5 style="margin-top:0px; background: #666; color: #FFF; padding:5px;">
+    <%= "List of custom fields for #{params[:type]}" %>
+  </h5>
+  <%=  @customs.count==0 ? t('.description') : '' %>
+  <% @customs.each do |custom| %>
+    <li class="ui-state-default" id="li<%= custom.id %>">
+      <span id="label<%= custom.id %>">
+        <%= label_tag custom.name, nil, :id=> "label#{custom.id}" %>
+      </span>
+      <div id="custom_field_updation_<%= custom.id %>">
+        <%= render :partial => 'customs/replace_dropdown',:locals => {:custom => custom} %>
+      </div>
+    </li>
+  <% end %>
+</ul><br/>
+
+<br/>
+<% if params[:type] == "Job" %>
+<div style="float:right; margin-top:20px;">
+  <%= link_to "print", print_custominfo_custom_path(params[:tab]),:class => "btn btn-small btn-primary" %>
+  <%= link_to_function "Email",:class => "btn btn-small btn-primary", :method => :post, :onclick => "email(#{params[:tab]});" %>
+  <%= link_to "Send Email", "#emailForm", :class => "btn btn-small btn-primary", "data-toggle" =>"modal" %>
+  <%= render 'email' %>
+</div>
+<% else %>
+<% end %>
+
+<style>
+  input.small_row{
+    margin: 0;
+    padding: 5px;
+    width: 60px;
+  }
+  input.mini_row{
+    margin: 0;
+    padding: 5px;
+    width: 20px;
+  }
+  .bold_me{
+    cursor: pointer;
+  }
+</style>
+

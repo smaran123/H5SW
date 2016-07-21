@@ -1,0 +1,2 @@
+module TrialExpiresHelper
+end

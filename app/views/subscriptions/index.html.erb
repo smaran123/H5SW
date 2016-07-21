@@ -1,0 +1,11 @@
+<div class="trial-warning error">
+ <%= t('subscriptions.index.trial') %>
+  <%#= link_to_function "Suscribe Now", "alert('comming soon'); return false;", :class => "btn btn-small btn-success" ,:style => "margin-left:20px;" %>
+
+  <!-- Button trigger modal -->
+  <% if current_company.present? %>
+  <%= link_to t('subscriptions.index.subscribe'), billing_subscriptions_path, :class => "btn btn-small btn-success" %>
+  <%#= link_to "Subscribe Now", "#subscriptionForm", :class => "btn btn-small btn-success", "data-toggle" =>"modal" %>
+  <% end %>
+  <%= render 'form' %>
+</div>

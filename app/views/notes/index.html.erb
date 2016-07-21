@@ -1,0 +1,23 @@
+<% if params[:controller]=="notes" && params[:type]=="Customer" %>
+<% else %>
+  <%= render '/layouts/timer' %>
+<% end %>
+
+<% if params[:controller]=="notes" && params[:action]=="index" && params[:type]== 'Customer' %>
+  <%= gmaps4rails(@json) %><br/><br/>
+<% end %>
+  
+<br/><br/>
+<%= render params[:type] == "Job" ?'/layouts/job_with_action' : "/layouts/customer_with_action" %>
+
+<% if params[:type] == "Job" || params[:type] == "job" %>
+  <%= render '/layouts/tab_panel_for_job' %>
+<% else %>
+  <%= render  '/layouts/tab_panel_for_customer' %>
+<% end %>
+
+<%= render 'form' %>
+
+<div id="notes">
+  <%= render :partial => "notes", :locals => {:notes => @notes} %>
+</div>

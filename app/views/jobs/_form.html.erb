@@ -1,0 +1,130 @@
+<%= form_for(@job,:class => 'signature_form' ) do |f| %>
+  <% if @job.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@job.errors.count, "error") %> <%= t('jobs.form.error') %></h2>
+
+      <ul>
+        <% @job.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= select_tag :select_action, options_for_select([['Actions', ''],['Convert to Invoice','convert_to_invoice'],['Close Job', 'close_job'],['Change customer or jobsite','change_customer_or_jobsite'],['Make Recurring','make_recurring']], :selected => params[:select_action]) %>
+  <%#= select_tag :select_action, options_for_select([['Actions', ' '], ['Convert to Invoice', 'convert_to_invoice'], ['Invoice & Pay', 'invoice_pay'], ['Email', 'email'], ['Print', 'print']], :selected => params[:select_action])%>
+
+  <%= f.hidden_field :customer_id, :value => @customer_id %>
+  <%= f.hidden_field :jobsite_id, :value => @jobsite_id %>
+  <%= f.hidden_field :company_id, :value => current_login.id %>
+  <%= f.hidden_field :signature %>
+
+
+  <div class="field">
+    <%= f.label :reference_no,t('.ref_no') %>
+    <%= f.text_field :reference_no %>
+  </div>
+  <div class="field">
+    <%= f.label :due_date,t('.due_date') %>
+    <div id="datetimepicker1" class="input-append date">
+      <style>
+        .btn{
+          padding :0;
+        }
+      </style>
+      <%= f.text_field :due_date, "data-format"=>"dd/MM/yyyy hh:mm:ss" %>
+      <span class="add-on">
+        <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+        </i>
+      </span>
+    </div> 
+  </div>
+  <div class="field">
+    <%= f.label :class_type, t('.class_type') %>
+    <%= f.select :class_type, options_for_select([["Installation", "installation"]],:selected => @job.class_type) %>
+  </div>
+  <div class="field">
+    <%= f.label :assigned_to,t('.assigned_to') %>
+    <%= f.select :assigned_to, options_for_select(["NULL"]+(@tech_users ? @tech_users.map{|user| [user.name]} : [""]), :selected => @job.assigned_to) %>
+  </div>
+  <div class="field">
+    <%= f.label :status, t('.status') %>
+    <%= f.select :status, options_for_select(["open"]+current_login.jobstatuses.map{|jobstatus| [jobstatus.status]},:selected => @job.status)%>
+  </div>
+  <div class="field">
+    <%= label_tag :job_contact, t('.job_contact') %>
+    <% if current_login.contacts.empty? %>
+      <span style="color: red;">NO CONTACTS</span>
+    <% else %>
+      <%= f.select :contact_id, options_for_select(search_by_session(current_login.contacts).map{|contact| [contact.name, contact.id]},:selected => @job.contact_id),{},:onchange => "GetContact(this)" %>
+    <% end %>
+    <div id="contact34">
+    </div>
+  </div>
+  <div class="field">
+    <%= f.label :sales_person, t('.sales_person') %>
+    <%= f.select :sales_person, options_for_select(@sales_users ? @sales_users.map{|user| [user.name]} : [""], :selected => @job.sales_person) %>
+  </div>
+  <div class="field">
+    <%= f.label :summary,t('.summary') %>
+    <%= f.text_field :summary %>
+  </div>
+
+  <div class ="field">
+    <%= f.label :name,t('.name') %>
+    <%= f.text_field :name %>
+  </div>
+
+  <%=  f.label :signature,t('.sign') %>
+  <div id="canvas">
+    <canvas class="roundCorners" id="newSignature" style="position: relative; margin: 0; padding: 0; border: 1px solid #c4caac;"><%= @job.signature %></canvas>
+  </div>
+
+  <div>
+    <%= image_tag(@job.signature,:alt=>"")%>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      signatureCapture();
+    })
+  </script>
+
+  <div class="actions">
+    <%= f.submit :class => "btn  btn-success",:onclick=>"signatureSave()" ,:style =>"width:300px; height:40px;"%>
+  </div>
+
+<% end %>
+
+<script>
+  <% if params[:controller]== "jobs" && params[:action] == "edit" %>
+  $(document).ready(function() {
+       $("#select_action").change(function(){
+        if($("#select_action").val() == "convert_to_invoice"){
+        <% if current_login.inventories.exists?(:job_id => @job.id) || current_login.jobtimes.exists?(:job_id => @job.id) %>
+        location.href = 'convert_to_invoice'
+        <% else %>
+          alert("At least one item is required to generate invoice. Please create items for this job and try again later.")
+        <% end %>
+      }
+      
+      if($("#select_action").val() == "close_job"){
+        location.href = 'close_job_invoice'
+      }
+      
+      if($("#select_action").val() == "change_customer_or_jobsite"){
+        location.href = 'change_customer';
+      }
+      
+      if($("#select_action").val() == "make_recurring"){
+        location.href = "/recurrings/new" ;
+      }
+    });    
+  });
+  <% end %>
+
+   $(function() {
+    $('#datetimepicker1').datetimepicker({
+       language: 'en'
+    });
+  });
+</script>

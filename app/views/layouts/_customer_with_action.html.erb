@@ -1,0 +1,48 @@
+<%= form_for "form2" do |f|%>
+  <% if params[:controller]=="customers" && (params[:action]=="new" || params[:action]=="index") %>
+
+  <% elsif params[:controller]=="customers" && params[:action]=="edit"  %>
+    Customer :
+    <%= f.select :customers, options_for_select(current_login.customers.where("status=?", "Active").map{|customer| [customer.company_name, customer.id]}, :selected => ( params[:cust_id] ? params[:cust_id] : session[:customer_id]) ), {}, :onchange => "getEditJobsite(this, 'edit');" %>
+  <% else %>
+    Customer :
+    <%= f.select :customers, options_for_select(["All"]+current_login.customers.where("status=?", "Active").map{|customer| [customer.company_name, customer.id]}, :selected => ( params[:cust_id] ? params[:cust_id] : session[:customer_id]) ), {}, :onchange => "getJobsite(this);" %>
+  <% end %>
+
+  <% if params[:controller]!="jobs" %>
+  <%= f.select :actions, options_for_select([[t('.action'), ""], [t('.add_customer'), new_customer_path],
+      [t('.add_jobsite'), new_jobsite_path] ,[t('.add_job'), new_job_path] , [t('.add_note'), notes_path(:type => "Customer")], [t('.add_contact'), new_contact_path],
+      [t('.add_doc'), documents_path(:type => "Customer")]]) %>
+  <% end %>
+
+  <br />
+  <% if params[:controller]=="customers" && (params[:action]=="new" || params[:action]=="index") %>
+
+  <% elsif params[:controller]=="jobsites" && params[:action]=="index" %>
+
+  <% elsif params[:controller]=="jobs" && params[:action]=="edit" %>
+    <div id="jobsite">
+      <% if @customer == nil %>
+        Job Site &nbsp; : <%= select_tag :jobsite_id, options_for_select(["None"]+["All"]), :onchange => "getJobsiteId(this)" %>
+      <% else %>
+        <% @jobsites = Jobsite.find_all_by_customer_id(@customer.id) %>
+        Job Site &nbsp; : <%= select_tag :jobsite_id, options_for_select(["None"]+["All"]+@jobsites.map{|job| [job.name,job.id]}, :selected => session[:jobsite_id]), :onchange => "getJobsiteId(this)" %>
+      <% end %>
+    </div>
+  <% else %>
+    <div id="jobsite">
+      <% @jobsites = Jobsite.find_all_by_customer_id(session[:customer_id]) %>
+      Job Site &nbsp; : <%= select_tag :jobsite_id, options_for_select(["None"]+["All"]+@jobsites.map{|job| [job.name,job.id]}, :selected => session[:jobsite_id]), :onchange => "getJobsiteId(this)" %>
+    </div>
+  <% end %>
+<%  end %>
+
+<script>
+  $(document).ready(function() {
+    $('#form2_actions').change(function() {
+      location.href = $(this).val();
+    });
+  });
+</script>
+
+

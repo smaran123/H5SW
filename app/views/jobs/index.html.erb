@@ -1,0 +1,15 @@
+<%= render '/layouts/customer_with_action' %>
+<%= render '/layouts/tab_panel_for_customer' %>
+
+
+<%= form_tag :jobs, :method => 'get', :id => "jobs_search"  do  %>
+<%= text_field_tag :search, params[:search], :placeholder => 'search',:class => "input-large search-query" %>
+<%= submit_tag :Search, :class => "btn btn-mini btn-primary",:style => "width:60px; height:30px" %>  
+&nbsp;
+ <%= select_tag :my_job, options_for_select([["Select",""],['My Jobs','my jobs'],['Closed Jobs', 'closed jobs'],['Invoiced jobs','invoiced jobs'],['Unassigned Jobs','unassigned jobs'],['All Jobs', 'all jobs']],params[:my_job]), {:onchange => "reload_with_new_param('my_job', this.value)"} %>
+
+  <div id="jobs_all">
+    <%= render :partial => 'all' %>
+  </div>
+<% end %>
+

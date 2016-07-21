@@ -1,0 +1,47 @@
+<br/>
+<table class="table table-striped" >
+    <tr>
+      <th colspan="10">
+        <%= link_to t('customers.customer.add_new'), new_customer_path %>
+      </th>
+    </tr>
+    <tr>
+      <th><%= t('customers.customer.name') %></th>
+      <th><%= t('customers.customer.type') %></th>
+      <th><%= t('customers.customer.status') %></th>
+      <th><%= t('customers.customer.term') %></th>
+      <th><%= t('customers.customer.contact') %></th>
+      <th><%= t('customers.customer.email')%></th>
+      <th><%= t('customers.customer.job') %></th>
+      <th><%= t('customers.customer.option') %></th>
+      <th><%= t('customers.customer.action') %></th>
+    </tr>
+    <% @customers.each do |customer| %>
+      <tr>
+        <td><%= link_to  customer.company_name, edit_customer_path(customer) %></td>
+        <td><%= customer.types %></td>
+        <td><%= customer.status%></td>
+        <td><%= customer.terms_client %></td>
+
+        <% Contact.exists?(:customer_id => customer.id) ? contact = Contact.find_by_customer_id(customer.id) : "" %>
+          <td><%= contact.present? ? contact.name : '-' %></td>
+          <td><%= contact.present? ? contact.email : '-' %> </td>
+
+          <td style="text-align: center;"><%= customer.id ? Job.where("customer_id=?", customer.id).count : '0' %> </td>
+        <td>
+          <%= link_to image_tag("add_contact.png", :title => "Add Contact", :width => "24px", :height => "24px"), new_contact_path(:cust_id => customer) %>
+          |<%= link_to image_tag("add_jobsite.png", :title => "Add Job Site", :width => "24px", :height => "24px"), new_jobsite_path(:cust_id => customer) %>
+        </td>
+        <td>
+          <%= customer.status == 'Inactive' ? " " : (link_to t('customers.customer.inactive'), inactive_cust_customer_path(customer),:method => :put, :class=>"btn btn-mini btn-primary") %>
+          <%= customer.status == 'Active' ? " " : (link_to "Reactive", active_cust_customer_path(customer),:method => :put, :class=>"btn btn-mini btn-primary") %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="10">
+        <%= will_paginate @customers %>
+      </td>
+    </tr>
+  </table>
+

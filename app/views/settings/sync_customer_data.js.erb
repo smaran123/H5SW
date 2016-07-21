@@ -1,0 +1,17 @@
+names = '<%= @customers_without_address.join(", ") %>';
+
+if(names != ''){
+  $("#alert-customer-error").show();
+  $("#alert-error").html("<br/>" + names);
+}
+  
+$("#notice-customer").html("All the customers are successfully sync to H5SW Application. Please Confirm it!");
+
+setTimeout(function(){
+  $("#notice-customer").hide();
+  $("#notice-customer").fadeIn();
+  $("#notice-customer").html("Import all new customers created on QuickBooks.");
+}, 8000);
+$("#sync_customer").html("Sync Customer Now")
+$("#notice-customer").hide();
+$("#notice-customer").fadeIn();

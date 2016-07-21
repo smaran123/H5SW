@@ -1,0 +1,32 @@
+
+<script>
+  $(document).ready(function(){
+    $('#search_actions').change(function(){
+      location.href = $(this).val();
+    });
+  });
+</script>
+
+<%= form_for "search" do |f| %>
+
+  <div style="margin-top: 10px;">
+    Customer :
+    <%= f.select :customer, :class => "span2", :id => "prependedInput", :placeholder => "customer" %>
+
+    <!-- dropdown list for selecting different actions like : add job, add customer, add contact, etc -->
+    Actions :
+    <%= f.select :actions, options_for_select([["Actions", "#"], ["Add Customer", "#"],
+    <div class="add-on" style="margin-left:20px;">Actions</div>
+            ["Add Job Site", "new_jobsite_path"] ,["Add Job", "jobs/new"] , ["Add Note", "#"], ["Add Contact", "#"],
+            ["Add Document", "new_document_path"]]), :placeholder => "Actions"
+    %>
+
+    <br />
+
+    Job Site :
+    <%= f.select :job_site, :class => "span2", :id => "prependedInput", :placeholder => "job site" %>
+
+  </div>
+
+
+<% end %>

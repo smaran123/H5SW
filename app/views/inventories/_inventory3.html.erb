@@ -1,0 +1,5 @@
+<%= form_for inventory,:url => inventory_path(inventory),:method => 'PUT',:remote => true do |f| %>
+  <%= f.text_field :number,:style => 'width:98px;height:12px;' %><br/>
+  <%= f.submit t('inventories.inventory3.update'), :class => "btn btn-small btn-primary" %>
+  <%= link_to_function t('inventories.inventory3.cancel'),"cancel_update_number('#{inventory.id}','#{inventory.number}')", :class => "btn btn-mini btn-primary" %>
+<% end %>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>High5Software</title>
+  <%= stylesheet_link_tag "superadmin/style", :media => "all" %>
+  <%= stylesheet_link_tag "bootstrap.min.css" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+     <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container" style="width:1000px;">
+          <div class="nav-collapse" style="font-family:helvetica;font-size:13px;">
+            <% if superadmin_signed_in? %>
+              <ul class="nav pull-left">
+                <li>
+                  <%= link_to "Home",superadmin_dashboards_path %>
+                </li>
+                <li>
+                  <%= link_to "Company", superadmin_dashboards_path %>
+                </li>
+                <li>
+                  <%= link_to "Users", users_list_superadmin_dashboards_path %>
+                </li>
+              </ul>
+              <ul class="nav pull-right">
+                
+                <li>
+                  <%= link_to "Logout",destroy_superadmin_session_path, :method => "DELETE" %>
+                </li>
+              </ul>
+            <% end %>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+  
+      <div class="container" style="padding-bottom:50px;width:1000px;">
+      <br/><br/><br/>
+          <% if notice %>
+            <div class="alert alert-info" style="margin-top: 0px;">
+             <a class="close" data-dismiss="alert">×</a>
+             <strong><%= notice %></strong>
+            </div>
+          <% end %>
+      
+         <% if alert %>
+            <div class="alert alert-error">
+             <a class="close" data-dismiss="alert">×</a>
+             <strong><%= alert %></strong>
+            </div>
+       <% end %>
+      <%= yield %>
+    </div>
+  
+</body>
+</html>

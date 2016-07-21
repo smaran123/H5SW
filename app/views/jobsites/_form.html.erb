@@ -1,0 +1,43 @@
+
+<%= form_for (@jobsite) do |f| %>
+
+  <% if @jobsite.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@jobsite.errors.count, "error") %> <%= t('jobsites.form.error') %></h2>
+
+      <ul>
+        <% @jobsite.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.label :parent_billing, t('jobsites.form.parent') %>
+  <%= f.select :customer_id, options_for_select(current_login.customers.where("status=?", "Active").map{|customer| [customer.company_name, customer.id]}, :selected => ( params[:cust_id] ? params[:cust_id] : session[:customer_id])), {}, :onchange => "getJobsite(this);" %>
+
+  <div class ="field">
+    <%= f.label :name,t('jobsites.form.name') %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class ="field">
+    <%= f.label :city,t('jobsites.form.city') %>
+    <%= f.text_field :city %>
+  </div>
+
+  <div class ="field">
+    <%= f.label :state,t('jobsites.form.state') %>
+    <%= f.text_field :state %>
+  </div>
+
+  <div class="field">
+    <%= f.label :zip,t('jobsites.form.zip') %>
+    <%= f.text_field :zip %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Save",:class => "btn btn-success" %>
+  </div>
+
+<% end %>

@@ -1,0 +1,106 @@
+<p>
+<%= link_to "Invoice and Pay", invoice_and_pay_job_path, :class => "btn btn-small btn-primary" %>
+<%= link_to_function "Email Invoice",:onclick => "Invoice(#{params[:id]});", :class=>"btn btn-small btn-primary" %>
+<%= link_to "Print", print_invoice_pay_job_path, :class => "btn btn-small btn-primary" %>
+<%= link_to "Back", jobs_path, :class => "btn btn-small btn-primary" %>
+</p><br/>
+  
+<hr/>
+
+<div id="bill">
+    <table class="table table-striped" style="boredr:1px solid;">
+      <tr><th><span style="font-weight: bold; font-size:14px;text-align:left;">Bill To</span></th></tr>
+      <tr>
+        <td><%= @job.customer.company_name %><br/>
+            <%= @job.customer.address1 %><br/>
+            <%= @job.customer.address2 %><br/>
+            <%= @job.customer.city %> <%= @job.customer.state %> <%= @job.customer.zip %>
+        </td>
+      </tr>
+    </table>
+</div>
+
+<div class="contact">
+  Job Contact:<br/>
+  <% if  @job.contact_id.present? %>
+  <span style="border: 2px solid;"><%= @contact.email %></span>
+  <% end %>
+</div>
+
+
+<div style="float:right;margin-top:-33px;">
+  <table class="table table-striped" style="border:1px solid;">
+    <tr>
+      <th>Date</th>
+      <th>Invoice Number</th>
+    </tr>
+    
+    <tr>
+      <td><%= Date.today %></td>
+      <td>#<%= @job.reference_no %></td>
+    </tr>
+    <tr><td></td>
+      <td></td>
+    </tr>
+    
+    <tr>
+      <td>Due Date</td>
+      <td><%= @job.due_date.to_date %></td>
+    </tr>
+  </table>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<div>
+  <% if current_login.inventories.exists?(:job_id => @job.id) || current_login.jobtimes.exists?(:job_id => @job.id) %>
+    <table class=" table table-striped"  style="width:50%;border:1px solid;">
+       <tr>
+         <th>Activity</th>
+         <th>Amount</th>
+       </tr> 
+            
+    <% inventory = current_login.inventories.find_all_by_job_id(@job.id) %>
+      <% inventory.each do |inventory| %>
+       <tr>
+        <td><%= inventory.description %></td>
+        <td><%= inventory.subtotal%></td>
+       </tr>
+      <% end %>
+              
+              
+    <% jobtime = current_login.jobtimes.find_all_by_job_id(@job.id) %>
+      <% jobtime.each do |jobtime| %>
+       <tr>
+         <td><%= jobtime.timetype %></td>
+         <td><%= jobtime.price %></td>
+       </tr>
+    <% end %>
+
+       <tr>
+        <td>Total</td>
+        <td>$<%= @job.total %></td>
+       </tr>
+   </table><br/>
+</div><br/>
+<% end %>
+      
+
+<div style="float:right;margin-top:-145px;">
+  <table class="table table-striped" >
+    <tr>
+      <th>Amount Due:</th>
+      <th>$<%= @job.total %></th>
+    </tr>
+    
+    <tr>
+      <th>Enclosed:</th>
+      <td>&nbsp;</td>
+    </tr>
+  </table><br/>
+</div>

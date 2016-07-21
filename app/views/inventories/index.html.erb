@@ -1,0 +1,16 @@
+<%= render '/layouts/timer' %>
+
+<%= render '/layouts/job_with_action' %>
+<%= render '/layouts/tab_panel_for_job' %>
+
+<div>
+  <%= label_tag :add_item,t('.add_item')%>
+  <%= text_field_tag :item_names,'',:size => 75, :id => 'auto_complete_text' %>
+  <ul id="auto_results"></ul>
+  <%#= link_to "Add Item", new_item_path %>
+</div>
+
+
+<div id="inventories">
+  <%= render :partial => "items/index", :locals => {:inventories => @inventories} %>
+</div>

@@ -1,0 +1,12 @@
+<%= form_for @dropdown_values,:url => update_dropdown_custom_path(@custom_id), :method => 'PUT', :remote => true do |f| %>
+  <small style="color:red">NOTE: Use commas(,) to seperate multiple values</small>
+  <%= text_field_tag :dropdown_value, {}, :value => @dropdown_values, :class => "txt#{params[:cus_id]}", :style => 'width:418px; height:12px;' %><br/>
+  <%= f.submit "update", :class => "btn btn-small btn-primary" %>
+  <%= link_to_function 'Cancel', "cancelDropdownUpdate('#{params[:cus_id]}')", :class => "btn btn-mini btn-primary", :style => "color:white;" %>
+<% end %>
+
+<script>
+  function cancelDropdownUpdate(id){
+    $("#custom_field_updation_"+id).html('<%= escape_javascript render :partial => '/customs/replace_dropdown', :locals => {:custom => @custom} %>');
+  }
+</script>

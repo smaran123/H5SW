@@ -1,0 +1,35 @@
+<% if params[:controller]=="documents" && params[:type]=="Customer"  %>
+<% else %>
+<%= render '/layouts/timer' %>
+<% end %>
+
+<% if params[:type] == 'Customer' %>
+<%= gmaps4rails(@json) %><br/><br/>
+<% else %>
+<% end %>
+<br/><br/>
+<%= render params[:type] == "Job" ?'/layouts/job_with_action' : "/layouts/customer_with_action" %>
+
+<% if params[:type] == "Job" || params[:type] == "job" %>
+  <%= render '/layouts/tab_panel_for_job' %>
+<% else %>
+  <%= render  '/layouts/tab_panel_for_customer' %>
+<% end %>
+
+<%= render 'form' %><br/>
+
+<div>
+    <%= form_tag :documents, :method => 'get', :class => "form-search" do |f|  %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search", :class => "input-large search-query" %> &nbsp;
+    <%= hidden_field_tag :type ,params[:type] %>
+    <%= submit_tag :Search, :class => "btn btn-mini btn-primary",:style => "width:60px; height:30px" %>  
+<% end %>
+</div>
+<hr />
+
+<div id="documents">
+  <%= render :partial => "documents", :locals => {:documents => @documents} %>
+</div>
+
+
+

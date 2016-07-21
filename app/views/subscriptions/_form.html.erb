@@ -1,0 +1,157 @@
+<!-- Modal -->
+<style>
+  h4, h3{
+    color: #333;
+  }
+  p, strong, div, span{
+    color: #6F6F6F;
+  }
+  [class*="span"] {
+    text-align: left;
+    margin-left:10px;
+    min-height:1px;
+  }
+  .modal-header{
+    height: 70px;
+    background: #E9EDF0;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -o-border-radius: 10px;
+    -web-kit-border-radius: 10px;
+    font-family: "Helvetica Neue","Helvetica",Arial,sans-serif;
+  }
+  td, label{
+    text-align: left;
+  }
+  .modal-body{
+    height: 350px;
+  }
+  
+  .modal.fade.in{
+    top: 1%;
+  }
+</style>
+
+<%= form_for Subscription.new do |f| %>
+  <div class="modal fade" id="subscriptionForm" tabindex="-1" role="dialog" aria-labelledby="subscriptionFormLabel" aria-hidden="true" style="width:410px;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <%= image_tag('h5sw-logo.png', :height => "24px", :alt => "High 5 Software") %> <br />
+          <strong>Please provide the following information</strong>
+        </div>
+        <div class="modal-body">
+          <%= f.hidden_field :stripe_card_token %>
+          <%= f.hidden_field :company_id, :value => current_login.id %>
+          <div class="field">
+            <%= label_tag :card_number, nil, :class => "span3" %>
+            <%= label_tag :expires, nil, :class => "span2" %>
+          </div>
+          <div class="field">
+            <%= text_field_tag :card_number, nil, :name => nil, :class => "span3", :placeholder => "**** **** **** ****", :maxlength => "16", :onkeydown => "isNumber(this);", :required => "required" %>
+            <%= text_field_tag :card_month, nil, :name => nil, :class => "span1", :placeholder => "MM", :maxlength => "2", :onkeydown => "isNumber(this);", :required => "required" %> -
+            <%= text_field_tag :card_year, nil, :name => nil, :class => "span1", :placeholder => "YY", :maxlength => "2", :onkeydown => "isNumber(this);", :required => "required" %>
+          </div>
+
+          <div class="field">
+            <%= label_tag :name_on_card, nil, :class => "span3" %>
+            <%= label_tag :card_code, nil, :class => "span2" %>
+          </div>
+          <div class="field">
+            <%= text_field_tag :name_on_card, nil, :name => nil, :class => "span3", :placeholder => "Card Name", :required => "required"  %>
+            <%= text_field_tag :card_code, nil, :name => nil, :class => "span2", :placeholder => "CVC", :maxlength => "6", :onkeydown => "isNumber(this);", :required => "required" %>
+          </div>
+          
+          <div style="background:#EFF8FB;">
+            <% if @user.present? %>
+            <%#= "You are subscribed for  #{@user.count} users, adding this user will update your subscription to  #{@user.count+1} users.  You will be automatically billed for the additional users.  Would you like to proceed?" %> 
+            <% end %>
+          </div><br/>
+          
+          <div>
+            <span style="font-size:14px;">Number of users</span>
+            <% if @user.present? %>
+            <%= text_field_tag :no_of_users,(@user.count), :style => "width:70px;", :readonly => "true"%>
+            <% end %>
+          </div>
+
+          <div>
+            <span style="font-size:14px;">Subscription Plan</span>
+            <%= f.select :plan ,options_for_select([["Monthly",20], ["Quarterly",60],["Twice a year",120],["Yearly",240]]) %>
+          </div>
+            
+          <div>
+            <span style="font-size:14px;">Amount</span> &nbsp;
+            <span style="font-size:14px;font-weight:bold;" id="amount"></span>
+          </div>
+
+          <div id="stripe_error" class="alert alert-error" style="margin-top: 5px; display: none; margin-bottom: 0px;">
+            <noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="margin-bottom: 0;">
+          <%= f.submit "Pay now", :class => "btn btn-small btn-primary" %>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+<% end %>
+
+<script>
+  //javascript code for submitting form to stripe account
+  var subscription;
+
+  $(document).ready(function() {
+    Stripe.setPublishableKey($('meta[name="stripe-key"]').attr('content'));
+    return subscription.setupForm();
+  });
+
+  subscription = {
+    setupForm: function() {
+      return $('#new_subscription').submit(function() {
+        $("#stripe_error").hide();
+        $('input[type=submit]').attr('disabled', true);
+        subscription.processCard();
+        return false;
+      });
+    },
+    processCard: function() {
+      var card, charge;
+      card = {
+        number: $('#card_number').val(),
+        cvc: $('#card_code').val(),
+        expMonth: $('#card_month').val(),
+        expYear: $('#card_year').val()
+      };
+      return Stripe.createToken(card, subscription.handleStripeResponse);
+    },
+    handleStripeResponse: function(status, response) {
+      if (status === 200) {
+        $('#subscription_stripe_card_token').val(response.id);
+        $('#new_subscription')[0].submit();
+      } else {
+        $('input[type=submit]').attr('disabled', false);
+        $('#stripe_error').show();
+        $('#stripe_error').html(response.error.message)
+      }
+    }
+  };
+
+
+  // javascript code for allowing only numbers(0-9), delete, backspace, tab, escape, enter, left, right, up, down keys
+  function isNumber(which) {
+    var val = which.value;
+    val = val.replace(/[^0-9]/g, '');  // strip non-digits
+    which.value = val;
+  }
+  
+  
+  $(document).ready(function() {
+    $("#subscription_plan").change(function() {
+      var total = (parseInt($("#no_of_users").val()))  * parseInt($("#subscription_plan").val())
+      $("#amount").html("$" + total);
+    });
+  });
+</script>

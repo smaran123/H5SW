@@ -1,0 +1,33 @@
+<%= render :partial => "layouts/tabs_for_settings" %>
+<table class="table table-striped">
+  <tr>
+    <th>Template Name</th>
+    <th>Job Name</th>
+    <th>Type</th>
+    <th>Interval</th>
+    <th>Every</th>
+    <th>On</th>
+    <th>Previous date</th>
+    <th>Next date</th>
+    <th>Action</th>
+  </tr>
+  
+  <% @recurrings.each do |recurr| %>
+  <tr>
+    <td><%= recurr.name %></td>
+    <td><% @job = Job.find_by_id(recurr.job_id) %><% if @job.present? %><%= link_to (@job.reference_no), edit_job_path(@job) %><% end %> </td>
+    <td><%= recurr.template_type %></td>
+    <td><%= recurr.interval %></td>
+    <td><%= recurr.every %></td>
+    <td><%= recurr.on %></td>
+    <td><%if recurr.start_date.present? %><%= recurr.start_date.to_date %><% end %> </td>
+    <td><% if recurr.end_date.present? %><%= recurr.end_date.to_date %><% end %> </td>
+    <td><%= link_to "Edit", edit_recurring_path(recurr),:class => "btn btn-mini btn-primary" %> | <%= link_to "Delete",recurr,:method => "delete",:data => {:confirm => "Are you sure?"}, :class => "btn btn-mini btn-danger" %></td>
+  </tr>
+  <% end %>
+  <tr>
+      <td colspan="9">
+        <%= will_paginate @recurrings %>
+      </td>
+    </tr>
+</table>

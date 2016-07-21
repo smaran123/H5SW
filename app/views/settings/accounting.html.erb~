@@ -1,0 +1,185 @@
+<style>
+  .notice{
+    color: green;
+    background: #F1F1F1;
+    box-shadow: 2px 2px 2px 2px #999;
+    padding: 10px;
+    margin-left:20px;
+    font-weight: bold;
+  }
+  #items{
+    width: 100%;
+    margin: 10px;
+    padding: 5px;
+  }
+  .button{
+    width: 156px;
+  }
+</style>
+<%= render :partial => "layouts/tabs_for_settings" %>
+<% if !current_login.access_token.present? && !current_login.access_secret.present? && !current_login.realm_id.present? %>
+  <!-- somewhere in your document include the Javascript -->
+  <script type="text/javascript" src="https://appcenter.intuit.com/Content/IA/intuit.ipp.anywhere.js"></script>
+
+  <!-- configure the Intuit object: 'grantUrl' is a URL in your application which kicks off the flow, see below -->
+  <script>
+    intuit.ipp.anywhere.setup({menuProxy: '/path/to/blue-dot', grantUrl: "<%= authenticate_settings_url %>"});
+  </script>
+
+  <!-- this will display a button that the user clicks to start the flow -->
+  <ipp:connectToIntuit></ipp:connectToIntuit>
+<% else %>
+  <table>
+    <tr>
+      <td colspan="2">
+        <%= button_to "Disconnect from Quickbooks", {:controller => "settings", :action => "dis_quickbooks"} , :class => "btn btn-small btn-primary"%>
+      </td>
+    </tr>
+    <tr id="items">
+      <td>
+        <%= link_to_function "Sync Customer Now", "sync_customer_data();", :class => "btn btn-small btn-primary button", :id => "sync_customer" %>
+      </td>
+      <td>
+        <span id="notice-customer" class="notice">Import all new customers created on quickbooks.</span>
+      </td>
+    </tr>
+    <tr id="items">
+<td>    
+      <%= link_to_function "Sync Items Now", "sync_items();", :id => "sync_items", :class => "btn btn-small btn-primary button" %>
+      <span id="notice-item" class="notice">Import all Items created on quickbooks.</span>
+    </tr>
+
+    <tr id="items">
+<td>   
+      <%= link_to_function "Sync Employees Now", "sync_employees", :class => "btn btn-small btn-primary button" %>
+      <span id="notice-employee" class="notice">Import all employees created on quickbooks.</span>
+      </td>
+    </tr>
+
+    <tr id="items">
+<td>   
+      <%= link_to_function "Sync Vendors Now", "sync_vendors", :class => "btn btn-small btn-primary button" %>
+      <span id="notice-user" class="notice">Import all vendors created on quickbooks.</span>
+      </td>
+    </tr>
+
+    <tr id="items">
+<td>      
+<%= link_to_function "Sync Users Now", "sync_users", :class => "btn btn-small btn-primary button" %>
+      <span id="notice-user" class="notice">Import all users created on quickbooks.</span>
+      </td>
+    </tr>
+  </table>
+
+<% end %>
+
+<script>
+  function sync_customer_data(){
+    document.getElementById("sync_customer").innerHTML = "Synchronizing...."
+    $.ajax({
+      url: '/settings/sync_customer_data',
+      type: 'GET',
+      dataType: 'script',
+      success: function(data){}
+    });
+  }
+
+  function sync_items(){
+    document.getElementById("sync_items").innerHTML = "Synchronizing...."
+    $.ajax({
+      url: '/settings/sync_items',
+      type: 'GET',
+      dataType: 'script',
+      success: function(data){}
+    })
+  }
+</script>
+<style>
+  .notice{
+    color: green;
+    background: #F1F1F1;
+    box-shadow: 2px 2px 2px 2px #999;
+    padding: 10px;
+    margin-left:20px;
+    font-weight: bold;
+  }
+  #items{
+    width: 100%;
+    margin: 10px;
+    padding: 5px;
+  }
+  .button{
+    width: 156px;
+  }
+</style>
+<%= render :partial => "layouts/tabs_for_settings" %>
+<% if !current_login.access_token.present? && !current_login.access_secret.present? && !current_login.realm_id.present? %>
+  <!-- somewhere in your document include the Javascript -->
+  <script type="text/javascript" src="https://appcenter.intuit.com/Content/IA/intuit.ipp.anywhere.js"></script>
+
+  <!-- configure the Intuit object: 'grantUrl' is a URL in your application which kicks off the flow, see below -->
+  <script>
+    intuit.ipp.anywhere.setup({menuProxy: '/path/to/blue-dot', grantUrl: "<%= authenticate_settings_url %>"});
+  </script>
+
+  <!-- this will display a button that the user clicks to start the flow -->
+  <ipp:connectToIntuit></ipp:connectToIntuit>
+<% else %>
+  <table>
+    <tr>
+      <td colspan="2">
+        <%= button_to "Disconnect from Quickbooks", {:controller => "settings", :action => "dis_quickbooks"} , :class => "btn btn-small btn-primary"%>
+      </td>
+    </tr>
+    <tr id="items">
+      <td>
+        <%= link_to_function "Sync Customer Now", "sync_customer_data();", :class => "btn btn-small btn-primary button", :id => "sync_customer" %>
+      </td>
+      <td>
+        <span id="notice-customer" class="notice">Import all new customers created on quickbooks.</span>
+      </td>
+    </tr>
+    <div id="items">
+      <%= link_to_function "Sync Items Now", "sync_items();", :id => "sync_items", :class => "btn btn-small btn-primary button" %>
+      <span id="notice-item" class="notice">Import all Items created on quickbooks.</span>
+    </div>
+
+    <div id="items">
+      <%= link_to_function "Sync Employees Now", "sync_employees", :class => "btn btn-small btn-primary button" %>
+      <span id="notice-employee" class="notice">Import all employees created on quickbooks.</span>
+    </div>
+
+    <div id="items">
+      <%= link_to_function "Sync Vendors Now", "sync_vendors", :class => "btn btn-small btn-primary button" %>
+      <span id="notice-user" class="notice">Import all vendors created on quickbooks.</span>
+    </div>
+
+    <div id="items">
+      <%= link_to_function "Sync Users Now", "sync_users", :class => "btn btn-small btn-primary button" %>
+      <span id="notice-user" class="notice">Import all users created on quickbooks.</span>
+    </div>
+  </table>
+
+<% end %>
+
+<script>
+  function sync_customer_data(){
+    document.getElementById("sync_customer").innerHTML = "Synchronizing...."
+    $.ajax({
+      url: '/settings/sync_customer_data',
+      type: 'GET',
+      dataType: 'script',
+      success: function(data){}
+    });
+  }
+
+  function sync_items(){
+    document.getElementById("sync_items").innerHTML = "Synchronizing...."
+    $.ajax({
+      url: '/settings/sync_items',
+      type: 'GET',
+      dataType: 'script',
+      success: function(data){}
+    })
+  }
+</script>

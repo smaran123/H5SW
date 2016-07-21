@@ -1,0 +1,62 @@
+<%= form_for(@job, :url => change_customer_jobsite_job_path, :html => {:method => "put"}) do |f| %>
+<table style="border:none;">
+  <tr>
+    <th>Current Customer:</th>
+    <td><%= link_to (@customer.company_name), edit_customer_path(@customer) %></td>
+  
+    <th>Change Customer to:</th>
+    <td><%= select_tag :customer_id, options_for_select(current_login.customers.where(:status => "Active").map{|customer| [customer.company_name,customer.id]},:selected => ( params[:cust_id] ? params[:cust_id] : params[:customer_id]) ),:onchange => "getJobsites(this);" %></td>
+  </tr>
+  
+  <tr>
+    <th>Current Jobsite:</th>
+    <td><% if @jobsite.present? %>
+        <%= link_to (@jobsite.name), edit_jobsite_path(@jobsite) %>
+      <% else %>
+      nil
+      <% end %> 
+    </td>
+    
+    <th>Change Jobsite to:</th>
+    <td>
+      <% @jobsites = Jobsite.find_all_by_customer_id(session[:customer_id]) %>
+      <%= select_tag :jobsite_id, options_for_select(["None"]+["All"]+@jobsites.map{|job| [job.name,job.id]}, :selected => session[:jobsite_id]),:onchange => "getJobsiteId(this);"%>
+    <%#= select_tag :jobsite_id, options_for_select(["All"]+["None"]+Jobsite.where(:customer_id => current_login.customers.collect(&:id)).all.map{|jobsite| [jobsite.name,jobsite.id]},:selected => params[:jobsite_id]), :onchange => "getJobsitesId(this);"  %></td>
+  </tr>
+  
+  <tr>
+    <td><%= f.submit "Save",:class => "btn btn-small btn-success"%></td>
+  </tr>
+</table>
+<% end %>
+
+<script>
+  function getJobsites(s){
+     var r = confirm("Are you sure?");
+    if (r==true)
+        {
+    $.ajax({
+        type: 'GET',
+        url: '/jobsites/'+ jQuery(s).val() + '/ajax_show',
+        dataType: 'script',
+        success: function(data){
+        //            $("#jobsite").html(data);
+            
+        }
+    });
+     }
+      else{
+       window.location.reload(true);
+      }
+}
+
+function getJobsiteId(s){
+    $.ajax({
+        url: '/jobsites/'+ jQuery(s).val() + '/get_id',
+        dataType: 'script',
+        success: function(data){            
+            window.location.reload(true);
+        }
+    });   
+}
+</script>

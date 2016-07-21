@@ -1,0 +1,174 @@
+<div style="margin-bottom: 10px; font-weight: bold; font-size: 40px;text-align: center; font-family: Times new roman;">Report</div><br/>
+<div id="customer">
+  <span style="font-size :18px; font-weight:bold;">Customer</span><br/>
+  <% @job.customer_id ? customer = Customer.find(@job.customer_id) : '' %>
+  <%= customer ? customer.company_name : '-' %><br/>
+  <%= customer ? customer.city : '-' %>,
+  <%= customer ? customer.state : '-' %>,
+  <%= customer ? customer.zip : '-' %>
+</div><br/>
+
+<% if @job.jobsite_id.present? && @job.jobsite_id != 0 %>
+  <% jobsite = Jobsite.find(@job.jobsite_id) %>
+  <div id="jobsites">
+    <span style="font-size :20px; font-weight:bold;">Jobsite</span><br/>
+    <%= jobsite.name %><br/>
+    <%= jobsite.city %>,
+    <%= jobsite.state %>,
+    <%= jobsite.zip %>
+  </div>
+<% end %>
+<br/>
+
+<div>
+  <% if current_login.notes.exists?(:notable_id => params[:id], :note_type => 'Service Request') %>
+    <p style="font-weight: bold; font-size: 20px;">Notes</p>
+    <% note = current_login.notes.where("notable_id = ? AND note_type =?", params[:id], 'Service Request') %>
+    <table class ="table table-striped">
+      <tr>
+
+        <th>Service Request Notes</th>
+      </tr>
+      <% note.each do |note| %>
+        <tr>
+          <td>* <%= note.description %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+
+  <% if  current_login.notes.exists?(:notable_id => params[:id], :note_type => 'Service Performed') %>
+    <% note = current_login.notes.where("notable_id = ? AND note_type =?", params[:id], 'Service Performed') %>
+    <table class ="table table-striped">
+      <tr>
+        <th>Service Performed Notes</th>
+      </tr>
+      <% note.each do |note| %>
+        <tr>
+          <td>* <%= note.description %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>
+<br/>
+
+<div>
+  <% Inventory.exists?(:job_id => @job.id) ? inventory = Inventory.find_all_by_job_id(@job.id) : "" %>
+  <% if inventory.present? %>
+    <p style="font-weight: bold; font-size: 20px;">Items List</p>
+    <table  class="table table-striped">
+      <tr>
+        <th>Type</th>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Description</th>
+        <th>Number</th>
+        <% unless current_company %>
+         <% @current_user = User.find(current_user.id) %>
+         <% @role = Role.find(@current_user.role_id) %>
+         <% if @role.reports == "With-Pricing" %>
+          <th>Unit Price</th>
+          <th>Sub Total</th>
+           <% end %>
+          <% else %>
+          <th>Unit Price</th>
+          <th>Sub Total</th>
+       <% end %>
+
+      </tr>
+      <% inventory.each do |inventory| %>
+        <tr>
+          <td><%= inventory.itemtype %></td>
+          <td><%= inventory.name %></td>
+          <td><%= inventory.qty %></td>
+          <td><%= inventory.description %></td>
+          <td><%= inventory.number %></td>
+          <% unless current_company %>
+          <% @current_user = User.find(current_user.id) %>
+          <% @role = Role.find(@current_user.role_id) %>
+          <% if @role.reports == "With-Pricing" %>
+          <td>$<%= inventory.unit_price%></td>
+          <td><%= inventory.subtotal %></td>
+          <% end %>
+          <% else %>
+          <td>$<%= inventory.unit_price %></td>
+          <td><%= inventory.subtotal %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+  <% end %>
+</div>
+
+<div>
+  <% Jobtime.exists?(:job_id => @job.id) ? jobtime = Jobtime.find_all_by_job_id(@job.id) : "" %>
+  <% if jobtime.present? %>
+    <p style="font-weight: bold; font-size: 20px;">Time</p>
+    <table  class ="table table-striped">
+      <tr>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th>who</th>
+        <th>Service</th>
+        <% unless current_company %>
+        <% @current_user = User.find(current_user.id) %>
+        <% @role = Role.find(@current_user.role_id) %>
+        <% if @role.reports == "With-Pricing" %>
+        <th>Sub Total</th>
+        <% end %>
+        <% else %>
+         <th>Sub Total</th>
+        <% end %>
+      </tr>
+      <% jobtime.each do |jobtime| %>
+        <tr>
+          <td><%= jobtime.timetype %></td>
+          <td><%= jobtime.start_time %></td>
+          <td><%= jobtime.qty %></td>
+          <td><%= jobtime.user %></td>
+          <td><%= jobtime.service != nil ? Item.find(jobtime.service).name : '' %></td>
+          <% unless current_company %>
+          <% @current_user = User.find(current_user.id) %>
+          <% @role = Role.find(@current_user.role_id) %>
+          <% if @role.reports == "With-Pricing" %>
+          <td>$<%= jobtime.price %></td>
+          <% end %>
+          <% else %>
+          <td>$<%= jobtime.price %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+  <% end %>
+</div>  
+
+<% if current_login.inventories.exists?(:job_id => @job.id) || current_login.jobtimes.exists?(:job_id => @job.id) %>
+<div style="width:100%; text-align: right;">
+  <%= link_to "print", job_report_report_path(@job.id), :class => "btn btn-small btn-primary"%>
+  <%= link_to_function "Email",:class => "btn btn-small btn-primary", :method => :post, :onclick => "mail(#{@job.id});" %>
+  <% if current_company.present? && @job.status != "invoiced" %>
+    <%= link_to_function "Push To QuickBooks Invoice","send_to_quickbook(#{params[:id]});", :class => "btn btn-small btn-primary" %>
+  <% end %>
+  <%= link_to "Back", reports_path(@job.id),:class => "btn btn-small btn-primary" %>
+</div>
+<% end %>
+
+<script>
+  function send_to_quickbook(id){
+    $.ajax({
+      url: '/reports/push_report_to_quickbook',
+      data: {
+        id: id
+      },
+      type: 'GET',
+      dataType: 'script',
+      success: function(data) {
+      }
+    });  
+  }
+</script>

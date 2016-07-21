@@ -1,0 +1,51 @@
+<table id="sub_total" class ="table table-striped ">
+  <tr>
+    <th colspan="8" style="background:#666; color: #FFF; font-weight: bold;">
+       <%= t('.title_html') %>
+    </th>
+  </tr>
+  <tr>
+    <th><%= t('.type') %></th>
+    <th><%= t('.qty') %></th>
+    <th><%= t('.price') %></th>
+    <th><%= t('.number') %></th>
+    <th><%= t('.name') %></th>
+    <th><%= t('.desc') %></th>
+    <th><%= t('.sub_total') %></th>
+    <th><%= t('.action') %></th>
+  </tr>
+
+  <% inventories.each do |inventory| %>
+    <tr>
+      <td id="itemtype_<%= inventory.id %>"><div onclick="inplace_edit_itemtype('<%= inventory.id %>')"><span style ="color :blue; background-color:#EEEEEE; padding: 1px 5px; "><%= inventory.itemtype %></span>
+       <div id="itemtype_<%= inventory.id %>" style="display:none;"></div>
+      </td>
+      <td id="quantity_<%= inventory.id %>"><div onclick="inplace_edit_quantity('<%= inventory.id %>')"><span style ="color :blue; background-color:#EEEEEE; padding: 1px 5px; "><%= inventory.qty%></span></div>
+        <div id="qty_<%= inventory.id %>" style="display:none;"></div>
+      </td>
+      <td>$<%= inventory.unit_price %></td>
+      <td id="number_<%= inventory.id %>"><div onclick="inplace_edit_number('<%= inventory.id %>')"><span style ="color :blue; background-color:#EEEEEE; padding: 1px 5px; "><%= inventory.number %></span>
+       <div id="number_<%= inventory.id %>" style="display:none;"></div>
+      </td>
+      <td><%= inventory.name %></td>
+      <td id="description_<%= inventory.id %>"><div onclick="inplace_edit_description('<%= inventory.id %>')"><span style ="color :blue;  background-color:#EEEEEE; padding: 1px 5px;"><%= inventory.description%></span></div>
+        <div id="description_<%= inventory.id %>" style="display:none;"></div>
+      </td>
+      <td class="inv_me"><%=  inventory.subtotal %></td>
+      <td><%= link_to "Delete", inventory, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => "btn btn-mini btn-danger" %></td>
+    </tr>
+   <% end %>
+</table>
+
+<script type="text/javascript">
+  var tds = document.getElementById('sub_total').getElementsByTagName('td');
+  var sum = 0;
+  for(var i = 0; i < tds.length; i ++) {    
+    if(tds[i].className == 'inv_me') {
+      sum += isNaN(tds[i].innerHTML.slice(1)) ? 0 : parseFloat(tds[i].innerHTML.slice(1));
+    }
+  }
+  document.getElementById('sub_total').innerHTML += '<tr style="font-weight:bold;"><td colspan="6"></td><td>$' + sum.toFixed(2) + '</td><td>Total</td></tr>';
+</script>
+
+

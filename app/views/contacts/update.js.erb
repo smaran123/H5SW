@@ -1,0 +1,11 @@
+<% if @update_status == true %>
+  $('#contacts').replaceWith("<%= escape_javascript(render(:partial => 'contacts', :locals => {:contacts => @contacts})) %> ");
+  $("#error_explanation").hide();
+<% else %>
+  <%  errors = [] %>
+  <% @contact.errors.each do |field, error| %>
+    <% errors  << "#{field}"+' '+"#{error}" %>
+  <%  end %>
+  $("#error_explanation").html("<h2><%= pluralize(@contact.errors.count, "error") %> prohibited this contact from being saved:</h2><ul><li style='list-style: none;'><%=  "#{errors.join('<br/>')}".html_safe %></li></ul>")
+  $("#error_explanation").show();
+<% end %>

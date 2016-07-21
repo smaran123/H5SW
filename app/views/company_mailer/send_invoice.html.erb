@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    
+
+    <div id="company">
+    <span style="font-weight:bold;font-size:18px;"><%= @job.company.name %></span><br/>
+    <%= @job.company.email %>
+    </div>
+  
+<div style="float:right;">
+  <span style="font-weight:bold; font-size:18px;float:right;">Invoice</span><br/>
+    <table style="width:300px;border: 1px solid black;border-collapse:collapse;">
+      <tr>
+        <th style="border:1px solid black;">Date</th>
+        <th style="border:1px solid black;">Invoice.No</th>
+      </tr>
+      
+      <tr>
+        <td style="border:1px solid black;"><%= Date.today %></td>
+        <td style="border:1px solid black;"></td>
+      </tr>
+      
+      <tr>
+        <th style="border:1px solid black;"></th>
+        <th style="border:1px solid black;">Due Date</th>
+      </tr>
+      
+      <tr>
+        <td style="border:1px solid black;"></td>
+        <td style="border:1px solid black;"><%= @job.due_date %></td>
+      </tr>
+    </table>
+</div><br/>
+  
+  <div id="billto">
+    <table style="border-collapse:collapse;border: 1px solid black;">
+      <tr><th style="background-color:grey;border:1px solid black;"><span style="font-weight: bold; font-size:14px;text-align:left;">Bill To</span></th></tr>
+      <tr>
+        <td style="border:1px solid black;"><%= @job.customer.company_name %><br/>
+            <%= @job.customer.address1 %><br/>
+            <%= @job.customer.address2 %><br/>
+            <%= @job.customer.city %> <%= @job.customer.state %> <%= @job.customer.zip %>
+        </td>
+      </tr>
+    </table>
+  </div><br/>
+  
+  <div>
+    <% if @job.jobsite_id.present? && @job.jobsite_id != 0 %>
+  <% jobsite = Jobsite.find(@job.jobsite_id) %>
+    <table  style="border-collapse:collapse;border: 1px solid black;">
+      <tr><th style="background-color:grey;border:1px solid black;"><span style="font-size :14px; font-weight:bold;">Jobsite</span></th></tr>
+      <tr>
+     <td style="border:1px solid black;"><%= jobsite.name %><br/>
+    <%= jobsite.city %><br/>
+    <%= jobsite.state %><br/>
+    <%= jobsite.zip %></td>
+      </tr>
+  <% end %>
+    </table>
+  </div>
+
+<div style="float:right;">
+  <table style="border-collapse:collapse;border: 1px solid black;">
+    <tr>
+      <th style="border:1px solid black;">Amount Due</th>
+      <th style="border:1px solid black;">Enclosed</th>
+    </tr>
+    
+    <tr>
+      <td style="border:1px solid black;">$<%= @job.total %></td>
+      <td style="border:1px solid black;"><% if Payment.exists?(:job_id => @job.id) %>
+      <% @pay = Payment.last %>
+      $<%= @pay.amount %><% end %> </td>
+    </tr>
+    
+  </table>
+</div><br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<div>
+  <% if @job.summary.present? %>
+  <table style="border-collapse:collapse;border: 1px solid black;width:100%;">
+    <tr><th style="border:1px solid black;text-align:left;">Summary</th></tr>
+    <tr><td style="border:1px solid black;"><%= @job.summary %></td></tr>
+  </table>
+  <% end %>
+</div><br/>
+<br/>
+  
+  <div>
+  <% if Inventory.exists?(:job_id => @job.id) || Jobtime.exists?(:job_id => @job.id) %>
+    <table  style="border-collapse:collapse;border:1px solid;width:100%;">
+       <tr>
+          <th style="background-color:grey;border:1px solid black;text-align:left;">Activity</th>
+          <th style="background-color:grey;border:1px solid black;text-align:left;">Amount</th>
+       </tr>
+            
+    <% inventory = Inventory.find_all_by_job_id(@job.id) %>
+      <% inventory.each do |inventory| %>
+       <tr>
+        <td style="border:1px solid black;"><%= inventory.description %></td>
+        <td style="border:1px solid black;"><%= inventory.subtotal %></td>
+       </tr>
+      <% end %>
+              
+              
+    <% jobtime = Jobtime.find_all_by_job_id(@job.id) %>
+      <% jobtime.each do |jobtime| %>
+       <tr>
+         <td style="border:1px solid black;"><%= jobtime.timetype %></td>
+         <td style="border:1px solid black;">$<%= jobtime.price %></td>
+       </tr>
+    <% end %>
+
+       <tr>
+        <td style="background-color:grey;border:1px solid black;">Total</td>
+        <td style="background-color:grey;border:1px solid black;">$<%= @job.total %></td>
+       </tr>
+   </table><br/>
+    <%  else %>
+   <% end %>
+</div><br/>
+
+
+  </body>
+</html>

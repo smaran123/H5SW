@@ -1,0 +1,6 @@
+<div id="search_data">
+  <%= form_tag (params[:controller] == "contacts" && params[:action] == "index" ? :contacts : :new_contact), :method => 'get', :class => "form-search" do |f|  %>
+    <%= text_field_tag :search, params[:search], :placeholder => "Search by Name", :class => "input-large search-query" %> &nbsp;
+    <%= button_tag "search", :style => "height:40px; width: 80px;"%>
+  <% end %>
+</div>

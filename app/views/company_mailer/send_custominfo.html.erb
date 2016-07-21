@@ -1,0 +1,93 @@
+<div>
+  <table style="width:100%;border: 1px solid black;border-collapse:collapse;">
+    <tr>
+      <td style="border:1px solid black;">Date</td>
+      <td style="border:1px solid black;"><%= Date.today %></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid black;">Time</td>
+      <td style="border:1px solid black;"><%= Time.now %></td>
+    </tr>
+  </table><br/>
+</div>
+
+<div>
+  <table style="width:100%;border: 1px solid black;border-collapse:collapse;">
+    <% if @customers.present? %>
+      <tr>
+        <td style="border:1px solid black;">Company Name</td>
+        <td style="border:1px solid black;"><%= @customers.company_name %></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid black;">Address</td>
+        <td style="border:1px solid black;"><%= @customers.address1 %></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid black;">City</td>
+        <td style="border:1px solid black;"><%= @customers.city %></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid black;">State</td>
+        <td style="border:1px solid black;"><%= @customers.state %></td>
+      </tr>
+      <tr>
+        <td style="border:1px solid black;">Zip</td>
+        <td style="border:1px solid black;"><%= @customers.zip %></td>
+      </tr>
+    <% end %>
+  </table><br/>
+</div>
+
+
+
+<p>Yes-Acceptable  "X" No-Unacceptable(Explains no answer in Remarks) "NA"Not Applicable</p>
+<table style="width:100%;border: 1px solid black;border-collapse:collapse;" >
+  <% @custom_table = @company.customs.exists?(:field => 'Table') ? @company.customs.find_by_field('Table') : '' %>
+  <!-- display table heading same for all the customers,jobsites and jobs -->
+  <% if @custom_table.present? %>
+    <tr style="background: #CCC;">
+      <% fields = @custom_table.drop_value.split(',') %>
+      <% fields.each do |heading| %>
+        <td style="border:1px solid black;">
+          <%= heading %>
+        </td>
+      <% end %>
+    </tr>
+
+    <!-- display table values depending on the customers,jobsites and jobs -->
+  <%# @values = DropdownValue.find_by_custom_id_and_customer_id(@custom_table.id, @customer) %>
+    <% @values = @company.dropdown_values.where("custom_id=? and job_id=?",@custom_table.id, @job.id).order('created_at asc') %>
+    <% @values.each do |value| %>
+      <tr class="bold_me">
+        <% value.drop_value.split(',').each do |row| %>
+          <td style="border:1px solid black;"><%= row %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+</div><br/>
+
+
+<div>
+  <% @customs = @tab.customs.where("field!=?", 'Table') %>
+  <table style="width:100%;border: 1px solid black;border-collapse:collapse;">
+    <tr>
+      <th style="border:1px solid black;">Custom Fields</th>
+      <th style="border:1px solid black;">Values</th>
+    </tr>
+    <% @customs.each do |custom| %>
+      <% @value = @company.dropdown_values.find_by_custom_id_and_job_id(custom.id, @job.id) %>
+      <tr>
+        <td style="border:1px solid black;"><%= custom.name %></td>
+        <td style="border:1px solid black;">      
+          <% if custom.field == "Legend" %>
+            <%= @company.dropdown_values.exists?(:custom_id => custom.id) ? @company.dropdown_values.find_by_custom_id(custom.id).drop_value : "" %>
+          <% else %>
+            <%= @value.present? ? @value.drop_value : '' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

@@ -1,0 +1,41 @@
+<%= stylesheet_link_tag "bootstrap.min.css" %>  
+ <div style="margin: 0 auto; width: 960px;">
+   <head><title>High5Software</title></head>
+  <h2>Admin SignIn</h2>
+   <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+  <div>
+      <p>
+        <span>Email </span>
+       <span class="star">*</span>
+      </p>
+      <%= f.email_field :email, :autofocus => true%>
+  </div>
+
+    <div>
+      <p>
+        <span>Password </span>
+        <span class="star">*</span>
+      </p>
+      <%= f.password_field :password,:autofocus => true %>
+    </div>
+  
+  
+    <% if devise_mapping.rememberable? -%>
+      <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+    <% end -%>
+
+    <div><%= f.submit "Sign in", :class => "btn btn-info"%></div>
+   <% end %>
+
+    <div>
+      <%= link_to "Forgot your password?", new_superadmin_password_path %><br />
+    </div>
+</div>
+  
+
+<style>
+  .star{
+    color :red;
+    font-size :16px;
+  }
+</style>

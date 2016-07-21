@@ -1,0 +1,48 @@
+<%= render :partial => "layouts/tabs_for_settings" %>
+<table class="table table-striped">
+  <tr>
+    <th colspan="3"><%= link_to t('settings.index.add'), new_business_path %></th>
+  </tr>
+  <tr style="background:#666; color: #FFF; font-weight: bold; ">
+    <th><%= t('settings.index.business') %></th>
+    <th><%= t('settings.index.action') %></th>
+  </tr>
+  
+  <% @businesses.each do |business| %>
+  <tr>
+    <td><%= business.biz_type%></td>
+    <td><%= link_to t('settings.index.edit'), edit_business_path(business), :class=>"btn btn-small btn-primary" %>|<%= link_to t('settings.index.delete'), business, method: :delete, data: { confirm: t('settings.index.del') }, :class => "btn btn-mini btn-danger" %></td>
+  </tr>
+ <% end %>
+  <tr>
+    <td colspan="3"><%= will_paginate @businesses ,:param_name => 'page1'%></td>
+  </tr>
+</table>
+
+<br/>
+<table class="table table-striped">
+  <tr>
+    <th colspan="4">
+      <%= link_to t('settings.index.addnew'), "#jobstatusForm", "data-toggle" =>"modal" %>
+      <%= render "jobstatuses/form"%>
+    </th>
+  </tr>
+  
+  <tr style="background:#666; color: #FFF; font-weight: bold; ">
+    <th><%= t('settings.index.job') %></th>
+    <th><%= t('settings.index.action1') %></th>
+  </tr>
+  
+  <% @jobstatus.each do |jobstatus| %>
+  <tr>
+    <td><%= jobstatus.status %></td>
+    <td>
+      <%= link_to t('settings.index.edit1'),  edit_jobstatus_path(jobstatus), :class => "btn btn-small btn-primary" %>|<%= link_to t('settings.index.delete1'), jobstatus, method: :delete, data: { confirm: t('settings.index.del1') }, :class => "btn btn-mini btn-danger" %>
+    </td>
+ </tr>
+  <% end %>
+ 
+ <tr>
+   <td colspan="4"><%= will_paginate @jobstatus,:param_name => 'page2' %></td>
+ </tr>
+</table>

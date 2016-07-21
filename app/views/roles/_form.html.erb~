@@ -1,0 +1,53 @@
+<%= form_for(@role) do |f| %>
+  <% if @role.errors.any? %>
+    <div id ="error_explanation">
+       <h2><%= pluralize(@role.errors.count, "error") %> prohibited this role from being saved:</h2>
+
+      <ul>
+        <% @role.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class ="field">
+  <%=  f.label :role,"Role" %>
+  <%= f.text_field :role %>
+</div>
+
+<div class ="field">
+  <%= f.label :module,"Module" %>
+  <%= f.check_box :module  %>
+</div>
+
+<div class ="field">
+  <%= f.label :customer,"Customer" %>
+  <%= f.select :customer, options_for_select([["All"],["Read-Only"],["Write-Only"],["Read-Write"],["None"]]) %>
+ </div>
+
+<div class ="field">
+  <%= f.label :jobs,"Jobs" %>
+  <%= f.select :jobs, options_for_select([["All"],["Read-Only"],["Write-Only"],["Read-Write"],["None"]]) %>
+</div>
+
+<div class ="field">
+  <%= f.label :contacts,"Contacts" %>
+  <%= f.select :contacts, options_for_select([["Add"],["Edit"],["Read"]]) %>
+</div>
+
+<div class ="field">
+  <%= f.label :reports,"Reports" %>
+  <%= f.select :reports, options_for_select([["None"]]) %>
+</div>
+
+<div class ="field">
+  <%= f.label :settings_admin,"Settings/Admin" %>
+  <%= f.select :settings_admin, options_for_select([["None"]]) %>
+</div>
+
+<div class ="actions">
+  <%= f.submit "Save", :class =>  "btn-success" %>
+</div>
+
+<% end %>

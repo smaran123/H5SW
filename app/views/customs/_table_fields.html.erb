@@ -1,0 +1,67 @@
+<td><%= text_field_tag :fields_1, nil, :class => "small_row", :value => @values ? @values[0] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_2, nil, :class => "small_row", :value => @values ? @values[1] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_3, nil, :class => "mini_row", :value => @values ? @values[2] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_4, nil, :class => "mini_row", :value => @values ? @values[3] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_5, nil, :class => "mini_row", :value => @values ? @values[4] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_6, nil, :class => "mini_row", :value => @values ? @values[5] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_7, nil, :class => "mini_row", :value => @values ? @values[6] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_8, nil, :class => "mini_row", :value => @values ? @values[7] : '', :placeholder => "value", :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_9, nil, :class => "mini_row", :value => @values ? @values[8] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_10, nil, :class => "mini_row", :value => @values ? @values[9] : '', :placeholder => "value" %></td>
+<td><%= text_field_tag :fields_11, nil, :class => "small_row", :value => @values ? @values[10] : '', :placeholder => "value" %></td>
+<td colspan="2" style="width:50px">
+  <% if @values %>
+    <%= link_to_function "Update".html_safe, "update_rows(#{@dropdown_value.id}, '#{params[:type]}');", :class => "btn btn-mini btn-primary", :style => "color:white", :id => "update-btn" %>
+  <% else %>
+    <%= link_to_function "Add", "display_row(#{custom.id}, '#{params[:type]}');", :id => "add-btn", :class => "btn btn-mini btn-primary", :style => "color:white" %>
+  <% end %>
+</td>
+
+
+<script>
+  function display_row(custom_id, type) {
+    var datas = new Array();
+    for (var i = 0; i < 11; i++) {
+      val = document.getElementById("fields_" + (i + 1)).value;
+      datas[i] = val == "" ? "-" : val;
+    }
+    fields = datas.join(",");
+
+    $.ajax({
+      url: '/customs/create_table_fields',
+      data: {
+        custom_id: custom_id,
+        drop_value: fields,
+        tab:<%= params[:tab] %>,
+        type: type
+      },
+      type: 'POST',
+      dataType: 'script',
+      success: function(data) {
+      }
+    });
+  }
+
+
+  function update_rows(id, type) {
+    var datas = new Array();
+    for(var i=0; i<11; i++){
+      value = document.getElementById("fields_"+(i+1)).value;
+      value = (value==" " || value=="") ? "-" : value;
+      datas[i] = value
+    }
+    fields = datas.join(",");
+    $.ajax({
+      url: '/customs/' + id + '/update_table',
+      data: {
+        drop_value: fields,
+        tab:<%= params[:tab] %>,
+        type: type
+      },
+      type: 'PUT',
+      dataType: 'script',
+      success: function(data) {
+      }
+    });
+  }
+</script>

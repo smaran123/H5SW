@@ -1,0 +1,66 @@
+<table class="table">
+  <table class="table table-striped">
+    <tr>
+      <th colspan="5">
+         <% if params[:controller]== "jobs" && (session[:customer_id]=="All" || session[:customer_id]== nil)  %>
+         <%= link_to t('.add_new') %>
+         <% flash[:alert] = "Please select customer for this job." %>
+         <% else %>
+        <% unless current_login.status == "paid" %>
+         <% unless current_login.jobs_remaining.to_i == 0 %>
+         <%= link_to t('.add_new'), new_job_path %>
+         <% else %>
+         <%= link_to_function "Add New Job", :onclick => "trial();" %>
+         <% end %>
+        <% else %>
+         <%= link_to "Add New Job",new_job_path %>
+        <% end %>
+        <% end %>
+      </th>
+    </tr>
+    <tr>
+      <th><%= t('.ref_no') %></th>
+      <th><%= t('.date') %></th>
+      <th><%= t('.status') %></th>
+      <th><%= t('.summary') %></th>
+      <th ><%= t('.action') %></th>
+    </tr>
+
+    <% @jobs.each do |job| %>
+       <% @user = User.find_by_name(job.assigned_to) %>   
+      <tr>
+        <td><%= link_to job.reference_no, edit_job_path(job) %></td>
+        <td><% if job.assigned_to == "NULL" %>
+               <%= job.due_date  %>
+           <% else %>
+              <%= Time.parse(job.due_date.to_s).in_time_zone(@user.time_zone) %>
+          <% end %>
+        </td>
+        <td><%= job.status %></td></div>
+        <td><%= job.summary %></td>
+        <td>
+          <%= job.status == 'invoiced' ? " " : (link_to t('.invoice'),invoice_job_job_path(job), :method => :put, :remote => true, :class => "btn btn-mini btn-success")  %>
+          <%= job.status == 'closed' ? " " : (link_to t('.close'),close_job_job_path(job), :method => :put, :remote => true, :class => "btn btn-mini btn-primary") %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="6">
+        <%= will_paginate @jobs %>
+      </td>
+    </tr>
+  </table>
+</table>
+
+ <script>
+  function trial(){
+    var r = confirm("Your account is configured for one free user with 30 jobs per month. To add another user and get unlimited jobs please click here");
+    if (r==true)
+        {
+         location.href = '/subscriptions/billing'
+        }
+      else{
+       window.location.reload(true);
+      }
+ }
+</script>

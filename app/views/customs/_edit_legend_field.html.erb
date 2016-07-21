@@ -1,0 +1,14 @@
+
+<%= form_for @dropdown_value, :url => update_legend_field_custom_path, :method => 'PUT',:remote => true do |f| %>
+  <%= f.hidden_field :custom_id,:value => @custom.id %>
+  <%= f.text_area "drop_value", :value => @dropdown_value.present? ? @dropdown_value.drop_value : "default value", :rows => 5 %>
+
+  <%= f.submit 'Update', :class => 'btn btn-small btn-primary' %>
+  <%= link_to_function 'cancel', 'cancel_legend_update()',:class => 'btn btn-mini btn-primary', :style => "color:white;" %>
+<% end %>
+
+<script>
+  function cancel_legend_update() {
+    $("#li<%= @custom.id %>").html('<%= escape_javascript render :partial => 'customs/replace_dropdown',:locals => {:custom => @custom} %>');
+  }
+</script>

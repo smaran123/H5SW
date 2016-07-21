@@ -1,0 +1,221 @@
+<div id ="job_report">
+
+<div id="company">
+<span style="font-weight:bold;font-size:20px;"><%= @job.company.name %></span>
+<br/>
+<%= @job.company.email %>
+</div>
+  
+<div style="float:right;">
+  <span style="font-weight:bold; font-size:18px;float:right;">Invoice</span><br/>
+    <table style="width:300px;">
+      <tr>
+        <th>Date</th>
+        <th>Invoice.No</th>
+      </tr>
+      
+      <tr>
+        <td><%= Date.today %></td>
+        <td><%= @job.reference_no %></td>
+      </tr>
+      
+      <tr>
+        <th style="border:none;"></th>
+        <th>Due Date</th>
+      </tr>
+      
+      <tr>
+        <td style="border:none;"></td>
+        <td><%= @job.due_date %></td>
+      </tr>
+    </table>
+</div><br/>
+  
+  <div id="billto">
+    <table>
+      <tr><th style="background-color:grey;"><span style="font-weight: bold; font-size:14px;text-align:left;">Bill To</span></th></tr>
+      <tr>
+        <td><%= @job.customer.company_name %><br/>
+            <%= @job.customer.address1 %><br/>
+            <%= @job.customer.address2 %><br/>
+            <%= @job.customer.city %> <%= @job.customer.state %> <%= @job.customer.zip %>
+        </td>
+      </tr>
+    </table>
+  </div><br/>
+  
+  <div>
+    <% if @job.jobsite_id.present? && @job.jobsite_id != 0 %>
+  <% jobsite = Jobsite.find(@job.jobsite_id) %>
+    <table>
+      <tr><th style="background-color:grey;border:1px solid black;"><span style="font-size :14px; font-weight:bold;">Jobsite</span></th></tr>
+      <tr>
+     <td><%= jobsite.name %><br/>
+    <%= jobsite.city %><br/>
+    <%= jobsite.state %><br/>
+    <%= jobsite.zip %></td>
+      </tr>
+  <% end %>
+    </table>
+  </div>
+   
+
+<% unless current_company %>
+  <% @current_user = User.find(current_user.id) %>
+  <% @role = Role.find(@current_user.role_id) %>
+  <% if @role.reports == "With-Pricing" %>
+<div style="float:right;">
+  <table>
+    <tr>
+      <th>Amount Due</th>
+      <th>Enclosed</th>
+    </tr>
+    
+    <tr>
+      <td>$<%= @job.total %></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table><br/>
+</div><br/><br/>
+
+<div>
+  <% if current_login.inventories.exists?(:job_id => @job.id) || current_login.jobtimes.exists?(:job_id => @job.id) %>
+    <table  style="width:100%;">
+       <tr>
+         <th style="background-color:grey;text-align:left;">Activity</th>
+         <th style="background-color:grey;text-align:left;">Amount</th>
+       </tr> 
+            
+    <% inventory = current_login.inventories.find_all_by_job_id(@job.id) %>
+      <% inventory.each do |inventory| %>
+       <tr>
+        <td><%= inventory.description %></td>
+        <td><%= inventory.subtotal%></td>
+       </tr>
+      <% end %>
+              
+              
+    <% jobtime = current_login.jobtimes.find_all_by_job_id(@job.id) %>
+      <% jobtime.each do |jobtime| %>
+       <tr>
+         <td><%= jobtime.timetype %></td>
+         <td>$<%= jobtime.price %></td>
+       </tr>
+    <% end %>
+
+       <tr>
+        <td style="background-color:grey;">Total</td>
+        <td style="background-color:grey;">$<%= @job.total %></td>
+       </tr>
+   </table><br/>
+    <%  else %>
+   <% end %>
+</div><br/>
+<% end %>
+<% else %>
+
+<div style="float:right;">
+  <table>
+    <tr>
+      <th>Amount Due</th>
+      <th>Enclosed</th>
+    </tr>
+    
+    <tr>
+      <td>$<%= @job.total %></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table><br/>
+</div><br/><br/>
+
+
+<div>
+  <% if @job.summary.present? %>
+  <table style="border-collapse:collapse;border: 1px solid black;width:100%;">
+    <tr><th style="border:1px solid black;text-align:left;">Summary</th></tr>
+    <tr><td style="border:1px solid black;"><%= @job.summary %></td></tr>
+  </table>
+  <% end %>
+</div><br/>
+<br/>
+
+<div>
+  <% if current_login.inventories.exists?(:job_id => @job.id) || current_login.jobtimes.exists?(:job_id => @job.id) %>
+    <table  style="width:100%;">
+       <tr>
+         <th style="background-color:grey;text-align:left;">Activity</th>
+         <th style="background-color:grey;text-align:left;">Amount</th>
+       </tr> 
+            
+    <% inventory = current_login.inventories.find_all_by_job_id(@job.id) %>
+      <% inventory.each do |inventory| %>
+       <tr>
+        <td><%= inventory.description %></td>
+        <td><%= inventory.subtotal %></td>
+       </tr>
+      <% end %>
+              
+              
+    <% jobtime = current_login.jobtimes.find_all_by_job_id(@job.id) %>
+      <% jobtime.each do |jobtime| %>
+       <tr>
+         <td><%= jobtime.timetype %></td>
+         <td>$<%= jobtime.price %></td>
+       </tr>
+    <% end %>
+
+       <tr>
+        <td style="background-color:grey;">Total</td>
+        <td style="background-color:grey;">$<%= @job.total %></td>
+       </tr>
+   </table><br/>
+</div><br/>
+
+<% end %>
+<% end %>
+      
+<div>
+  <% current_login.notes.exists?(:notable_id => @job.id) ? note = Note.where(:note_type => 'Service Request').find_all_by_notable_id(@job.id) : "" %>
+  <% if note.present? %>
+  <p style="font-weight: bold; font-size: 20px;">Notes</p>
+    <table style="width:300px;">
+      <tr>
+        <th>Service Request Notes</th>
+      </tr>
+      <% note.each do |note| %>
+        <tr>
+          <td>* <%= note.description %></td>
+        </tr>
+      <% end %>
+    </table><br/>
+  <% else %>
+  <% end %>
+  
+    <% current_login.notes.exists?(:notable_id => @job.id) ? note = Note.where(:note_type => 'Service Request').find_all_by_notable_id(@job.id) : "" %>
+    <% if note.present? %>
+    <table style="width:300px;">
+      <tr>
+        <th>Service Performed Notes</th>
+      </tr>
+        <% note.each do |note| %>
+        <tr>
+          <td>* <%= note.description %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+  <% end %>
+  </table>
+</div>
+</div>
+
+<style>
+  table
+    {
+    border-collapse:collapse;
+    }
+  td, th, table{
+    border: 1px solid black;
+  }
+</style>
+     

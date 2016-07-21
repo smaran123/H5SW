@@ -1,0 +1,175 @@
+<% @value = DropdownValue.find_by_custom_id_and_company_id(custom.id, current_login.id) %>
+<%# @value = (DropdownValue.exists?(:custom_id => custom.id,:customer_id =>session[:customer_id]) and custom.field == "Text Box") ? DropdownValue.find_by_custom_id_and_customer_id(custom.id,session[:customer_id]).drop_value : '' %>
+
+<% if custom.field == "Text Box" %>
+  <% unless params[:controller]=="customs" && (params[:action]=="new" || params[:action]=="edit" || params[:action]=="update" || params[:action]=="destroy") %>
+    <% if params[:type]=="Job" %>
+      <% textfield_value = (current_login.dropdown_values.exists?(:custom_id => custom.id,:job_id =>session[:job_id]) and custom.field == "Text Box") ? current_login.dropdown_values.find_by_custom_id_and_job_id(custom.id,session[:job_id]).drop_value : '' %>
+    <% else %>
+      <%
+      if session[:jobsite_id].present? && session[:jobsite_id] != "All" && session[:jobsite_id] != "None"
+        textfield_value = (current_login.dropdown_values.exists?(:custom_id => custom.id,:customer_id =>session[:customer_id], :jobsite_id => session[:jobsite_id]) and custom.field == "Text Box") ? current_login.dropdown_values.find_by_custom_id_and_customer_id_and_jobsite_id(custom.id,session[:customer_id], session[:jobsite_id]).drop_value : ''
+      else
+        textfield_value = (current_login.dropdown_values.exists?(:custom_id => custom.id,:customer_id =>session[:customer_id], :jobsite_id => 0) and custom.field == "Text Box") ? current_login.dropdown_values.find_by_custom_id_and_customer_id_and_jobsite_id(custom.id,session[:customer_id], '').drop_value : ''
+      end
+    %>
+    <% end %>
+    <%= text_field_tag "textField",{}, :value => textfield_value , :onfocus => "javascript:show_edit_form('#{custom.id}','#{@value.id}', '#{params[:type]}')" %>
+  <% end %>
+
+
+<% elsif custom.field == "Dropdown List" %>
+  <% dropvalue = current_login.customs.find(custom.id).drop_value.split(',').each %>
+
+  <% if params[:type]=="Job" %>
+    <% selected_value = (current_login.dropdown_values.exists?(:custom_id => custom.id, :job_id =>session[:job_id]) and custom.field == "Dropdown List") ? current_login.dropdown_values.find_by_custom_id_and_job_id(custom.id, session[:job_id]).drop_value : '' %>
+  <% else %>
+    <%
+    if session[:jobsite_id].present? && session[:jobsite_id] != 0 && session[:jobsite_id] != "All" && session[:jobsite_id] != "None"
+      selected_value = (current_login.dropdown_values.exists?(:custom_id => custom.id, :customer_id =>session[:customer_id], :jobsite_id => session[:jobsite_id]) and custom.field == "Dropdown List") ? current_login.dropdown_values.find_by_custom_id_and_customer_id_and_jobsite_id(custom.id,session[:customer_id], session[:jobsite_id]).drop_value : ''
+    else
+      selected_value = (current_login.dropdown_values.where("custom_id=? AND customer_id=? AND (jobsite_id=0 OR jobsite_id IS NULL)", custom.id, session[:customer_id]).exists? and custom.field == "Dropdown List") ? current_login.dropdown_values.where("custom_id=? and customer_id=? and (jobsite_id IS NULL OR jobsite_id=0)",custom.id, session[:customer_id]).first.drop_value : ''
+    end
+  %>
+  <% end %>
+  <%= select_tag "dropdownField", options_for_select([""]+dropvalue.each do |drop|[drop] end, :selected => selected_value), :style => "width: 436px", :id => "dropdownField_#{custom.id}",
+  (params[:controller]=="customs" && (params[:action]=="new" || params[:action]=="edit" || params[:action]=="update" || params[:action]=="destroy" || params[:action]=="edit_dropdown" || params[:action]=="update_dropdown")) ? '' : :onchange =>  "update_customer_selection('#{custom.id}', '#{params[:type]}');" %>
+
+  <% if params[:controller]=="customs" && (params[:action]=="new" || params[:action]=="edit" || params[:action]=="update" || params[:action]=="destroy" || params[:action]=="edit_dropdown" || params[:action]=="update_dropdown") %>
+    <%= link_to_function "Edit", "update_dropdown_values('#{custom.id}');", :class => "btn btn-mini btn-primary", :style => "color:white" %>
+  <% else %>
+    <%#= link_to_function "save changes", "update_customer_selection('#{custom.id}', '#{params[:type]}');", :class => "btn btn-mini btn-primary", :style => "color:white" %>
+  <% end %>
+
+
+
+
+
+<% elsif custom.field == "Calendar" %>
+  <% unless params[:controller]=="customs" && (params[:action]=="new" || params[:action]=="edit" || params[:action]=="update" || params[:action]=="destroy") %>
+    <% if params[:type]=="Job" %>
+      <% calendar_value = (current_login.dropdown_values.exists?(:custom_id => custom.id, :job_id => session[:job_id]) and custom.field == "Calendar") ? current_login.dropdown_values.find_by_custom_id_and_job_id(custom.id,session[:job_id]).drop_value : '' %>
+    <% else %>
+      <%
+      if session[:jobsite_id].present? && session[:jobsite_id] != 0 && session[:jobsite_id] != "All" && session[:jobsite_id] != "None"
+        calendar_value = (current_login.dropdown_values.exists?(:custom_id => custom.id,:customer_id =>session[:customer_id], :jobsite_id => session[:jobsite_id]) and custom.field == "Calendar") ? current_login.dropdown_values.find_by_custom_id_and_customer_id_and_jobsite_id(custom.id,session[:customer_id], session[:jobsite_id]).drop_value : ''
+      else
+        calendar_value = (current_login.dropdown_values.exists?(:custom_id => custom.id,:customer_id =>session[:customer_id], :jobsite_id => 0) and custom.field == "Calendar") ? current_login.dropdown_values.find_by_custom_id_and_customer_id_and_jobsite_id(custom.id,session[:customer_id], 0).drop_value : ''
+      end
+    %>
+    <% end %>
+    <%= text_field_tag "calendar", nil, :value => calendar_value,
+      :onfocus => "javascript:show_edit_form('#{custom.id}','#{@value.id}', '#{params[:type]}')", :class => 'data' %>&nbsp;
+    <%= image_tag "calendar.png", :style => "width: 32px; height: 32px; cursor:pointer;", :id => "calendar_icon", :class => "datepicker"%>
+  <% end %>
+
+<% elsif custom.field == "Legend" %>
+  <pre style="text-indent:-18px;margin: 0px;font-family: Arial, Verdana, Sans-serif;"
+    <% unless params[:controller]=="customs" && (params[:action]=="index") %>onclick="javascript:edit_legend_field(<%= custom.id %>, <%= @value.id %>)"<% end %> >
+      <%= @value.drop_value %>
+  </pre>
+  <br/>
+
+<% elsif custom.field == "Table" %>
+  <div id="create_table_fields">
+    <%= render :partial => 'create_table_fields', :locals => {:custom => custom} %>
+  </div>
+  <br/>
+
+<% else %>
+  ''
+<% end %>
+
+<% unless params[:controller]=="customs" && (params[:action]=="index" || params[:action]=="get_dropdown_values" || params[:action]=="update_dropdown_values") %>
+  <span>
+    <%= link_to "Delete", custom, :remote => true, :confirm => "Are you sure you want to delete this custom field?", :method => :delete, :class => "btn btn-mini btn-primary" , :style => "color:white;"%>&nbsp;
+    <%= link_to_function "Hide", "status_false('#{custom.id}');", :class => "btn btn-mini btn-primary" , :style => "color:white;"%>
+  </span>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    /* Activating Best In Place */
+    $('.datepicker').datepicker()
+    .on('changeDate', function(e) {
+      var y = e.date.getFullYear(),
+      _m = e.date.getMonth() + 1,
+      m = (_m > 9 ? _m : '0' + _m),
+      _d = e.date.getDate(),
+      d = (_d > 9 ? _d : '0' + _d);
+      $(this).prev('input.data').val(y + '-' + m + '-' + d);
+    });
+  });
+
+  function update_dropdown_values(id) {
+    $.ajax({
+      url: "/customs/edit_dropdown",
+      data: {
+        cus_id: id,
+        tab:<%= params[:tab] %>
+      },
+      type: 'GET',
+      dataType: 'script',
+      success: function(data) {
+      }
+    });
+  }
+
+  function status_false(id) {
+    $.ajax({
+      url: '/customs/' + id + '/update_status/',
+      type: 'PUT',
+      dataType: 'script',
+      success: function(data) {
+      }
+    });
+  }
+
+  function show_edit_form(custom_id,value_id, tb_type){
+    $.ajax({
+      url:'/customs/get_dropdown_values',
+      data:{
+        custom_id:custom_id,
+        dropdown_id:value_id,
+        tab:<%= params[:tab] %>,
+        type:tb_type
+      },
+      type:'GET',
+      dataType:'script',
+      success:function(data){}
+    });
+  }
+
+  // update legend fields without customer, jobsite and job. It should be visible
+  // for all of them depening on tab_id
+  function edit_legend_field(custom_id, value_id, tb_type){
+    $.ajax({
+      url: '/customs/'+custom_id+'/edit_legend_field',
+      data:{
+        dropdown_id:value_id,
+        tab:<%= params[:tab] %>,
+        type:tb_type
+      },
+      type: 'GET',
+      dataType: 'script',
+      success:function(data){}
+    });
+  }
+
+
+  function update_customer_selection(custom_id, tab_type){
+    var selected_value = document.getElementById("dropdownField_"+custom_id).value;
+    $.ajax({
+      url: '/customs/'+custom_id+'/update_customer_selection',
+      data:{ "dropdown_value" :{
+          drop_value: selected_value
+        },
+        tab_id:<%= params[:tab] %>,
+        type:tab_type
+      },
+      type: 'POST',
+      dataType:'script',
+      success: function(data){}
+    });
+  }
+</script>

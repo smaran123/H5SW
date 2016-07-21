@@ -1,0 +1,14 @@
+<%= render '/layouts/customer_with_action' %>
+
+<%= render '/layouts/tab_panel_for_customer' %>
+
+
+<%= form_tag :customers, :method => 'get', :id => "customers_search"  do  %>
+    <%= text_field_tag :search, params[:search], :placeholder => 'search',:class => "input-large search-query" %>
+    <%= submit_tag :Search, :class => "btn btn-mini btn-primary", :style => "width:60px; height:30px" %> 
+
+<%= select_tag :cust, options_for_select([["Select",""],['Inactive Customer','inactive_customer']],params[:cust]), {:onchange => "reload_with_new_param('cust', this.value)"} %>
+    <div id="customer123">
+      <%= render :partial => 'customer' %>
+    </div>
+<% end %>

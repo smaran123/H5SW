@@ -1,0 +1,75 @@
+<table class="table table-striped" style="border:1px solid;width:100%;">
+  <tr>
+    <th colspan="10"><span style="font-size:20px;">Company Details</span></th>
+  </tr>
+  <tr>
+    <th>Company Name</th>
+    <th>Email</th>
+    <th>Phone number</th>
+    <th>Number Of users</th>
+    <th>Company type</th>
+    <th>Created at</th>
+    <th>New Company Period Starts</th>
+    <th>Jobs Remaining</th>
+    <th>Last access date</th>
+    <th style="text-align:center;">Actions</th>
+  </tr>
+  <% @companies.each do |company| %>
+  <tr>
+    <td><%= company.name %></td>
+    <td><%= company.email %></td>
+    <td><%= company.phone_number %></td>
+    <td><%= company.no_of_users %></td>
+    <td><%= company.status %></td>
+    <td><%= company.created_at.to_date %></td>
+    <td><%= company.new_company_period %></td>
+    <td><% if company.status == "paid" %>
+      unlimited
+      <% else %>
+      <%= company.jobs_remaining.to_i %>
+      <% end %>
+    </td>
+    <td><%= company.last_sign_in_at.to_date %></td>
+    <td><%= link_to "Delete", superadmin_company_path(company),method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-mini btn-danger"%>|
+    <%= company.status == 'Inactive' ? "" : (link_to "Inactive", inactivate_company_superadmin_company_path(company),:method => :put, :remote => true,:class => "btn btn-mini btn-primary") %>
+    <%= (company.status == 'paid')||(company.status == 'trial') ? "" : (link_to "Activate", activate_company_superadmin_company_path(company),:method => :put, :remote => true,:class => "btn btn-mini btn-success") %>
+    </td>
+  <% end %>
+  
+</table>
+
+<p>
+  Download:
+  <%= link_to "CSV",  superadmin_dashboards_path(format: "csv") ,:class=>"btn btn-small btn-primary"%> 
+  <%= link_to "Excel", superadmin_dashboards_path(format: "xls"),:class=>"btn btn-small btn-primary" %>
+</p>
+
+<style>
+table{
+    border:1px solid #CCC;
+    width: 100%;
+}
+
+tr, td, th {
+    border: none;
+}
+
+td, th{
+    padding: 5px;
+    font-style: Times New Roman;
+    font-size: 13px;
+}
+
+tr.heading{
+    background: #777777;
+    color:#FFF;
+}
+
+tr.even{
+    background: #FCFCFC;
+}
+
+tr.odd{
+    background: #CCC;
+}
+</style>

@@ -1,0 +1,16 @@
+<div style="width:435px; font-weight: bold;" id="display_customer_and_jobsite">
+  <p>
+    <% if @customer == nil %>
+      <span style="color:red"><%= t('.display') %></span><br/>
+    <% else %>
+      <%= link_to ("Customer : #{@customer.company_name}, #{@customer.address1} #{@customer.city},#{@customer.state},#{@customer.zip} "), edit_customer_path(@customer)%>
+<% end %>
+  </p>
+
+  <p>
+    <% if @jobsite == nil %>
+    <% else %>
+     <%= link_to (" Job Site :#{@jobsite.name}, #{@jobsite.city},#{@jobsite.state},#{@jobsite.zip} "), edit_jobsite_path(@jobsite) %>
+    <% end %>
+  </p>
+</div>

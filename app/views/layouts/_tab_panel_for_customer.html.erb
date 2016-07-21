@@ -1,0 +1,38 @@
+<ul class="nav nav-tabs" id="myTab">
+  <li class = <%= params[:controller] == "customers" ? 'active' : ''  %> >
+    <% if session[:customer_id] && session[:customer_id] != "All" %>
+      <%= link_to t('.customer'), edit_customer_path(session[:customer_id]), :title => "Customer Edit Page" %>
+    <% else %>
+      <%= link_to t('.customer'), new_customer_path, :title => "Customer New Page" %>
+    <% end %>
+  </li>
+
+  <li class = <%= params[:controller] == "jobs" && params[:action] == "index" ? 'active' : ''  %> >
+    <%= link_to t('.job'), jobs_path, :title => "Jobs index page" %>
+  </li>
+
+  <li class = <%= params[:controller]=="notes" ? 'active' : ''  %> >
+    <%= link_to t('.note'), notes_path(:type => "Customer"), :title => "list customer notes" %>
+  </li>
+
+  <li class = <%= params[:controller] == "contacts" ? 'active' : ''  %> >
+    <%= link_to t('.contact'), contacts_path, :title => "list contacts" %>
+  </li>
+
+  <li class = <%= params[:controller] == "documents" ? 'active' : ''  %>>
+    <%= link_to t('.document'), documents_path(:type => "Customer"), :title => "list customer documents" %>
+  </li>
+
+  <li class =" <%= (params[:controller] == "customs" && params[:type] == "Customer") ? 'active' : ''  %> ">
+    <% tab = current_login.tabs.find_by_tab_type("Customer") %>
+    <% if tab.present? %>
+      <%= link_to t('.custom'), customs_path(:type => "Customer", :tab => tab.id ), :title => "custom page" %>
+    <% else %>
+      <%= link_to t('.custom'), new_tab_customs_path(:type=> "Customer"), :title => "Create tabs for Customer" %>
+    <% end %>
+  </li>
+
+</ul>
+
+
+

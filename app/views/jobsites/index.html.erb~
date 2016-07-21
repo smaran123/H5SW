@@ -1,0 +1,1 @@
+<%= render :partial => "jobsites", :locals => {:jobsites => @jobsites} %>

@@ -1,0 +1,13 @@
+<% if !@role.new_record? %>
+  $('#roles').html("<%= escape_javascript(render(:partial => 'roles', :locals => {:roles => @roles})) %> ");
+  $("#role_roll").val(' ')
+  $("#role_module").val(' ')
+  $("#role_customer").val(' ')
+  $("#role_jobs").val(' ')
+  $("#role_contacts").val(' ')
+  $("#role_reports").val(' ')
+  $("#role_settings_admin").val(' ')
+  $("#error_explanation").hide();
+<% else %>
+  $("#role_form").html("<%= escape_javascript(render(:partial => 'form')) %>")
+<% end %>

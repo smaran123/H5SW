@@ -1,0 +1,10 @@
+<ul class ="nav nav-tabs">
+   <li class = <%= params[:controller] == "dashboards" ? 'active' : ''  %> >
+    <%= link_to t('.dashboard'), '/dashboards/index' %>
+  </li>
+  
+  <li class =<%= params[:controller] == "reports" ? 'active' : '' %>>
+  <%= link_to t('.report'), reports_path %>
+  </li>
+  
+</ul>

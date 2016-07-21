@@ -1,0 +1,52 @@
+<%= render '/layouts/customer_with_action' %>
+<%= render '/layouts/tab_panel_for_customer' %>
+
+<%= form_for(@contact, :remote => true) do |f| %>
+  <div id="error_explanation" style="display:none;">
+
+  </div>
+
+  <span>
+     <%= f.hidden_field :customer_id, :value => session[:customer_id] %>
+    <%= f.hidden_field :jobsite_id, :value => session[:jobsite_id] %>
+  </span>
+  <div class="field">
+    <%= f.label :name,t('.name') %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :role,t('.role') %>
+    <%= f.text_field :role %>
+  </div>
+  <div class="field">
+    <%= f.label :email,t('.email') %>
+    <%= f.email_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :mobile,t('.mobile') %>
+    <%= f.text_field :mobile1, :size => 3, :maxlength => 3,:value =>@mobile1.blank? ? @contact.mobile1 : @mobile1, :style => "height: 25px;    padding: 3px 10px;width: 50px; ", :onkeyup => "mobile_validate(this,2)" %>
+    <%= f.text_field :mobile2, :size => 3, :maxlength => 3,:value =>@mobile2.blank? ? @contact.mobile2 : @mobile2, :style => "height: 25px;   margin-left: 2px;  width: 50px;  margin-top: 0px; padding: 3px 10px;", :onkeyup => "mobile_validate(this,3)" %>
+    <%= f.text_field :mobile3, :size => 4, :maxlength => 4,:value =>@mobile3.blank? ? @contact.mobile3 : @mobile3, :style => "height: 25px;  margin-left: 2px;   width: 50px;  margin-top: 0px;   padding: 3px 10px;", :onkeyup => "mobile_validate(this,3)" %>
+    <%= f.text_field :mobile4, :size => 4, :maxlength => 4,:value =>@mobile4.blank? ? @contact.mobile4 : @mobile4, :style => "height: 25px;    padding: 3px 10px; width: 50px;  margin-left: 2px;margin-top: 0px;", :onkeyup => "mobile_validate(this,4)", :placeholder => "Ext.." %>
+   
+  </div>
+  <div class="field">
+    <%= f.label :business,t('.business') %>
+    <%= f.text_field :business1, :size => 3, :maxlength => 3,:value =>@business1.blank? ? @contact.business1 : @business1, :style => "height: 25px;    padding: 3px 10px;width: 50px; ", :onkeyup => "business_validate(this,2)" %>
+    <%= f.text_field :business2, :size => 3, :maxlength => 3,:value =>@business2.blank? ? @contact.business2 : @business2, :style => "height: 25px;   margin-left: 2px;  width: 50px;  margin-top: 0px; padding: 3px 10px;", :onkeyup => "business_validate(this,3)" %>
+    <%= f.text_field :business3, :size => 4, :maxlength => 4,:value =>@business3.blank? ? @contact.business3 : @business3, :style => "height: 25px;  margin-left: 2px;   width: 50px;  margin-top: 0px;   padding: 3px 10px;", :onkeyup => "business_validate(this,3)" %>
+    <%= f.text_field :business4, :size => 4, :maxlength => 4,:value =>@business4.blank? ? @contact.business4 : @business4, :style => "height: 25px;    padding: 3px 10px; width: 50px;  margin-left: 2px;margin-top: 0px;", :onkeyup => "business_validate(this,4)", :placeholder => "Ext.." %>
+  </div>
+  <div class="field">
+    <%= f.label :twitter,t('.twitter') %>
+    <%= f.text_field :twitter %>
+  </div>
+  <div class="actions">
+    <%= f.submit :class => "btn btn-success" %>
+  </div>
+<% end %>
+
+<hr />
+<div id="contacts">
+  <%= render :partial => "contacts", :locals => {:contacts => @contacts} %>
+</div>

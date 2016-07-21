@@ -1,0 +1,3 @@
+$("#drop_ids").val($("#drop_ids").val()+'<%=@dropdown_val.id%>,')
+$("#display_dropdown_values").append('<span style="margin-left: 5px;"><%= @dropdown_val.drop_value %>,</span>');
+$("#drop_down_value").val('');

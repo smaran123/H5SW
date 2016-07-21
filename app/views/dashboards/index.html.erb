@@ -1,0 +1,96 @@
+<%= render :partial => 'layouts/tab_panel_for_dashboards' %>
+<%= stylesheet_link_tag "gmaps4rails_1" %>
+
+<script type="text/javascript" charset="utf-8">
+  // display map of current location if no jobsites are present
+  $(document).ready(function(){
+    Gmaps.map.callback = function() {
+      Gmaps.map.createMarker({Lat: Gmaps.map.userLocation.lat(),
+        Lng: Gmaps.map.userLocation.lng(),
+        rich_marker: null,
+        marker_picture: ""
+      })
+    }
+  });
+</script>
+
+
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+  new Highcharts.Chart({
+    chart: { renderTo: 'jobs_chart' },
+    title: { text: 'Open Jobs' },
+    xAxis: { type: 'datetime' },
+    yAxis: {
+      title: { text: 'number of open_jobs'}
+    },
+    series: [{
+      pointInterval: <%= 1.day * 1000 %>,
+      pointStart: <%= 3.weeks.ago.at_midnight.to_i * 1000 %>,
+      data: <%=  (3.weeks.ago.to_date..Date.today).map { |date| current_login.jobs.total_on(date).to_f} %>
+    }]
+  });
+});
+</script>
+
+
+<table style="border:none;">
+  <tr>
+    <td>
+      <table div ="gmap">
+        <% if Jobsite.where(:customer_id => current_login.customers.collect(&:id)).present?  %>
+          <%= gmaps4rails(@json) %>
+        <% else %>
+        <span class="alert-error" style="padding:0 5px; width:100%;">
+          You have no jobsites to display.
+        </span>
+        <%= gmaps(:map_options => {:detect_location => true, :center_on_user => true, :auto_zoom => false, :zoom => 12, :auto_adjust => true}, :markers => {:data => @json} ) %>
+        <% end %>
+      </table>
+    </td>
+    <td><div id="jobs_chart" style="width: 340px; height: 200px;"></div></td>
+  </tr>
+  
+  <tr>
+    <td><div id="closedjobs_chart" style="width: 340px; height: 200px;"></div></td>
+	<td><div id="openjobs_chart" style="width: 340px; height: 200px;"></div></td>
+  </tr>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+  new Highcharts.Chart({
+    chart: { renderTo: 'closedjobs_chart' },
+    title: { text: 'Closed Jobs' },
+    xAxis: { type: 'datetime' },
+    yAxis: {
+      title: { text: 'number of closed_jobs'}
+    },
+     series: [{
+      pointInterval: <%= 1.day * 1000 %>,
+      pointStart: <%= 3.weeks.ago.at_midnight.to_i * 1000 %>,
+      data: <%=  (3.weeks.ago.to_date..Date.today).map { |date| current_login.jobs.closed_jobs(date).to_f}.inspect %>
+    }]
+  });
+});
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+  new Highcharts.Chart({
+    chart: { renderTo: 'openjobs_chart' },
+    title: { text: 'Open Jobs' },
+    xAxis: { type: 'datetime' },
+    yAxis: {
+      title: { text: 'open_jobs by day'}
+    },
+    series: [{
+      pointInterval: <%= 1.day * 1000 %>,
+      pointStart: <%= 3.weeks.ago.at_midnight.to_i * 1000 %>,
+      data: <%=  (3.weeks.ago.to_date..Date.today).map { |date| Job.open_jobs(date)} %>
+    }]
+  });
+});
+</script>
+ 

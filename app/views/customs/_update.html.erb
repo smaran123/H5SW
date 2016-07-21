@@ -1,0 +1,11 @@
+<%= form_for @custom,:url => custom_path(@custom), :method => 'PUT', :remote => true do |f| %>
+  <%= f.text_field :name, :class => "txt#{@custom.id}", :style => 'width:200px;height:12px;' %><br/>
+  <%= f.submit "update", :class => "btn btn-small btn-primary" %>
+  <%= link_to_function 'cancel', "cancelUpdate('#{@custom.id}')", :class => "btn btn-mini btn-primary", :style => "color:white;" %>
+<% end %>
+
+<script>
+  function cancelUpdate(id){
+    $("#label"+id).html('<%= label_tag @custom.name, nil, :onclick => "inplace_edit(#{@custom.id}, 'label');" %>');
+  }
+</script>

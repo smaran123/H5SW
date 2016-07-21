@@ -1,0 +1,404 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+
+*/
+
+/* style for search filter */
+
+#my_job > select {
+    margin-left: 260px;
+    margin-top: -55px;
+}
+/* end style for search filter */
+
+/* Drag and drop css */
+#sortable{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    float: left;
+    margin-right: 10px;
+    /*background: #eee;*/
+    box-shadow: 2px 2px 2px 2px #999;
+    padding: 5px;
+    width: 98%;
+}
+
+#sortable li{
+    margin: 5px;
+    padding: 5px 20px;
+    font-size: 1.2em;
+    pointer:cursor;
+}
+
+/* end of drag and drop css*/
+
+
+td a:hover{
+    background: transparent;
+    color: #333;
+}
+
+h1, h2, h3, h4{
+    color: #339bb9;
+}
+
+table{
+    border:1px solid #CCC;
+    width: 100%;
+}
+
+tr, td, th {
+    border: none;
+}
+
+td, th{
+    padding: 5px;
+}
+
+tr.heading{
+    background: #777777;
+    color:#FFF;
+}
+
+tr.even{
+    background: #FCFCFC;
+}
+
+tr.odd{
+    background: #CCC;
+}
+
+#error_explanation{
+    color: red;
+}
+
+#dsh_box{
+    background-color: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    margin: 0 auto 20px;
+    max-width: 300px;
+    padding: 19px 29px 29px;
+}
+
+.left{
+    float: left;
+    width: 150px;
+}
+.right{
+    float: left;
+    width: 700px;
+}
+
+#comment{
+    clear: both;
+    width: 100%;
+    padding : 0;
+    margin: 0;
+    margin-bottom: 10px;
+    background: #CCC;
+    border: 2px solid #999;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+#comment h4{
+    clear: both;
+    margin: 0;
+    width: auto;
+    border: 2px solid rgb(221, 110, 8);
+    padding: 5px;
+    background:rgb(28, 132, 245);
+    color: #FFF;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+#comment #close{
+    float: right;
+    padding-right: 10px;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+#comment #box{
+    display: block;
+    clear: both;
+    background: #F0F0F0;
+    width: 97%;
+    margin: 8px auto;
+    padding: 5px;
+    min-height: 100px;
+    overflow: hidden;
+}
+
+#comment #box #image{
+    width: 100px;
+    float: left
+}
+#image #img{
+    width: 50px;
+    height: 50px;
+    margin: 5px auto;
+    background: #c0c0c0;
+}
+#image #desc{
+    width: 80px;
+    margin: auto;
+    text-align: center;
+    font-weight: bold;
+}
+
+#comment #box #notes{
+    margin: 10px 0 0 20px;
+    width: 50%;
+    float: left;
+}
+
+#comment #box #created_at{
+    width: auto;
+    margin-top: 20px;
+    padding: 2px 5px;
+    float: right;
+    font-weight: bold;
+    border: 1px solid #333;
+}
+
+
+#overlay{
+    display: none;
+    background-color:#000000;
+    height:100%;
+    left:0;
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index: 1000;
+    opacity: 0.5;
+}
+
+#popup_box {
+    width: 230px;
+    background: snow;
+    display: none;
+    height: 380px;
+    left: 35%;
+    margin: -290px 0 0 150px;
+    position: fixed;
+    top: 70%;
+    z-index: 1001;
+    border: 1px solid black;
+}
+
+#overlay1{
+    display: none;
+    background-color:#000000;
+    height:100%;
+    left:0;
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index: 1000;
+    opacity: 0.5;
+}
+
+#popup_box1 {
+    width: 230px;
+    background: snow;
+    display: none;
+    height: 300px;
+    left: 35%;
+    margin: -290px 0 0 150px;
+    position: fixed;
+    top: 70%;
+    z-index: 1001;
+    border: 1px solid black;
+}
+
+
+
+
+#ajax_loader_big_div{
+    display:none;
+    height:auto;
+    left:50%;
+    position:fixed;
+    top:40%;
+    z-index:1000;
+}
+
+#droparea{
+    border: 1px dotted grey;
+    height: 65px;
+    padding-top: 40px;
+    text-align: center;
+    width: 705px;
+}
+
+#item_form input[type="text"]{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 120px;
+    padding :4px 0px;
+}
+
+#inventory_form input[type="text"]{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 120px;
+    padding :4px 0px;
+}
+.form_in_place input[type="text"]{
+    width :60px;
+}
+
+#clock{
+    width:500px;
+    margin:auto;
+    background: #F1F1F1;
+    text-align: center;
+    border: 1px solid #CCC;
+    -moz-box-shadow:2px 2px 2px 2px #999;
+    -webkit-box-shadow:2px 2px 2px 2px #999;
+    box-shadow:2px 2px 2px 2px #999;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.my-clock{
+    padding:5px; 
+    color: #666;
+    margin-left:5px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-box-shadow:1px 1px 1px 1px #999;
+    -webkit-box-shadow:1px 1px 1px 1px #999;
+    box-shadow:1px 1px 1px 1px #999;
+}
+
+#hour, #min, #sec{
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+#table123, .Row {
+    width :30px;
+    height :15px;
+}
+
+
+
+
+
+
+/* create warning div for trial period message */
+.trial-warning{
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font: bold 13px Arial;
+    text-align: center;
+}
+.trial-remaining-days{
+    font: bold 19px Arial;
+    box-shadow:  1px 1px 4px 1px;
+    -moz-box-shadow:  1px 1px 4px 1px;
+    -webkit-box-shadow:  1px 1px 4px 1px;
+    border-radius: 999px;
+    padding: 5px;
+}
+.warning {
+    color: #9F6000 !important;
+    /*border: 1px solid #9F6000;*/
+    /*color: #CD0000 !important;*/
+    background-color: #FEEFB3;
+    background-image: url('warning.png');
+}
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('error.png');
+}
+/* end warning div for trial period message */
+
+/* #tableitems{
+    width :200px;
+  border: 1px solid black;
+}
+#tabletime{
+    width :200px;
+    border :1px solid black;
+}
+*/
+#customer{
+    margin: auto;
+    text-align: center;
+    font-size :16px;
+    width :250px;
+    border-top-style:dotted;
+    border-right-style:solid;
+    border-bottom-style:dotted;
+    border-left-style:solid
+}
+
+#jobsites{
+    width:200px; 
+    border: black;
+    text-align: center;
+    font-size:14px;
+    margin :auto;
+    border-style: solid;
+}
+
+#job_report{
+    boredr-style :solid;
+    width :100%;
+}
+
+#company{
+    text-align :center;
+    float :left;
+    font-size :18px;
+    font-weight :bold;
+}
+
+#invoice{
+    float :right;
+    margin :auto;
+}
+
+#billto{
+    float :right;
+}
+
+#bill{
+    float :left;
+}
+
+.contact{
+    margin-left :220px;
+    width :280px;
+}
+
+#job111{
+    float :left;
+}

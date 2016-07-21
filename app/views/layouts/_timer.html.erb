@@ -1,0 +1,20 @@
+<div id="clock">
+  <span style="margin-right: 10px;">
+    <%= select_tag :service, options_for_select(Item.find_all_by_itemtype("Service").map{|item| [item.name, item.id]}), :class => "span2", :style => "padding:5px; height:30px; margin-top:10px;" %>
+  </span>
+  <%= button_tag t('.start'), :onclick => "clockStart()",:id => "start", :class => "btn btn-small btn-info"%>
+  <%= button_tag t('.stop'), :onclick => "clockStop()",:disabled => true, :id => "stop", :class => "btn btn-small btn-info" %>
+  <span class="my-clock">
+    <span id="hour">00</span> Hrs :
+    <span id="min">00</span> Min :
+    <span id="sec">00</span> Sec
+  </span>
+</div>
+<hr />
+
+
+<script>
+  $(document).ready(function(){
+    loadTimer();
+  })
+</script>

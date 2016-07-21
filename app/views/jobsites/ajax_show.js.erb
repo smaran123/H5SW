@@ -1,0 +1,6 @@
+$('#jobsite').html("<%= escape_javascript(render(:partial => 'jobsites')) %> ");
+<% if @edit == "edit" %>
+  window.location.href = '/customers/<%= session[:customer_id] %>/edit'
+<% else %>
+  window.location.reload();
+<% end %>

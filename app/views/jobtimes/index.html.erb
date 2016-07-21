@@ -1,0 +1,44 @@
+<%= render '/layouts/timer' %>
+
+<%= render '/layouts/job_with_action' %>
+<%= render '/layouts/tab_panel_for_job' %>
+
+
+<%= link_to t('.add_time'), new_jobtime_path(:time => "Actual"), :class => "btn btn-small btn-primary" %>
+<%= link_to t('.add_schedule'), new_jobtime_path, :class => "btn btn-small btn-primary" %>
+<hr />
+<table class ="table-striped">
+  <tr style="text-align: left;">
+    <th><%= t('.type') %></th>
+    <th><%= t('.date') %></th>
+    <th><%= t('.qty') %></th>
+    <th><%= t('.who') %></th>
+    <th><%= t('.service') %></th>
+    <%#*<th> Cost | Price </th>%>
+  </tr>
+
+  <% @jobtimes.each do |jobtime| %>
+    <tr>
+      <td><%= link_to jobtime.timetype,edit_jobtime_path(jobtime) %></td>
+      <td><%= jobtime.start_time %></td>
+      <td><%= jobtime.qty %></td>
+      <td><%= jobtime.user %></td>
+      <td><%= jobtime.service != nil ? Item.find(jobtime.service).name : '' %></td>
+      <%#=<td>
+         "#{jobtime.cost} | #{jobtime.price}" 
+      </td>%>
+    </tr>
+  <% end %>
+  
+</table>
+
+
+
+<script>
+  function calculate_subtotal(){
+    
+  }
+</script>
+
+
+

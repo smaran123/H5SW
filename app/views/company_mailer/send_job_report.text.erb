@@ -1,0 +1,107 @@
+Welcome, <%= @company.name %>,
+   <div style="margin-bottom: 10px; font-weight: bold; font-size: 40px;text-align: center; font-family: Times new roman;">Report</div><br/>
+    <div style="float:center;text-align:center; ">
+    <span style="font-size :18px; font-weight:bold;">Customer</span><br/>
+    <%= @job.customer.company_name %><br/>
+    <%= @job.customer.city %>,
+    <%= @job.customer.state  %>,
+    <%= @job.customer.zip %>
+    </div><br/>
+  
+  <% if @job.jobsite_id.present? && @job.jobsite_id != 0 %>
+  <% jobsite = Jobsite.find(@job.jobsite_id) %>
+  <div style ="text-align:center;float:center;">
+    <span style="font-size :20px; font-weight:bold;">Jobsite</span><br/>
+    <%= jobsite.name %><br/>
+    <%= jobsite.city %>,
+    <%= jobsite.state %>,
+    <%= jobsite.zip %>
+  </div>
+  <% end %><br/>
+
+<div>
+  <% Inventory.exists?(:job_id => @job.id) ? inventory = Inventory.find_all_by_job_id(@job.id) : "" %>
+  <% if inventory.present? %>
+    <p style="font-weight: bold; font-size: 20px;">Items List</p>
+    <table  class="table table-striped">
+      <tr>
+        <th>Type</th>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Description</th>
+        <th>Number</th>
+
+      </tr>
+      <% inventory.each do |inventory| %>
+        <tr>
+          <td><%= inventory.itemtype %></td>
+          <td><%= inventory.name %></td>
+          <td><%= inventory.qty %></td>
+          <td><%= inventory.description %></td>
+          <td><%= inventory.number %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+  <% end %>
+</div>
+
+<div>
+  <% Jobtime.exists?(:job_id => @job.id) ? jobtime = Jobtime.find_all_by_job_id(@job.id) : "" %>
+  <% if jobtime.present? %>
+    <p style="font-weight: bold; font-size: 20px;">Time</p>
+    <table  class ="table table-striped">
+      <tr>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th>who</th>
+        <th>Service</th>
+      </tr>
+      <% jobtime.each do |jobtime| %>
+        <tr>
+          <td><%= jobtime.timetype %></td>
+          <td><%= jobtime.start_time %></td>
+          <td><%= jobtime.qty %></td>
+          <td><%= jobtime.user %></td>
+          <td><%= jobtime.service != nil ? Item.find(jobtime.service).name : '' %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+  <% end %>
+</div>  
+  
+  <div>
+  <% Note.exists?(:notable_id => @job.id) ? note = Note.where(:note_type => 'Service Request').find_all_by_notable_id(@job.id) : "" %>
+  <% if note.present? %>
+  <p style="font-weight: bold; font-size: 20px;">Notes</p>
+    <table class ="table table-striped">
+      <tr>
+
+        <th>Service Request Notes</th>
+      </tr>
+      <% note.each do |note| %>
+        <tr>
+          <td>* <%= note.description %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+  <% end %>
+
+<% Note.exists?(:notable_id => @job.id) ? note = Note.where(:note_type => 'Service Request').find_all_by_notable_id(@job.id) : "" %>
+  <% if note.present? %>
+    <table class ="table table-striped">
+      <tr>
+        <th>Service Performed Notes</th>
+      </tr>
+      <% note.each do |note| %>
+        <tr>
+          <td>* <%= note.description %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+  <% end %>
+</div>

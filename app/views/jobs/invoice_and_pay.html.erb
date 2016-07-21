@@ -1,0 +1,117 @@
+<%= form_for(@payment, :url => process_invoice_job_path, :html => {:method => "post"}) do |f| %>
+  <div class ="field">
+    <%= f.label :payment_type, "Payment type"%>
+    <%= f.select :payment_type, options_for_select([["Cash","cash"],["Check","check"],["Credit card","credit_card"],["PO/Invoice", "po_invoice"]]),{},:onchange => "display();" %>
+  </div>
+  <div class ="field">
+    <%= label_tag :reference_no %>
+    <span><%= text_field_tag :referenc_no,(@job.reference_no),:readonly => true %></span>
+  </div>
+
+  <div id="label">
+    <%= f.label :amount %>
+    <%= f.text_field :amount %>
+  </div>
+
+  <div id="card">
+    <%= f.label :card_number %>
+    <%= f.text_field :card_number%>
+  </div>
+
+  <div id="expire">
+    <%= f.label :expires %>
+    <%= f.text_field :expires%>
+  </div>
+
+  <div id="data">
+    <%= f.label :data, "CVV2 Data" %>
+    <%= f.text_field :data %>
+  </div>
+
+  <div id="number">
+    <%= f.label :check_number %>
+    <%= f.text_field :check_number %>
+  </div>
+
+  <div id="ponumber">
+    <%= f.label :po_number, "PO Number" %>
+    <%= f.text_field :po_number %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :sub_total,"Sub total:" %>
+    $<%= @job.total %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :total, "Total:" %>
+    <span id="total">$<%= @job.total %></span>
+  </div>
+
+  <div>
+    Balance(Change Due): &nbsp; <span id="balance"></span>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Save",:class => "btn btn-small btn-success"%>
+  </div>
+<br/>
+
+<% end %>
+<div>
+  <%= link_to "Back", convert_to_invoice_job_path,:class=>"btn btn-small btn-primary" %>
+  <%= link_to "print", print_invoice_job_path,:class=>"btn btn-small btn-primary" %>
+  <%= link_to_function "Email",:onclick => "emailInvoice(#{params[:id]});", :class=>"btn btn-small btn-primary" %>
+</div>
+
+<script>
+  $(document).ready(function() {
+    display();
+  });
+
+  function display() {
+    if ($("#payment_payment_type").val() == "cash") {
+      $("#label").show();
+      $("#card").hide();
+      $("#expire").hide();
+      $("#data").hide();
+      $("#number").hide();
+      $("#ponumber").hide();
+    }
+
+    if ($("#payment_payment_type").val() == "check") {
+      $("#label").show();
+      $("#card").hide();
+      $("#expire").hide();
+      $("#data").hide();
+      $("#number").show();
+      $("#ponumber").hide();
+    }
+
+    if ($("#payment_payment_type").val() == "credit_card") {
+      $("#label").show();
+      $("#card").show();
+      $("#expire").show();
+      $("#data").show();
+      $("#number").hide();
+      $("#ponumber").hide();
+    }
+
+    if ($("#payment_payment_type").val() == "po_invoice") {
+      $("#label").show();
+      $("#card").hide();
+      $("#expire").hide();
+      $("#data").hide();
+      $("#number").hide();
+      $("#ponumber").show();
+    }
+  }
+  
+  $(document).ready(function() {
+    $("#payment_amount").keyup(function() {
+      var job_total = <%= @job.total %>;
+      var total = parseFloat(job_total) - parseFloat($("#payment_amount").val())
+            $("#balance").html("$" + total);
+    });
+  });
+</script>

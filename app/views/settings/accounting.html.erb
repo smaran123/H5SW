@@ -1,0 +1,120 @@
+<style>
+  .notice{
+    color: green;
+    background: #F1F1F1;
+    box-shadow: 2px 2px 2px 2px #999;
+    padding: 10px;
+    margin-left:20px;
+    font-weight: bold;
+  }
+  #items{
+    width: 100%;
+    margin: 10px;
+    padding: 5px;
+  }
+  .button{
+    width: 156px;
+  }
+</style>
+<%= render :partial => "layouts/tabs_for_settings" %>
+
+<div id="alert-customer-error" class="alert alert-error" style="display:none;">
+  <a class="close" data-dismiss="alert">×</a>
+  <strong>
+    SMO is unable to sync customer without their city, state and zipcode. Please confirm you entered city, state and zipcode for these customers in QuickBooks:
+  </strong>
+  <br/>
+  <strong id="alert-error"></strong>
+</div>
+
+<% if !current_login.access_token.present? && !current_login.access_secret.present? && !current_login.realm_id.present? %>
+  <!-- this will display a button that the user clicks to start the flow -->
+  <ipp:connectToIntuit></ipp:connectToIntuit>
+<% else %>
+  <%#*<ipp:blueDot></ipp:blueDot>%>
+  <div id="items">
+    <%= button_to t('.disconnect_from_quickbook'), {:controller => "settings", :action => "dis_quickbooks"} , :class => "btn btn-small btn-primary"%>
+  </div>
+
+  <div id="items">
+    <%= link_to_function t('.sync_customer'), "sync_customer_data();", :class => "btn btn-small btn-primary button", :id => "sync_customer" %>
+    <span id="notice-customer" class="notice"><%= t('.cust_html') %></span>
+  </div>
+
+  <div id="items">
+    <%= link_to_function t('.sync_items'), "sync_items();", :id => "sync_items", :class => "btn btn-small btn-primary button" %>
+    <span id="notice-item" class="notice"><%= t('.item_html') %></span>
+  </div>
+
+  <div id="items">
+    <%= link_to_function t('.sync_employees'), "sync_employees();", :id => "sync_employee", :class => "btn btn-small btn-primary button" %>
+    <span id="notice-employee" class="notice"><%= t('.emp_html') %></span>
+  </div>
+
+  <div id="items">
+    <%= link_to_function t('.sync_vendors'), "sync_vendors();", :id => "sync_vendor", :class => "btn btn-small btn-primary button" %>
+    <span id="notice-vendor" class="notice"><%= t('.vendors_html') %></span>
+  </div>
+
+  <div id="items" style="display:none;">
+    <%= link_to_function t('.sync_sales_person'), "sync_salse_person();", :id => "sync_sales_person", :class => "btn btn-small btn-primary button" %>
+    <span id="notice-user" class="notice"><%= t('.sales_html') %></span>
+  </div>
+<% end %>
+
+<script>
+  function sync_customer_data() {
+    document.getElementById("sync_customer").innerHTML = "Synchronizing...."
+    $.ajax({
+      url: '/settings/sync_customer_data',
+      type: 'GET',
+      dataType: 'script',
+      success: function(data) {
+<%#*window.location.reload(true);%>
+      }
+    });
+  }
+
+  function sync_items() {
+    document.getElementById("sync_items").innerHTML = "Synchronizing....";
+    $.ajax({
+      url: '/settings/sync_items',
+      type: 'GET',
+      dataType: 'script',
+      success: function(data) {
+        window.location.reload(true);
+      }
+    });
+  }
+
+  //sync all users
+  function sync_employees() {
+    document.getElementById("sync_employee").innerHTML = "Synchronizing....";
+    $.ajax({
+      url: '/settings/sync_employees',
+      type: 'GET',
+      dataType: 'script',
+      success: function(data) {
+        window.location.reload(true);
+      }
+    });
+  }
+
+  //sync all sub-contractors
+  function sync_vendors() {
+    document.getElementById("sync_vendor").innerHTML = "Synchronizing....";
+    $.ajax({
+      url: '/settings/sync_vendors',
+      type: 'GET',
+      dataType: 'script',
+      success: function(data) {
+        window.location.reload(true);
+      }
+    });
+  }
+
+  //sync all vendors
+  function sync_salse_person() {
+
+  }
+</script>

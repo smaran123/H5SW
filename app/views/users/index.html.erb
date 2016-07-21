@@ -1,0 +1,7 @@
+<%= render :partial => "layouts/tabs_for_settings" %>
+<div id="users">
+  <%= render :partial => "users", :locals => {:users => @users} %>
+</div><br/>
+<div id="user_form">
+  <%= render :partial => "form" %>
+</div>

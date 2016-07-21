@@ -1,0 +1,42 @@
+<%#= form_for "form1" do |f|%>
+  <%# if params[:controller]=="customers" && (params[:action]=="new" || params[:action]=="index" ) %>
+
+  <%# elsif params[:controller]=="customers" && params[:action]=="edit"  %>
+    <%#*Customer :%>
+    <%#= f.select :customers, options_for_select(["All"]+current_login.customers.where("status=?", "Active").map{|customer| [customer.company_name, customer.id]}, :selected => ( params[:cust_id] ? params[:cust_id] : session[:customer_id]) ), {}, :onchange => "getShowJobsite(this);" %>
+  <%# else %>
+    <%#*Customer :%>
+    <%#= f.select :customers, options_for_select(["All"]+current_login.customers.where("status=?", "Active").map{|customer| [customer.company_name, customer.id]}, :selected => ( params[:cust_id] ? params[:cust_id] : session[:customer_id]) ), {}, :onchange => "getShowJobsite(this);" %>
+  <%# end %>
+
+  
+
+  <%#*<br />%>
+  <%# if params[:controller]=="customers" && (params[:action]=="new" || params[:action]=="index") %>
+
+  <%# elsif params[:controller]=="jobsites" && (params[:action]=="index"  || params[:action]=="edit") %>
+
+  <%# else %>
+    <%#*<div id="jobsite123">%>
+      <%# @jobsites = Jobsite.find_all_by_customer_id(session[:customer_id]) %>
+       <%#= select_tag :jobsite_id, options_for_select(["None"]+["All"]+@jobsites.map{|job| [job.name,job.id]}, :selected => session[:jobsite_id]), :onchange => "getJobsitesId(this)" %>
+    <%#*</div>%>
+  <%# end %>
+<%#  end %>
+
+
+<p><span style = "color:#0044cc; font-weight: bold;"> Job # : <%= params[:controller] == "jobs" && params[:action] == "new" ? '' : session[:job_id] %>  </span></p>
+
+<div id="display_customer_and_jobsite">
+  <%= render :partial => 'display_customer_and_jobsite' %>
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    $('#form1_actions').change(function() {
+      location.href = $(this).val();
+    });
+  });
+</script>
+

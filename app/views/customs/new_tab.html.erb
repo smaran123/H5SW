@@ -1,0 +1,79 @@
+<%= render '/layouts/tabs_for_settings' %>
+
+<ul class="nav nav-tabs" id="custom_tab">
+  <li class=<%= params[:controller]=="customs" && params[:action] == "new_tab" && params[:type]=="Customer" ? 'active' : '' %> >
+    <%= link_to "Customer", new_tab_customs_path(:type=> "Customer") %>
+  </li>
+
+  <li class=<%= params[:controller]=="customs" && params[:action] == "new_tab" && params[:type]=="Job" ? 'active' : '' %> >
+    <%= link_to "Job", new_tab_customs_path(:type=> "Job") %>
+  </li>
+</ul>
+
+<table style="background: #F1F1F1">
+  <%= form_for(@tab, :url => create_tab_customs_path(@tab, :type => params[:type]), :method => "POST") do |f| %>
+    <% if @tab.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@tab.errors.count, "error") %> prohibited custom tabs from being saved:</h2>
+
+        <ul>
+          <% @tab.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= f.hidden_field :company_id, :value => current_login.id %>
+    <%= f.hidden_field :tab_type, :value => params[:type] %>
+
+    <tr style="background: #666; color: #FFF;">
+      <td>
+        <%= t('.custom_html') %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <%= t('.tab_title') %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= f.text_field :name, :placeholder => "Create your custom tabs" %>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <%= f.submit "Save", :class => "btn btn-small btn-success", :style => "width:120px; height:30px;" %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        &nbsp;
+      </td>
+    </tr>
+
+  <% end %>
+</table>
+
+<table style="margin-top:10px;">
+  <tr>
+    <th style="background:#666; color: #FFF;">
+     <%= t('.preview') %>
+    </th>
+  </tr>
+  <tr>
+    <td style="background:#F1F1F1;">
+<%# Tabs available for both customer and jobs%>
+      <ul class="nav nav-tabs" id="custom_tab">
+        <% @tabs.each do |tab| %>
+          <li class="active" >
+            <%= link_to (tab.name+" - #{tab.tab_type} "), "#" %>
+          </li>
+        <% end %>
+      </ul>
+    </td>
+  </tr>
+</table>

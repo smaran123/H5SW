@@ -1,0 +1,19 @@
+<%= render 'layouts/tabs_for_settings' %>
+
+<table class =" table-striped">
+  <tr>
+    <th colspan="7" style="background:#666; color: #FFF; font-weight: bold;"><%= t('.list') %></th>
+  </tr>
+
+  <% @items.each do |item| %>
+    <tr>
+      <td><%= item.name %></td>
+    </tr>
+    
+  <% end %>
+    <tr>
+      <td>
+        <%= will_paginate %>
+      </td>
+    </tr>
+</table>

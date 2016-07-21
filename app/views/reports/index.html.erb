@@ -1,0 +1,29 @@
+<%= render :partial => 'layouts/tab_panel_for_dashboards' %>
+<table class="table">
+  <table class="table table-striped">
+    <tr>
+    </tr>
+    <tr>
+      <th><%=  t('reports.index.reference_no')%></th>
+      <th><%=  t('reports.index.date')%></th>
+      <th><%=  t('reports.index.status')%></th>
+      <th><%=  t('reports.index.summary')%></th>
+    </tr>
+
+    <% @jobs.each do |job| %>
+      <tr>
+        <td><%= link_to (job.reference_no), report_path(job.id) %></td>
+        <td><%= job.due_date %></td>
+        <td><%= job.status %></td></div>
+        <td><%= job.summary %></td>
+      </tr>
+    <% end %>
+      <tr>
+        <td colspan="4">
+        <%= will_paginate @jobs %>
+      </td>
+      </tr>
+  </table>
+</table>
+
+ 
